@@ -27,6 +27,7 @@ members = [
   "derive-test",
   "mpi-derive",
   "mpi-sys",
+  "mpitrampoline-sys",
 ]
 
 [features]
