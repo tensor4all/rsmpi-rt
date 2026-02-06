@@ -209,3 +209,17 @@ pub fn RSMPI_INFO_NULL_fn() -> MPI_Info {
 pub fn RSMPI_WIN_NULL_fn() -> MPI_Win {
     unsafe { RSMPI_WIN_NULL }
 }
+
+// Error codes and misc integer constants
+pub fn RSMPI_SUCCESS_fn() -> std::os::raw::c_int {
+    MPI_SUCCESS as std::os::raw::c_int
+}
+pub fn RSMPI_UNIVERSE_SIZE_fn() -> std::os::raw::c_int {
+    MPI_UNIVERSE_SIZE as std::os::raw::c_int
+}
+pub fn RSMPI_APPNUM_fn() -> std::os::raw::c_int {
+    MPI_APPNUM as std::os::raw::c_int
+}
+
+// Compile-time size constants
+pub const RSMPI_MAX_OBJECT_NAME: usize = MPI_MAX_OBJECT_NAME as usize;

@@ -608,7 +608,7 @@ pub trait Communicator: sealed::AsHandle {
     ///
     /// 6.8, see the `MPI_Comm_get_name` function
     fn get_name(&self) -> String {
-        type BufType = [c_char; ffi::MPI_MAX_OBJECT_NAME as usize];
+        type BufType = [c_char; ffi::RSMPI_MAX_OBJECT_NAME];
 
         unsafe {
             let mut buf = MaybeUninit::<BufType>::uninit();
@@ -685,7 +685,7 @@ pub trait Communicator: sealed::AsHandle {
         let periods: IntArray = periods.iter().map(|x| *x as i32).collect();
 
         unsafe {
-            let mut new_rank = ffi::MPI_UNDEFINED;
+            let mut new_rank = ffi::RSMPI_UNDEFINED_fn();
             ffi::MPI_Cart_map(
                 self.as_raw(),
                 dims.count(),
@@ -693,7 +693,7 @@ pub trait Communicator: sealed::AsHandle {
                 periods.as_ptr(),
                 &mut new_rank,
             );
-            if new_rank == ffi::MPI_UNDEFINED {
+            if new_rank == ffi::RSMPI_UNDEFINED_fn() {
                 None
             } else {
                 Some(new_rank)

@@ -1605,7 +1605,7 @@ pub trait Root: AsCommunicator {
         }
         let fails = errcodes
             .into_iter()
-            .filter(|&c| c != ffi::MPI_SUCCESS as i32)
+            .filter(|&c| c != ffi::RSMPI_SUCCESS_fn())
             .count();
         if fails > 0 {
             Err(MpiError::Spawn(Rank::try_from(fails).unwrap(), maxprocs))
@@ -1674,7 +1674,7 @@ pub trait Root: AsCommunicator {
         }
         let fails = errcodes
             .into_iter()
-            .filter(|&c| c != ffi::MPI_SUCCESS as i32)
+            .filter(|&c| c != ffi::RSMPI_SUCCESS_fn())
             .count();
         if fails > 0 {
             Err(MpiError::Spawn(

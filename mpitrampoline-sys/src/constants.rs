@@ -3181,6 +3181,10 @@ pub fn RSMPI_MAX_PROCESSOR_NAME() -> c_int {
     RSMPI_MAX_PROCESSOR_NAME_fn()
 }
 
+/// MPI_MAX_OBJECT_NAME from MPIABI spec (MPIABI_MAX_OBJECT_NAME = 128)
+pub const MPI_MAX_OBJECT_NAME: usize = 128;
+pub const RSMPI_MAX_OBJECT_NAME: usize = MPI_MAX_OBJECT_NAME;
+
 pub unsafe fn RSMPI_Wtime() -> c_double {
     crate::functions::MPI_Wtime()
 }
