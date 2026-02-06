@@ -125,6 +125,14 @@
 
 use std::{mem::MaybeUninit, os::raw::c_int};
 
+#[cfg(all(feature = "mpi-sys-backend", feature = "mpitrampoline"))]
+compile_error!(
+    "Features `mpi-sys-backend` and `mpitrampoline` are mutually exclusive. Enable only one."
+);
+
+#[cfg(not(any(feature = "mpi-sys-backend", feature = "mpitrampoline")))]
+compile_error!("Either `mpi-sys-backend` or `mpitrampoline` feature must be enabled.");
+
 /// The raw C language MPI API
 ///
 /// Documented in the [Message Passing Interface specification][spec]

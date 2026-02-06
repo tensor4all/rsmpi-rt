@@ -3192,3 +3192,9 @@ pub unsafe fn RSMPI_Wtime() -> c_double {
 pub unsafe fn RSMPI_Wtick() -> c_double {
     crate::functions::MPI_Wtick()
 }
+
+// Aliases matching mpi-sys naming convention
+// mpi-sys: RSMPI_FLOAT_COMPLEX = MPI_C_FLOAT_COMPLEX
+pub fn RSMPI_FLOAT_COMPLEX_fn() -> MPI_Datatype {
+    RSMPI_C_FLOAT_COMPLEX_fn()
+}
