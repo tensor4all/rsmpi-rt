@@ -1,7 +1,8 @@
 //! Dynamic loading of MPIwrapper library via MPITRAMPOLINE_LIB
 
-use libloading::Library;
 use std::sync::OnceLock;
+
+use libloading::Library;
 
 static LIBRARY: OnceLock<Library> = OnceLock::new();
 

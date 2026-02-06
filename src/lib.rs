@@ -145,7 +145,6 @@ pub mod ffi {
     pub use mpi_sys::constant_accessors::*;
     #[cfg(feature = "mpi-sys-backend")]
     pub use mpi_sys::*;
-
     #[cfg(feature = "mpitrampoline")]
     pub use mpitrampoline_sys::*;
 }
