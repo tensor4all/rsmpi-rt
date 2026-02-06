@@ -21,32 +21,32 @@ jobs:
           - os: ubuntu-22.04
             rust: nightly
             mpi_package: libmpich-dev
-            cargo_flags: --all-features
+            cargo_flags: --features mpi-sys-backend,user-operations,derive,complex
             cargo_update: true
           - os: ubuntu-22.04
             rust: stable
             mpi_package: libmpich-dev
-            cargo_flags: --all-features
+            cargo_flags: --features mpi-sys-backend,user-operations,derive,complex
           - os: ubuntu-22.04
             rust: 1.78.0
             mpi_package: libmpich-dev
-            cargo_flags: --all-features
+            cargo_flags: --features mpi-sys-backend,user-operations,derive,complex
           - os: macos-latest
             rust: stable
             mpi_package: open-mpi
-            cargo_flags: --all-features
+            cargo_flags: --features mpi-sys-backend,user-operations,derive,complex
           - os: ubuntu-latest
             rust: stable
             mpi_package: libopenmpi-dev
-            cargo_flags: --all-features
+            cargo_flags: --features mpi-sys-backend,user-operations,derive,complex
           - os: windows-2025
             rust: stable
             mpi_package: intelmpi
-            cargo_flags: --all-features
+            cargo_flags: --features mpi-sys-backend,user-operations,derive,complex
           - os: windows-2025
             rust: stable
             mpi_package: msmpi
-            cargo_flags: --features derive,complex
+            cargo_flags: --features mpi-sys-backend,derive,complex
     steps:
       - uses: actions/checkout@v4
       - name: Install (Linux)
