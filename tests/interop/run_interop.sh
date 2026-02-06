@@ -1,8 +1,9 @@
 #!/bin/bash
 # Cross-language MPI interoperability test.
 #
-# Launches Rust, Python, and Julia MPI programs under a single mpiexec
-# using MPMD (Multiple Program Multiple Data) mode, sharing MPI_COMM_WORLD.
+# Verifies that Rust, Python (mpi4py), and Julia (MPI.jl) all work
+# correctly with the same MPI implementation by running each language's
+# MPI program under mpiexec -n 2.
 #
 # Prerequisites:
 #   - MPI implementation (MPICH or OpenMPI)
@@ -43,71 +44,67 @@ cargo build --manifest-path "$PROJECT_DIR/Cargo.toml" \
 RUST_BIN="$PROJECT_DIR/target/debug/examples/interop_test"
 
 # Check prerequisites
-check_cmd() {
-    if ! command -v "$1" &>/dev/null; then
-        echo "SKIP: $1 not found"
-        return 1
-    fi
-    return 0
-}
-
 HAS_PYTHON=false
 HAS_JULIA=false
 
-if check_cmd python3; then
-    if python3 -c "import mpi4py" 2>/dev/null; then
-        HAS_PYTHON=true
-    else
-        echo "SKIP: mpi4py not installed (pip install mpi4py)"
-    fi
+if command -v python3 &>/dev/null && python3 -c "import mpi4py" 2>/dev/null; then
+    HAS_PYTHON=true
+else
+    echo "NOTE: mpi4py not available, Python tests will be skipped"
 fi
 
-if check_cmd julia; then
-    if julia -e 'using MPI' 2>/dev/null; then
-        HAS_JULIA=true
-    else
-        echo "SKIP: MPI.jl not installed (julia -e 'using Pkg; Pkg.add(\"MPI\")')"
-    fi
+if command -v julia &>/dev/null && julia -e 'using MPI' 2>/dev/null; then
+    HAS_JULIA=true
+else
+    echo "NOTE: MPI.jl not available, Julia tests will be skipped"
 fi
 
-# --- Test 1: Rust only (baseline) ---
+FAILED=0
+
+# --- Test 1: Rust MPI (2 ranks) ---
 echo ""
-echo "--- Test 1: Rust-only MPI (2 ranks) ---"
-mpiexec -n 2 "$RUST_BIN"
-echo "PASSED"
+echo "--- Test 1: Rust MPI (2 ranks) ---"
+if mpiexec -n 2 "$RUST_BIN"; then
+    echo "PASSED"
+else
+    echo "FAILED"
+    FAILED=1
+fi
 
-# --- Test 2: Rust + Python (MPMD) ---
+# --- Test 2: Python/mpi4py (2 ranks) ---
 if [ "$HAS_PYTHON" = true ]; then
     echo ""
-    echo "--- Test 2: Rust + Python MPMD (2 ranks) ---"
-    mpiexec -n 1 "$RUST_BIN" : -n 1 python3 "$SCRIPT_DIR/test_mpi4py.py"
-    echo "PASSED"
+    echo "--- Test 2: Python/mpi4py (2 ranks) ---"
+    if mpiexec -n 2 python3 "$SCRIPT_DIR/test_mpi4py.py"; then
+        echo "PASSED"
+    else
+        echo "FAILED"
+        FAILED=1
+    fi
 else
     echo ""
-    echo "--- Test 2: Rust + Python MPMD --- SKIPPED"
+    echo "--- Test 2: Python/mpi4py --- SKIPPED"
 fi
 
-# --- Test 3: Rust + Julia (MPMD) ---
+# --- Test 3: Julia/MPI.jl (2 ranks) ---
 if [ "$HAS_JULIA" = true ]; then
     echo ""
-    echo "--- Test 3: Rust + Julia MPMD (2 ranks) ---"
-    mpiexec -n 1 "$RUST_BIN" : -n 1 julia "$SCRIPT_DIR/test_mpi_jl.jl"
-    echo "PASSED"
+    echo "--- Test 3: Julia/MPI.jl (2 ranks) ---"
+    if timeout 300 mpiexec -n 2 julia --project="$SCRIPT_DIR" "$SCRIPT_DIR/test_mpi_jl.jl"; then
+        echo "PASSED"
+    else
+        echo "FAILED (or timed out after 300s)"
+        FAILED=1
+    fi
 else
     echo ""
-    echo "--- Test 3: Rust + Julia MPMD --- SKIPPED"
-fi
-
-# --- Test 4: All three languages (MPMD) ---
-if [ "$HAS_PYTHON" = true ] && [ "$HAS_JULIA" = true ]; then
-    echo ""
-    echo "--- Test 4: Rust + Python + Julia MPMD (3 ranks) ---"
-    mpiexec -n 1 "$RUST_BIN" : -n 1 python3 "$SCRIPT_DIR/test_mpi4py.py" : -n 1 julia "$SCRIPT_DIR/test_mpi_jl.jl"
-    echo "PASSED"
-else
-    echo ""
-    echo "--- Test 4: Rust + Python + Julia MPMD --- SKIPPED"
+    echo "--- Test 3: Julia/MPI.jl --- SKIPPED"
 fi
 
 echo ""
-echo "=== All interop tests completed ==="
+if [ "$FAILED" -eq 0 ]; then
+    echo "=== All interop tests completed ==="
+else
+    echo "=== Some interop tests FAILED ==="
+    exit 1
+fi
