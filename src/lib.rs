@@ -43,7 +43,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! mpi = "0.8.1"
+//! mpi = "0.1.0"
 //! ```
 //!
 //! Then use it in your program like this:
