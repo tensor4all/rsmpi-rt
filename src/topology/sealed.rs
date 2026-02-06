@@ -1,4 +1,4 @@
-use mpi_sys::MPI_Comm;
+use crate::ffi::MPI_Comm;
 
 use crate::{ffi, topology::comm_is_inter, traits::AsRaw};
 
@@ -59,15 +59,15 @@ impl CommunicatorHandle {
     /// - `raw` must be a live communicator handle or `MPI_COMM_NULL`
     /// - `raw` must not be used after calling this function
     pub unsafe fn try_from_raw(raw: MPI_Comm) -> Option<CommunicatorHandle> {
-        if raw == ffi::RSMPI_COMM_NULL {
+        if raw == ffi::RSMPI_COMM_NULL_fn() {
             None
-        } else if raw == ffi::RSMPI_COMM_WORLD {
+        } else if raw == ffi::RSMPI_COMM_WORLD_fn() {
             Some(CommunicatorHandle::World)
-        } else if raw == ffi::RSMPI_COMM_SELF {
+        } else if raw == ffi::RSMPI_COMM_SELF_fn() {
             Some(CommunicatorHandle::SelfComm)
         } else {
             if comm_is_inter(raw) {
-                let mut parent_comm = ffi::RSMPI_COMM_NULL;
+                let mut parent_comm = ffi::RSMPI_COMM_NULL_fn();
                 ffi::MPI_Comm_get_parent(&mut parent_comm);
                 if raw == parent_comm {
                     Some(CommunicatorHandle::Parent(raw))
@@ -90,9 +90,9 @@ impl CommunicatorHandle {
     /// - `raw` must not be the parent communicator
     /// - `raw` must not be used after calling this function
     pub unsafe fn simple_comm_from_raw(raw: MPI_Comm) -> CommunicatorHandle {
-        debug_assert_ne!(raw, ffi::RSMPI_COMM_NULL);
-        debug_assert_ne!(raw, ffi::RSMPI_COMM_WORLD);
-        debug_assert_ne!(raw, ffi::RSMPI_COMM_SELF);
+        debug_assert_ne!(raw, ffi::RSMPI_COMM_NULL_fn());
+        debug_assert_ne!(raw, ffi::RSMPI_COMM_WORLD_fn());
+        debug_assert_ne!(raw, ffi::RSMPI_COMM_SELF_fn());
         debug_assert!(!comm_is_inter(raw));
         CommunicatorHandle::User(raw)
     }
@@ -106,7 +106,7 @@ impl CommunicatorHandle {
     /// - `raw` must not be the parent communicator
     /// - `raw` must not be used after calling this function
     pub unsafe fn inter_comm_from_raw(raw: MPI_Comm) -> CommunicatorHandle {
-        debug_assert_ne!(raw, ffi::RSMPI_COMM_NULL);
+        debug_assert_ne!(raw, ffi::RSMPI_COMM_NULL_fn());
         debug_assert!(comm_is_inter(raw));
         CommunicatorHandle::InterComm(raw)
     }
@@ -120,9 +120,9 @@ impl CommunicatorHandle {
     /// - `raw` must not be used after calling this function
     #[allow(dead_code)]
     pub unsafe fn parent_comm_from_raw(raw: MPI_Comm) -> CommunicatorHandle {
-        debug_assert_ne!(raw, ffi::RSMPI_COMM_NULL);
+        debug_assert_ne!(raw, ffi::RSMPI_COMM_NULL_fn());
         debug_assert!({
-            let mut parent = ffi::RSMPI_COMM_NULL;
+            let mut parent = ffi::RSMPI_COMM_NULL_fn();
             ffi::MPI_Comm_get_parent(&mut parent);
             raw == parent
         });
@@ -150,11 +150,11 @@ impl Drop for CommunicatorHandle {
             }
             CommunicatorHandle::User(handle) => unsafe {
                 ffi::MPI_Comm_free(handle);
-                assert_eq!(*handle, ffi::RSMPI_COMM_NULL);
+                assert_eq!(*handle, ffi::RSMPI_COMM_NULL_fn());
             },
             CommunicatorHandle::InterComm(handle) => unsafe {
                 ffi::MPI_Comm_disconnect(handle);
-                assert_eq!(*handle, ffi::RSMPI_COMM_NULL);
+                assert_eq!(*handle, ffi::RSMPI_COMM_NULL_fn());
             },
         }
     }
@@ -165,8 +165,8 @@ unsafe impl AsRaw for CommunicatorHandle {
 
     fn as_raw(&self) -> Self::Raw {
         match self {
-            CommunicatorHandle::SelfComm => unsafe { ffi::RSMPI_COMM_SELF },
-            CommunicatorHandle::World => unsafe { ffi::RSMPI_COMM_WORLD },
+            CommunicatorHandle::SelfComm => ffi::RSMPI_COMM_SELF_fn(),
+            CommunicatorHandle::World => ffi::RSMPI_COMM_WORLD_fn(),
             CommunicatorHandle::Parent(handle) => *handle,
             CommunicatorHandle::User(handle) => *handle,
             CommunicatorHandle::InterComm(handle) => *handle,

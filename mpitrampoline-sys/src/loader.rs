@@ -24,14 +24,12 @@ pub fn library() -> &'static Library {
 /// The caller must ensure that the symbol type matches the actual symbol.
 pub unsafe fn get_symbol<T>(name: &[u8]) -> *const T {
     let lib = library();
-    let sym: libloading::Symbol<*const T> = lib
-        .get(name)
-        .unwrap_or_else(|e| {
-            panic!(
-                "Failed to load symbol '{}': {}",
-                String::from_utf8_lossy(name),
-                e
-            )
-        });
+    let sym: libloading::Symbol<*const T> = lib.get(name).unwrap_or_else(|e| {
+        panic!(
+            "Failed to load symbol '{}': {}",
+            String::from_utf8_lossy(name),
+            e
+        )
+    });
     *sym
 }

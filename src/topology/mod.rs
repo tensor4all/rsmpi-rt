@@ -112,13 +112,13 @@ impl SimpleCommunicator {
             let (_, topology) =
                 with_uninitialized(|topology| ffi::MPI_Topo_test(self.as_raw(), topology));
 
-            if topology == ffi::RSMPI_GRAPH {
+            if topology == ffi::RSMPI_GRAPH_fn() {
                 Topology::Graph
-            } else if topology == ffi::RSMPI_CART {
+            } else if topology == ffi::RSMPI_CART_fn() {
                 Topology::Cartesian
-            } else if topology == ffi::RSMPI_DIST_GRAPH {
+            } else if topology == ffi::RSMPI_DIST_GRAPH_fn() {
                 Topology::DistributedGraph
-            } else if topology == ffi::RSMPI_UNDEFINED {
+            } else if topology == ffi::RSMPI_UNDEFINED_fn() {
                 Topology::Undefined
             } else {
                 panic!("Unexpected Topology type!")
@@ -321,7 +321,7 @@ pub struct Color(c_int);
 impl Color {
     /// Special color of undefined value
     pub fn undefined() -> Color {
-        Color(unsafe { ffi::RSMPI_UNDEFINED })
+        Color(ffi::RSMPI_UNDEFINED_fn())
     }
 
     /// A color of a certain value
@@ -478,9 +478,9 @@ pub trait Communicator: sealed::AsHandle {
                 with_uninitialized(|newcomm| {
                     ffi::MPI_Comm_split_type(
                         self.as_raw(),
-                        ffi::RSMPI_COMM_TYPE_SHARED,
+                        ffi::RSMPI_COMM_TYPE_SHARED_fn(),
                         key,
-                        ffi::RSMPI_INFO_NULL,
+                        ffi::RSMPI_INFO_NULL_fn(),
                         newcomm,
                     )
                 })
@@ -649,7 +649,7 @@ pub trait Communicator: sealed::AsHandle {
         let periods: IntArray = periods.iter().map(|x| *x as i32).collect();
 
         unsafe {
-            let mut comm_cart = ffi::RSMPI_COMM_NULL;
+            let mut comm_cart = ffi::RSMPI_COMM_NULL_fn();
             ffi::MPI_Cart_create(
                 self.as_raw(),
                 dims.count(),
@@ -812,9 +812,9 @@ pub trait Communicator: sealed::AsHandle {
     /// 10.3.2, see MPI_Comm_get_parent
     fn parent(&self) -> Option<InterCommunicator> {
         unsafe {
-            let mut comm = ffi::RSMPI_COMM_NULL;
+            let mut comm = ffi::RSMPI_COMM_NULL_fn();
             ffi::MPI_Comm_get_parent(&mut comm);
-            if comm == ffi::RSMPI_COMM_NULL {
+            if comm == ffi::RSMPI_COMM_NULL_fn() {
                 return None;
             }
             Some(InterCommunicator::from_raw(comm))
@@ -905,13 +905,13 @@ pub enum CommunicatorRelation {
 
 impl From<c_int> for CommunicatorRelation {
     fn from(i: c_int) -> CommunicatorRelation {
-        if i == unsafe { ffi::RSMPI_IDENT } {
+        if i == ffi::RSMPI_IDENT_fn() {
             return CommunicatorRelation::Identical;
-        } else if i == unsafe { ffi::RSMPI_CONGRUENT } {
+        } else if i == ffi::RSMPI_CONGRUENT_fn() {
             return CommunicatorRelation::Congruent;
-        } else if i == unsafe { ffi::RSMPI_SIMILAR } {
+        } else if i == ffi::RSMPI_SIMILAR_fn() {
             return CommunicatorRelation::Similar;
-        } else if i == unsafe { ffi::RSMPI_UNEQUAL } {
+        } else if i == ffi::RSMPI_UNEQUAL_fn() {
             return CommunicatorRelation::Unequal;
         }
         panic!("Unknown communicator relation: {}", i)
@@ -956,7 +956,7 @@ pub struct Process<'a> {
 impl<'a> Process<'a> {
     #[allow(dead_code)]
     fn by_rank<C: Communicator + ?Sized>(c: &'a C, r: Rank) -> Option<Self> {
-        if r != unsafe { ffi::RSMPI_PROC_NULL } {
+        if r != ffi::RSMPI_PROC_NULL_fn() {
             Some(Process::by_rank_unchecked(c, r))
         } else {
             None
@@ -1053,7 +1053,7 @@ pub struct SystemGroup(MPI_Group);
 impl SystemGroup {
     /// An empty group
     pub fn empty() -> SystemGroup {
-        SystemGroup(unsafe { ffi::RSMPI_GROUP_EMPTY })
+        SystemGroup(ffi::RSMPI_GROUP_EMPTY_fn())
     }
 }
 
@@ -1078,7 +1078,7 @@ impl Drop for UserGroup {
         unsafe {
             ffi::MPI_Group_free(&mut self.0);
         }
-        assert_eq!(self.0, unsafe { ffi::RSMPI_GROUP_NULL });
+        assert_eq!(self.0, ffi::RSMPI_GROUP_NULL_fn());
     }
 }
 
@@ -1217,7 +1217,7 @@ pub trait Group: AsRaw<Raw = MPI_Group> {
     fn rank(&self) -> Option<Rank> {
         unsafe {
             let (_, rank) = with_uninitialized(|rank| ffi::MPI_Group_rank(self.as_raw(), rank));
-            if rank == ffi::RSMPI_UNDEFINED {
+            if rank == ffi::RSMPI_UNDEFINED_fn() {
                 None
             } else {
                 Some(rank)
@@ -1241,7 +1241,7 @@ pub trait Group: AsRaw<Raw = MPI_Group> {
             let (_, translated) = with_uninitialized(|translated| {
                 ffi::MPI_Group_translate_ranks(self.as_raw(), 1, &rank, other.as_raw(), translated)
             });
-            if translated == ffi::RSMPI_UNDEFINED {
+            if translated == ffi::RSMPI_UNDEFINED_fn() {
                 None
             } else {
                 Some(translated)
@@ -1304,11 +1304,11 @@ pub enum GroupRelation {
 
 impl From<c_int> for GroupRelation {
     fn from(i: c_int) -> GroupRelation {
-        if i == unsafe { ffi::RSMPI_IDENT } {
+        if i == ffi::RSMPI_IDENT_fn() {
             return GroupRelation::Identical;
-        } else if i == unsafe { ffi::RSMPI_SIMILAR } {
+        } else if i == ffi::RSMPI_SIMILAR_fn() {
             return GroupRelation::Similar;
-        } else if i == unsafe { ffi::RSMPI_UNEQUAL } {
+        } else if i == ffi::RSMPI_UNEQUAL_fn() {
             return GroupRelation::Unequal;
         }
         panic!("Unknown group relation: {}", i)

@@ -46,7 +46,7 @@ use crate::{
 
 /// Check if the request is `MPI_REQUEST_NULL`.
 fn is_null(request: MPI_Request) -> bool {
-    request == unsafe { ffi::RSMPI_REQUEST_NULL }
+    request == ffi::RSMPI_REQUEST_NULL_fn()
 }
 
 /// A request object for a non-blocking operation registered with a `Scope` of lifetime `'a`
@@ -114,7 +114,7 @@ pub fn wait_any<'a, D, S: Scope<'a>>(
     requests: &mut Vec<Request<'a, D, S>>,
 ) -> Option<(usize, Status)> {
     let mut mpi_requests: Vec<_> = requests.iter().map(|r| r.as_raw()).collect();
-    let mut index: i32 = mpi_sys::MPI_UNDEFINED;
+    let mut index: i32 = ffi::RSMPI_UNDEFINED_fn();
     let size: i32 = mpi_requests
         .len()
         .try_into()
@@ -129,7 +129,7 @@ pub fn wait_any<'a, D, S: Scope<'a>>(
             .1,
         );
     }
-    if index != mpi_sys::MPI_UNDEFINED {
+    if index != ffi::RSMPI_UNDEFINED_fn() {
         let u_index: usize = index.try_into().expect("Error while casting i32 to usize");
         assert!(is_null(mpi_requests[u_index]));
         let r = requests.remove(u_index);
@@ -200,7 +200,7 @@ impl<'a, D: ?Sized, S: Scope<'a>> Request<'a, D, S> {
     /// reference.
     pub fn wait_for_data(self) -> &'a D {
         // TODO: Just ignores the status for now, but this info might be needed.
-        self.wait_with(unsafe { ffi::RSMPI_STATUS_IGNORE })
+        self.wait_with(ffi::RSMPI_STATUS_IGNORE_fn())
     }
 
     /// Wait for an operation to finish.
@@ -226,7 +226,7 @@ impl<'a, D: ?Sized, S: Scope<'a>> Request<'a, D, S> {
     ///
     /// 3.7.3
     pub fn wait_without_status(self) {
-        self.wait_with(unsafe { ffi::RSMPI_STATUS_IGNORE });
+        self.wait_with(ffi::RSMPI_STATUS_IGNORE_fn());
     }
 
     /// Test whether an operation has finished.

@@ -199,36 +199,36 @@ macro_rules! equivalent_system_datatype {
         unsafe impl Equivalence for $rstype {
             type Out = SystemDatatype;
             fn equivalent_datatype() -> Self::Out {
-                unsafe { DatatypeRef::from_raw($mpitype) }
+                unsafe { DatatypeRef::from_raw($mpitype()) }
             }
         }
     };
 }
 
-equivalent_system_datatype!(bool, ffi::RSMPI_C_BOOL);
+equivalent_system_datatype!(bool, ffi::RSMPI_C_BOOL_fn);
 
-equivalent_system_datatype!(f32, ffi::RSMPI_FLOAT);
-equivalent_system_datatype!(f64, ffi::RSMPI_DOUBLE);
+equivalent_system_datatype!(f32, ffi::RSMPI_FLOAT_fn);
+equivalent_system_datatype!(f64, ffi::RSMPI_DOUBLE_fn);
 
-equivalent_system_datatype!(i8, ffi::RSMPI_INT8_T);
-equivalent_system_datatype!(i16, ffi::RSMPI_INT16_T);
-equivalent_system_datatype!(i32, ffi::RSMPI_INT32_T);
-equivalent_system_datatype!(i64, ffi::RSMPI_INT64_T);
+equivalent_system_datatype!(i8, ffi::RSMPI_INT8_T_fn);
+equivalent_system_datatype!(i16, ffi::RSMPI_INT16_T_fn);
+equivalent_system_datatype!(i32, ffi::RSMPI_INT32_T_fn);
+equivalent_system_datatype!(i64, ffi::RSMPI_INT64_T_fn);
 
-equivalent_system_datatype!(u8, ffi::RSMPI_UINT8_T);
-equivalent_system_datatype!(u16, ffi::RSMPI_UINT16_T);
-equivalent_system_datatype!(u32, ffi::RSMPI_UINT32_T);
-equivalent_system_datatype!(u64, ffi::RSMPI_UINT64_T);
+equivalent_system_datatype!(u8, ffi::RSMPI_UINT8_T_fn);
+equivalent_system_datatype!(u16, ffi::RSMPI_UINT16_T_fn);
+equivalent_system_datatype!(u32, ffi::RSMPI_UINT32_T_fn);
+equivalent_system_datatype!(u64, ffi::RSMPI_UINT64_T_fn);
 
 #[cfg(target_pointer_width = "32")]
-equivalent_system_datatype!(usize, ffi::RSMPI_UINT32_T);
+equivalent_system_datatype!(usize, ffi::RSMPI_UINT32_T_fn);
 #[cfg(target_pointer_width = "32")]
-equivalent_system_datatype!(isize, ffi::RSMPI_INT32_T);
+equivalent_system_datatype!(isize, ffi::RSMPI_INT32_T_fn);
 
 #[cfg(target_pointer_width = "64")]
-equivalent_system_datatype!(usize, ffi::RSMPI_UINT64_T);
+equivalent_system_datatype!(usize, ffi::RSMPI_UINT64_T_fn);
 #[cfg(target_pointer_width = "64")]
-equivalent_system_datatype!(isize, ffi::RSMPI_INT64_T);
+equivalent_system_datatype!(isize, ffi::RSMPI_INT64_T_fn);
 
 #[cfg(feature = "complex")]
 /// Implement direct equivalence for complex types
@@ -236,8 +236,8 @@ pub mod complex_datatype {
     use num_complex::{Complex32, Complex64};
 
     use super::{ffi, DatatypeRef, Equivalence, FromRaw, SystemDatatype};
-    equivalent_system_datatype!(Complex32, ffi::RSMPI_FLOAT_COMPLEX);
-    equivalent_system_datatype!(Complex64, ffi::RSMPI_DOUBLE_COMPLEX);
+    equivalent_system_datatype!(Complex32, ffi::RSMPI_FLOAT_COMPLEX_fn);
+    equivalent_system_datatype!(Complex64, ffi::RSMPI_DOUBLE_COMPLEX_fn);
 }
 
 /// A user defined MPI datatype
@@ -407,7 +407,7 @@ impl Drop for UserDatatype {
         unsafe {
             ffi::MPI_Type_free(&mut self.0);
         }
-        assert_eq!(self.0, unsafe { ffi::RSMPI_DATATYPE_NULL });
+        assert_eq!(self.0, ffi::RSMPI_DATATYPE_NULL_fn());
     }
 }
 
@@ -420,7 +420,7 @@ unsafe impl AsRaw for UserDatatype {
 
 impl FromRaw for UserDatatype {
     unsafe fn from_raw(handle: MPI_Datatype) -> Self {
-        assert_ne!(handle, ffi::RSMPI_DATATYPE_NULL);
+        assert_ne!(handle, ffi::RSMPI_DATATYPE_NULL_fn());
         UserDatatype(handle)
     }
 }
@@ -723,7 +723,7 @@ impl Drop for UncommittedUserDatatype {
         unsafe {
             ffi::MPI_Type_free(&mut self.0);
         }
-        assert_eq!(self.0, unsafe { ffi::RSMPI_DATATYPE_NULL });
+        assert_eq!(self.0, ffi::RSMPI_DATATYPE_NULL_fn());
     }
 }
 
@@ -736,7 +736,7 @@ unsafe impl AsRaw for UncommittedUserDatatype {
 
 impl FromRaw for UncommittedUserDatatype {
     unsafe fn from_raw(handle: MPI_Datatype) -> Self {
-        assert_ne!(handle, ffi::RSMPI_DATATYPE_NULL);
+        assert_ne!(handle, ffi::RSMPI_DATATYPE_NULL_fn());
         UncommittedUserDatatype(handle)
     }
 }

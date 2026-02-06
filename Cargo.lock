@@ -214,6 +214,7 @@ dependencies = [
  "memoffset",
  "mpi-derive",
  "mpi-sys",
+ "mpitrampoline-sys",
  "num-complex",
  "once_cell",
  "smallvec",
@@ -236,6 +237,13 @@ dependencies = [
  "bindgen",
  "build-probe-mpi",
  "cc",
+]
+
+[[package]]
+name = "mpitrampoline-sys"
+version = "0.1.0"
+dependencies = [
+ "libloading",
 ]
 
 [[package]]
