@@ -11,7 +11,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! mpi = { version = "0.8.1", default-features = false, features = ["mpi-rt-sys-backend"] }
+//! mpi = { version = "0.1.0", default-features = false, features = ["mpi-rt-sys-backend"] }
 //! ```
 //!
 //! At runtime, set the `MPI_RT_LIB` environment variable to the path of an
