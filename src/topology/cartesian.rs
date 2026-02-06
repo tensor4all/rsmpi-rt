@@ -348,13 +348,13 @@ impl CartesianCommunicator {
                 )
             });
 
-        let rank_source = if rank_source != ffi::RSMPI_PROC_NULL {
+        let rank_source = if rank_source != ffi::RSMPI_PROC_NULL_fn() {
             Some(rank_source)
         } else {
             None
         };
 
-        let rank_destination = if rank_destination != ffi::RSMPI_PROC_NULL {
+        let rank_destination = if rank_destination != ffi::RSMPI_PROC_NULL_fn() {
             Some(rank_destination)
         } else {
             None
@@ -475,7 +475,7 @@ impl FromRaw for CartesianCommunicator {
     /// - `raw` must not be an inter-comm handle, the parent handle, or a system handle
     /// - `raw` must not be used after calling this function.
     unsafe fn from_raw(raw: <Self as AsRaw>::Raw) -> Self {
-        debug_assert_ne!(raw, ffi::RSMPI_COMM_NULL);
+        debug_assert_ne!(raw, ffi::RSMPI_COMM_NULL_fn());
         CartesianCommunicator(SimpleCommunicator::from_raw(raw))
     }
 }

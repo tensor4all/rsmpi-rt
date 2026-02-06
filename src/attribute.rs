@@ -49,7 +49,7 @@ where
         _extra_state: *mut c_void,
     ) -> c_int {
         let _to_drop = Box::from_raw(val as *mut Self);
-        ffi::MPI_SUCCESS as i32
+        ffi::RSMPI_SUCCESS_fn()
     }
 
     /// Callback invoked by `MPI_Comm_dup()`, `MPI_Comm_idup()`, and variants to
@@ -81,7 +81,7 @@ where
         } else {
             *flag = 0;
         }
-        ffi::MPI_SUCCESS as i32
+        ffi::RSMPI_SUCCESS_fn()
     }
 
     /// Get the attribute key for this attribute. User keys are provisioned by
@@ -164,7 +164,7 @@ pub(crate) struct UniverseSize(c_int);
 
 impl CommAttribute for UniverseSize {
     fn get_key() -> AttributeKey {
-        unsafe { AttributeKey::new_unchecked(ffi::MPI_UNIVERSE_SIZE as i32) }
+        unsafe { AttributeKey::new_unchecked(ffi::RSMPI_UNIVERSE_SIZE_fn()) }
     }
 }
 
@@ -182,7 +182,7 @@ pub(crate) struct AppNum(c_int);
 
 impl CommAttribute for AppNum {
     fn get_key() -> AttributeKey {
-        unsafe { AttributeKey::new_unchecked(ffi::MPI_APPNUM as i32) }
+        unsafe { AttributeKey::new_unchecked(ffi::RSMPI_APPNUM_fn()) }
     }
 }
 

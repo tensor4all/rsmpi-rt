@@ -1587,7 +1587,7 @@ pub trait Root: AsCommunicator {
             .chain(std::iter::once(ptr::null_mut()))
             .collect();
 
-        let mut result = unsafe { ffi::RSMPI_COMM_NULL };
+        let mut result = ffi::RSMPI_COMM_NULL_fn();
         let mut errcodes: Vec<c_int> =
             vec![0; maxprocs.value_as().expect("maxprocs should be positive")];
 
@@ -1596,7 +1596,7 @@ pub trait Root: AsCommunicator {
                 prog.as_ptr(),
                 argv.as_mut_ptr(),
                 maxprocs,
-                ffi::RSMPI_INFO_NULL,
+                ffi::RSMPI_INFO_NULL_fn(),
                 self.root_rank(),
                 self.as_communicator().as_raw(),
                 &mut result,
@@ -1605,7 +1605,7 @@ pub trait Root: AsCommunicator {
         }
         let fails = errcodes
             .into_iter()
-            .filter(|&c| c != ffi::MPI_SUCCESS as i32)
+            .filter(|&c| c != ffi::RSMPI_SUCCESS_fn())
             .count();
         if fails > 0 {
             Err(MpiError::Spawn(Rank::try_from(fails).unwrap(), maxprocs))
@@ -1652,10 +1652,10 @@ pub trait Root: AsCommunicator {
             argvs.iter_mut().map(|argv| argv.as_mut_ptr()).collect();
 
         let infos: Vec<_> = (0..commands.len())
-            .map(|_| unsafe { ffi::RSMPI_INFO_NULL })
+            .map(|_| ffi::RSMPI_INFO_NULL_fn())
             .collect();
 
-        let mut result = unsafe { ffi::RSMPI_COMM_NULL };
+        let mut result = ffi::RSMPI_COMM_NULL_fn();
         let sum_maxprocs: Rank = maxprocs.iter().sum();
         let mut errcodes = vec![0; usize::try_from(sum_maxprocs).unwrap()];
 
@@ -1674,7 +1674,7 @@ pub trait Root: AsCommunicator {
         }
         let fails = errcodes
             .into_iter()
-            .filter(|&c| c != ffi::MPI_SUCCESS as i32)
+            .filter(|&c| c != ffi::RSMPI_SUCCESS_fn())
             .count();
         if fails > 0 {
             Err(MpiError::Spawn(
@@ -1726,23 +1726,23 @@ macro_rules! system_operation_constructors {
     ($($ctor:ident => $val:path),*) => (
         $(pub fn $ctor() -> SystemOperation {
             //! A built-in operation
-            SystemOperation(unsafe { $val })
+            SystemOperation($val())
         })*
     )
 }
 
 impl SystemOperation {
     system_operation_constructors! {
-        max => ffi::RSMPI_MAX,
-        min => ffi::RSMPI_MIN,
-        sum => ffi::RSMPI_SUM,
-        product => ffi::RSMPI_PROD,
-        logical_and => ffi::RSMPI_LAND,
-        bitwise_and => ffi::RSMPI_BAND,
-        logical_or => ffi::RSMPI_LOR,
-        bitwise_or => ffi::RSMPI_BOR,
-        logical_xor => ffi::RSMPI_LXOR,
-        bitwise_xor => ffi::RSMPI_BXOR
+        max => ffi::RSMPI_MAX_fn,
+        min => ffi::RSMPI_MIN_fn,
+        sum => ffi::RSMPI_SUM_fn,
+        product => ffi::RSMPI_PROD_fn,
+        logical_and => ffi::RSMPI_LAND_fn,
+        bitwise_and => ffi::RSMPI_BAND_fn,
+        logical_or => ffi::RSMPI_LOR_fn,
+        bitwise_or => ffi::RSMPI_BOR_fn,
+        logical_xor => ffi::RSMPI_LXOR_fn,
+        bitwise_xor => ffi::RSMPI_BXOR_fn
     }
 }
 

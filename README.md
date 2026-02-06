@@ -1,4 +1,8 @@
-# MPI bindings for Rust
+# rsmpi-rt: MPI bindings for Rust with MPItrampoline support
+
+> **Note:** This is a fork of [rsmpi](https://github.com/rsmpi/rsmpi) that adds an
+> [MPItrampoline](https://github.com/eschnett/MPItrampoline) backend. The original `mpi-sys`
+> (bindgen-based) backend is fully preserved and remains the default.
 
 [![GitHub Actions][actions-shield]][actions]
 [![Documentation][doc-shield]][doc]
@@ -159,6 +163,36 @@ Not supported (yet):
 - MPI parallel I/O
 - A million small things
 
+
+### Backend Selection
+
+rsmpi-rt supports two MPI backends, selected via feature flags:
+
+| Feature | Description | Default |
+|---------|-------------|---------|
+| `mpi-sys-backend` | Traditional bindgen-based backend (requires C compiler, system MPI, libclang) | Yes |
+| `mpitrampoline` | [MPItrampoline](https://github.com/eschnett/MPItrampoline)-based backend (no C compiler needed at build time) | No |
+
+**Using the default mpi-sys backend** (no changes needed):
+
+```toml
+[dependencies]
+mpi = { version = "0.8.1" }
+```
+
+**Using the MPItrampoline backend:**
+
+```toml
+[dependencies]
+mpi = { version = "0.8.1", default-features = false, features = ["mpitrampoline"] }
+```
+
+The MPItrampoline backend dynamically loads the MPI implementation at runtime via [MPIwrapper](https://github.com/eschnett/MPIwrapper). Set the `MPITRAMPOLINE_LIB` environment variable to the path of the MPIwrapper library:
+
+```bash
+export MPITRAMPOLINE_LIB=/path/to/libmpiwrapper.so
+mpiexec -n 4 ./my_program
+```
 
 ### Optional Cargo Features
 
