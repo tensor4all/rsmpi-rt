@@ -6,7 +6,14 @@
 
 **Rust [MPI] bindings with runtime library loading.** Fork of [rsmpi] v0.8.1.
 
+> **Status: Experimental / Proof of Concept.**
+> This project aims to eventually merge its runtime-loading backend upstream into rsmpi.
+
 The key addition over upstream rsmpi is the `mpi-rt-sys-backend`: an [MPIABI]-based backend that loads MPI at runtime via `dlopen`, requiring **no C compiler, system MPI headers, or libclang at build time**.
+
+### Motivation
+
+The primary goal is to enable **calling Rust MPI code from Julia and Python** without build-time MPI dependencies. By loading MPI at runtime, Rust libraries can share the same MPI communicator with [MPI.jl] and [mpi4py], enabling seamless multi-language HPC workflows.
 
 [actions-shield]: https://github.com/tensor4all/rsmpi-rt/workflows/Test/badge.svg
 [actions]: https://github.com/tensor4all/rsmpi-rt/actions
@@ -17,6 +24,8 @@ The key addition over upstream rsmpi is the `mpi-rt-sys-backend`: an [MPIABI]-ba
 [MPI]: http://www.mpi-forum.org
 [rsmpi]: https://github.com/rsmpi/rsmpi
 [MPIABI]: https://github.com/eschnett/MPItrampoline
+[MPI.jl]: https://github.com/JuliaParallel/MPI.jl
+[mpi4py]: https://mpi4py.readthedocs.io/
 
 ## Quick Start
 
@@ -103,6 +112,17 @@ See the [upstream rsmpi README](https://github.com/rsmpi/rsmpi#requirements) for
 | `user-operations` | User-defined reduction operations via `libffi` |
 | `derive` | `#[derive(Equivalence)]` for sending structs over MPI |
 | `complex` | Support for `num-complex` types |
+
+## Interoperability Tests
+
+Integration tests verify that Rust MPI code can run alongside [mpi4py] and [MPI.jl] under the same `mpiexec`, sharing `MPI_COMM_WORLD` via MPMD launch:
+
+```bash
+# Run the cross-language interop test (requires Python/mpi4py and Julia/MPI.jl)
+bash tests/interop/run_interop.sh
+```
+
+See [tests/interop/](tests/interop/) for details.
 
 ## Documentation
 

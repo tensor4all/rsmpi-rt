@@ -1,0 +1,55 @@
+name: Interoperability Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  interop:
+    name: MPI interop (${{ matrix.mpi }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - mpi: mpich
+            mpi-pkg: libmpich-dev
+          - mpi: openmpi
+            mpi-pkg: libopenmpi-dev
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ${{ matrix.mpi-pkg }} llvm-dev libclang-dev pkgconf
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install mpi4py
+        run: pip install mpi4py
+
+      - name: Set up Julia
+        uses: julia-actions/setup-julia@v2
+        with:
+          version: "1"
+
+      - name: Install MPI.jl
+        run: julia -e 'using Pkg; Pkg.add("MPI")'
+
+      - name: Run interop tests (mpi-sys-backend)
+        run: bash tests/interop/run_interop.sh --backend mpi-sys-backend
+
+      # TODO: Enable mpi-rt-sys-backend tests once MPIwrapper is available in CI
+      # - name: Run interop tests (mpi-rt-sys-backend)
+      #   run: bash tests/interop/run_interop.sh --backend mpi-rt-sys-backend
+      #   env:
+      #     MPI_RT_LIB: /path/to/libmpiwrapper.so
