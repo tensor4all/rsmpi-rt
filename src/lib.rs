@@ -125,13 +125,13 @@
 
 use std::{mem::MaybeUninit, os::raw::c_int};
 
-#[cfg(all(feature = "mpi-sys-backend", feature = "mpitrampoline"))]
+#[cfg(all(feature = "mpi-sys-backend", feature = "mpi-rt-sys-backend"))]
 compile_error!(
-    "Features `mpi-sys-backend` and `mpitrampoline` are mutually exclusive. Enable only one."
+    "Features `mpi-sys-backend` and `mpi-rt-sys-backend` are mutually exclusive. Enable only one."
 );
 
-#[cfg(not(any(feature = "mpi-sys-backend", feature = "mpitrampoline")))]
-compile_error!("Either `mpi-sys-backend` or `mpitrampoline` feature must be enabled.");
+#[cfg(not(any(feature = "mpi-sys-backend", feature = "mpi-rt-sys-backend")))]
+compile_error!("Either `mpi-sys-backend` or `mpi-rt-sys-backend` feature must be enabled.");
 
 /// The raw C language MPI API
 ///
@@ -141,12 +141,12 @@ compile_error!("Either `mpi-sys-backend` or `mpitrampoline` feature must be enab
 #[allow(missing_docs, dead_code, non_snake_case, non_camel_case_types)]
 #[macro_use]
 pub mod ffi {
+    #[cfg(feature = "mpi-rt-sys-backend")]
+    pub use mpi_rt_sys::*;
     #[cfg(feature = "mpi-sys-backend")]
     pub use mpi_sys::constant_accessors::*;
     #[cfg(feature = "mpi-sys-backend")]
     pub use mpi_sys::*;
-    #[cfg(feature = "mpitrampoline")]
-    pub use mpitrampoline_sys::*;
 }
 
 pub mod attribute;
