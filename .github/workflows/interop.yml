@@ -10,6 +10,7 @@ jobs:
   interop:
     name: MPI interop (${{ matrix.mpi }})
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:
@@ -42,8 +43,13 @@ jobs:
         with:
           version: "1"
 
-      - name: Install MPI.jl
-        run: julia -e 'using Pkg; Pkg.add("MPI")'
+      - name: Install and precompile MPI.jl
+        run: |
+          julia --project=tests/interop -e '
+            using Pkg
+            Pkg.instantiate()
+            Pkg.precompile()
+          '
 
       - name: Run interop tests (mpi-sys-backend)
         run: bash tests/interop/run_interop.sh --backend mpi-sys-backend
