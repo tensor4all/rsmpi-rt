@@ -1,12 +1,11 @@
-# rsmpi-rt: MPI bindings for Rust with MPItrampoline support
+# rsmpi-rt: MPI bindings for Rust with runtime MPI loading
 
 > **Note:** This is a fork of [rsmpi](https://github.com/rsmpi/rsmpi) that adds an
-> [MPItrampoline](https://github.com/eschnett/MPItrampoline) backend. The original `mpi-sys`
-> (bindgen-based) backend is fully preserved and remains the default.
+> `mpi-rt-sys` backend for runtime MPI loading via the [MPIABI](https://github.com/eschnett/MPItrampoline)
+> standard. The original `mpi-sys` (bindgen-based) backend is fully preserved and remains the default.
 
 [![GitHub Actions][actions-shield]][actions]
 [![Documentation][doc-shield]][doc]
-[![Crates.io][crate-shield]][crate]
 [![License: Apache License 2.0 or MIT][license-shield]][license]
 
 The [Message Passing Interface][MPI] (MPI) is a specification for a
@@ -15,14 +14,12 @@ parallel computation on High Performance Computing systems. The MPI specificatio
 bindings for the C programming language (and through it C++) as well as for the Fortran
 programming language. This library tries to bridge the gap into a more rustic world.
 
-[actions-shield]: https://github.com/rsmpi/rsmpi/workflows/Test/badge.svg
-[actions]: https://github.com/rsmpi/rsmpi/actions
-[doc-shield]: https://docs.rs/mpi/badge.svg
-[doc]: https://docs.rs/mpi
-[crate-shield]: https://img.shields.io/crates/v/mpi.svg?style=flat-square
-[crate]: https://crates.io/crates/mpi
+[actions-shield]: https://github.com/tensor4all/rsmpi-rt/workflows/Test/badge.svg
+[actions]: https://github.com/tensor4all/rsmpi-rt/actions
+[doc-shield]: https://img.shields.io/badge/docs-GitHub%20Pages-blue
+[doc]: https://tensor4all.github.io/rsmpi-rt/mpi/
 [license-shield]: https://img.shields.io/badge/license-Apache_License_2.0_or_MIT-blue.svg?style=flat-square
-[license]: https://github.com/rsmpi/rsmpi#license
+[license]: https://github.com/tensor4all/rsmpi-rt#license
 [MPI]: http://www.mpi-forum.org
 
 ## Requirements
@@ -36,7 +33,7 @@ Users have also had success with these MPI implementations, but they are not tes
 - [Spectrum MPI][Spectrum-MPI] 10.3.0.1
 - [Cray MPI][Cray-MPI] 8.1.16 with `PrgEnv-amd/8.3.3`
 
-For a reasonable chance of success with `rsmpi` with any MPI implementation, you must have one of:
+For the default `mpi-sys-backend`, you need one of:
 
 - export `MPI_PKG_CONFIG` to be the name or path for pkg-config for your implementation
   - `rsmpi` automatically uses `CRAY_MPICH_DIR` on Cray environments so the above need not be set
@@ -49,6 +46,8 @@ For a reasonable chance of success with `rsmpi` with any MPI implementation, you
 - On Windows,
   - for MS-MPI the variables `MSMPI_INC` and either `MSMPI_LIB32` or `MSMPI_LIB64` should be set
   - for Intel MPI the variable `I_MPI_ROOT` should be set
+
+For the `mpi-rt-sys-backend`, no C compiler or system MPI headers are needed at build time. Instead, the MPI library is loaded at runtime (see [Runtime Setup](#runtime-setup-mpi-rt-sys-backend)).
 
 Since the MPI standard leaves some details of the C API unspecified (whether to implement certain constants and even functions using preprocessor macros or native C constructs, the details of most types, etc.) `rsmpi` takes a two step approach to generating functional low-level bindings.
 
@@ -63,9 +62,9 @@ Furthermore, `rsmpi` uses the `libffi` crate which installs the native `libffi` 
 [MS-MPI]: https://docs.microsoft.com/en-us/message-passing-interface/microsoft-mpi
 [Spectrum-MPI]: https://www.ibm.com/products/spectrum-mpi
 [Cray-MPI]: https://docs.nersc.gov/development/programming-models/mpi/cray-mpich/
-[rsmpih]: https://github.com/rsmpi/rsmpi/blob/main/mpi-sys/src/rsmpi.h
-[rsmpic]: https://github.com/rsmpi/rsmpi/blob/main/mpi-sys/src/rsmpi.c
-[buildrs]: https://github.com/rsmpi/rsmpi/blob/main/mpi-sys/build.rs
+[rsmpih]: https://github.com/tensor4all/rsmpi-rt/blob/main/mpi-sys/src/rsmpi.h
+[rsmpic]: https://github.com/tensor4all/rsmpi-rt/blob/main/mpi-sys/src/rsmpi.c
+[buildrs]: https://github.com/tensor4all/rsmpi-rt/blob/main/mpi-sys/build.rs
 [bindgen]: https://github.com/servo/rust-bindgen
 [libffi]: https://github.com/tov/libffi-rs
 
@@ -171,7 +170,7 @@ rsmpi-rt supports two MPI backends, selected via feature flags:
 | Feature | Description | Default |
 |---------|-------------|---------|
 | `mpi-sys-backend` | Traditional bindgen-based backend (requires C compiler, system MPI, libclang) | Yes |
-| `mpitrampoline` | [MPItrampoline](https://github.com/eschnett/MPItrampoline)-based backend (no C compiler needed at build time) | No |
+| `mpi-rt-sys-backend` | [MPIABI](https://github.com/eschnett/MPItrampoline)-based backend (no C compiler needed at build time) | No |
 
 **Using the default mpi-sys backend** (no changes needed):
 
@@ -180,18 +179,38 @@ rsmpi-rt supports two MPI backends, selected via feature flags:
 mpi = { version = "0.8.1" }
 ```
 
-**Using the MPItrampoline backend:**
+**Using the mpi-rt-sys backend:**
 
 ```toml
 [dependencies]
-mpi = { version = "0.8.1", default-features = false, features = ["mpitrampoline"] }
+mpi = { version = "0.8.1", default-features = false, features = ["mpi-rt-sys-backend"] }
 ```
 
-The MPItrampoline backend dynamically loads the MPI implementation at runtime via [MPIwrapper](https://github.com/eschnett/MPIwrapper). Set the `MPITRAMPOLINE_LIB` environment variable to the path of the MPIwrapper library:
+**Combining with optional features:**
+
+```toml
+[dependencies]
+mpi = { version = "0.8.1", default-features = false, features = ["mpi-rt-sys-backend", "user-operations", "derive"] }
+```
+
+### Runtime Setup (mpi-rt-sys-backend)
+
+The `mpi-rt-sys-backend` dynamically loads the MPI implementation at runtime via [MPIwrapper](https://github.com/eschnett/MPIwrapper). Set the `MPI_RT_LIB` environment variable to the path of the MPIwrapper library:
 
 ```bash
-export MPITRAMPOLINE_LIB=/path/to/libmpiwrapper.so
+export MPI_RT_LIB=/path/to/libmpiwrapper.so
 mpiexec -n 4 ./my_program
+```
+
+To install MPIwrapper (requires a system MPI installation):
+
+```bash
+git clone https://github.com/eschnett/MPIwrapper
+cd MPIwrapper
+cmake -S . -B build -DCMAKE_INSTALL_PREFIX=$HOME/.local
+cmake --build build
+cmake --install build
+export MPI_RT_LIB=$HOME/.local/lib/libmpiwrapper.so
 ```
 
 ### Optional Cargo Features
@@ -236,19 +255,19 @@ For a standard install of LLVM on Linux, the `runtime` feature can be disabled (
 
 ## Documentation
 
-Every public item of `rsmpi` should at least have a short piece of documentation associated with it. Documentation can be generated via:
+API documentation is hosted on [GitHub Pages][doc].
+
+Documentation can also be generated locally via:
 
 ```
-cargo doc
+cargo doc --workspace --no-deps --features mpi-sys-backend,user-operations,derive,complex
 ```
-
-Documentation for the latest version of the crate released to crates.io is [hosted on Github pages][doc].
 
 ## Examples
 
 See files in [examples/][examples]. These examples also act as [integration tests][actions].
 
-[examples]: https://github.com/rsmpi/rsmpi/tree/master/examples
+[examples]: https://github.com/tensor4all/rsmpi-rt/tree/main/examples
 
 ## Python integration
 

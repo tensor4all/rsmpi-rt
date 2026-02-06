@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate Rust bindings for MPItrampoline from mpiabi definitions.
+"""Generate Rust bindings for mpi-rt-sys from mpiabi definitions.
 
 Reads mpiabi/mpi_functions.py and mpiabi/mpi_constants.py and generates:
 - ../src/functions.rs  -- dynamic-dispatch function wrappers
@@ -285,7 +285,7 @@ def generate_constants() -> str:
         rust_type, _ = CONST_TYPE_MAP[c_type]
         rsmpi_name = mpi_to_rsmpi_const(name)
         field_name = name.lower()
-        # Also export as RSMPI_ (non-fn) for mpitrampoline-sys direct use
+        # Also export as RSMPI_ (non-fn) for mpi-rt-sys direct use
         lines.append(f"pub fn {rsmpi_name}() -> {rust_type} {{")
         lines.append(f"    get_constants().{field_name}")
         lines.append(f"}}")

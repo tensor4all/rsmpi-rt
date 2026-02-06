@@ -1,4 +1,4 @@
-//! Dynamic loading of MPIwrapper library via MPITRAMPOLINE_LIB
+//! Dynamic loading of MPIwrapper library via MPI_RT_LIB
 
 use std::sync::OnceLock;
 
@@ -8,12 +8,12 @@ static LIBRARY: OnceLock<Library> = OnceLock::new();
 
 /// Get or load the MPIwrapper library.
 ///
-/// The library path is read from the `MPITRAMPOLINE_LIB` environment variable.
+/// The library path is read from the `MPI_RT_LIB` environment variable.
 /// Panics if the variable is not set or the library cannot be loaded.
 pub fn library() -> &'static Library {
     LIBRARY.get_or_init(|| {
-        let path = std::env::var("MPITRAMPOLINE_LIB")
-            .expect("MPITRAMPOLINE_LIB environment variable not set. Set it to the path of your MPIwrapper library (e.g., libmpiwrapper.so)");
+        let path = std::env::var("MPI_RT_LIB")
+            .expect("MPI_RT_LIB environment variable not set. Set it to the path of your MPIwrapper library (e.g., libmpiwrapper.so)");
         unsafe { Library::new(&path) }
             .unwrap_or_else(|e| panic!("Failed to load MPIwrapper library '{}': {}", path, e))
     })

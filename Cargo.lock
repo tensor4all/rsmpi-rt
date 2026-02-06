@@ -213,8 +213,8 @@ dependencies = [
  "libffi",
  "memoffset",
  "mpi-derive",
+ "mpi-rt-sys",
  "mpi-sys",
- "mpitrampoline-sys",
  "num-complex",
  "once_cell",
  "smallvec",
@@ -231,19 +231,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "mpi-rt-sys"
+version = "0.1.0"
+dependencies = [
+ "libloading",
+]
+
+[[package]]
 name = "mpi-sys"
 version = "0.2.3"
 dependencies = [
  "bindgen",
  "build-probe-mpi",
  "cc",
-]
-
-[[package]]
-name = "mpitrampoline-sys"
-version = "0.1.0"
-dependencies = [
- "libloading",
 ]
 
 [[package]]

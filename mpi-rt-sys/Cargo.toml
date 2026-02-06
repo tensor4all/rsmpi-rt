@@ -1,0 +1,13 @@
+[package]
+name = "mpi-rt-sys"
+version = "0.1.0"
+edition = "2021"
+description = "Low-level Rust bindings to MPI via MPIABI dynamic loading"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/tensor4all/rsmpi-rt"
+
+[dependencies]
+libloading = "0.8"
+
+[package.metadata.docs.rs]
+default-target = "x86_64-unknown-linux-gnu"
