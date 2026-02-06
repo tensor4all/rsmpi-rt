@@ -133,7 +133,13 @@ use std::{mem::MaybeUninit, os::raw::c_int};
 #[allow(missing_docs, dead_code, non_snake_case, non_camel_case_types)]
 #[macro_use]
 pub mod ffi {
+    #[cfg(feature = "mpi-sys-backend")]
     pub use mpi_sys::*;
+    #[cfg(feature = "mpi-sys-backend")]
+    pub use mpi_sys::constant_accessors::*;
+
+    #[cfg(feature = "mpitrampoline")]
+    pub use mpitrampoline_sys::*;
 }
 
 pub mod attribute;
