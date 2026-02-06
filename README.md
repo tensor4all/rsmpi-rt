@@ -9,7 +9,7 @@
 > **Status: Experimental / Proof of Concept.**
 > This project aims to eventually merge its runtime-loading backend upstream into rsmpi.
 
-The key addition over upstream rsmpi is the `mpi-rt-sys-backend`: an [MPIABI]-based backend that loads MPI at runtime via `dlopen`, requiring **no C compiler, system MPI headers, or libclang at build time**.
+The key addition over upstream rsmpi is the `mpi-rt-sys-backend`: a backend based on [MPItrampoline]'s [MPIABI] that loads MPI at runtime via `dlopen`, requiring **no C compiler, system MPI headers, or libclang at build time**.
 
 ### Motivation
 
@@ -23,7 +23,8 @@ The primary goal is to enable **calling Rust MPI code from Julia and Python** wi
 [license]: https://github.com/tensor4all/rsmpi-rt#license
 [MPI]: http://www.mpi-forum.org
 [rsmpi]: https://github.com/rsmpi/rsmpi
-[MPIABI]: https://github.com/eschnett/MPItrampoline
+[MPItrampoline]: https://github.com/eschnett/MPItrampoline
+[MPIABI]: https://github.com/eschnett/MPItrampoline#mpiabi
 [MPI.jl]: https://github.com/JuliaParallel/MPI.jl
 [mpi4py]: https://mpi4py.readthedocs.io/
 
@@ -54,7 +55,7 @@ mpiexec -n 4 cargo run
 | Feature | Description | Default |
 |---------|-------------|---------|
 | `mpi-sys-backend` | Bindgen-based (requires C compiler, system MPI, libclang) | Yes |
-| `mpi-rt-sys-backend` | MPIABI-based runtime loading (no build-time MPI deps) | No |
+| `mpi-rt-sys-backend` | [MPItrampoline]/MPIABI-based runtime loading (no build-time MPI deps) | No |
 
 The two backends are **mutually exclusive**.
 
