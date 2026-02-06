@@ -12,7 +12,7 @@ static LIBRARY: OnceLock<Library> = OnceLock::new();
 pub fn library() -> &'static Library {
     LIBRARY.get_or_init(|| {
         let path = std::env::var("MPITRAMPOLINE_LIB")
-            .expect("MPITRAMPOLINE_LIB environment variable not set");
+            .expect("MPITRAMPOLINE_LIB environment variable not set. Set it to the path of your MPIwrapper library (e.g., libmpiwrapper.so)");
         unsafe { Library::new(&path) }
             .unwrap_or_else(|e| panic!("Failed to load MPIwrapper library '{}': {}", path, e))
     })

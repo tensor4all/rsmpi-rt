@@ -39,3 +39,8 @@ pub struct MPI_Status {
 const MPIABI_STATUS_INTERNAL_SIZE: usize = 24;
 #[cfg(target_pointer_width = "32")]
 const MPIABI_STATUS_INTERNAL_SIZE: usize = 20;
+
+const _: () = assert!(
+    std::mem::size_of::<MPI_Status>()
+        == MPIABI_STATUS_INTERNAL_SIZE + 3 * std::mem::size_of::<c_int>()
+);
