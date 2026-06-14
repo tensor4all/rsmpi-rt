@@ -240,14 +240,12 @@ impl From<c_int> for Threading {
 }
 
 /// Whether the MPI library has been initialized
-pub(crate) fn is_initialized() -> bool {
+pub fn is_initialized() -> bool {
     unsafe { with_uninitialized(|initialized| ffi::MPI_Initialized(initialized)).1 != 0 }
 }
 
 /// Whether the MPI library has been initialized
-/// NOTE: Used by "derive" feature
-#[allow(unused)]
-pub(crate) fn is_finalized() -> bool {
+pub fn is_finalized() -> bool {
     unsafe { with_uninitialized(|finalized| ffi::MPI_Finalized(finalized)).1 != 0 }
 }
 
