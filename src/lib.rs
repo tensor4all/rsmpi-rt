@@ -168,7 +168,8 @@ pub mod internal {
 
 #[doc(inline)]
 pub use crate::environment::{
-    initialize, initialize_with_threading, time, time_resolution, Threading,
+    initialize, initialize_with_threading, is_finalized, is_initialized, time, time_resolution,
+    Threading,
 };
 use crate::ffi::MPI_Aint;
 
