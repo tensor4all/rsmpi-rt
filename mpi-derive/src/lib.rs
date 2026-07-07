@@ -65,7 +65,7 @@ fn equivalence_for_tuple_field(
     quote! {
         &#mpi_crate_path::datatype::UncommittedUserDatatype::structured(
             &[#(#field_blocklengths as #mpi_crate_path::Count),*],
-            &[#(#mpi_crate_path::internal::memoffset::offset_of_tuple!(#type_tuple, #fields) as #mpi_crate_path::Address),*],
+            &[#(::core::mem::offset_of!(#type_tuple, #fields) as #mpi_crate_path::Address),*],
             &[#(#mpi_crate_path::datatype::UncommittedDatatypeRef::from(#field_datatypes)),*],
         )
     }
@@ -141,7 +141,7 @@ fn equivalence_for_struct(ast: &syn::DeriveInput, fields: &Fields) -> TokenStrea
                                 #mpi_crate_path::datatype::UncommittedDatatypeRef,
                             >(
                                 &[#(#field_blocklengths as #mpi_crate_path::Count),*],
-                                &[#(#mpi_crate_path::internal::memoffset::offset_of!(#ident, #field_names) as #mpi_crate_path::Address),*],
+                                &[#(::core::mem::offset_of!(#ident, #field_names) as #mpi_crate_path::Address),*],
                                 &[#(#mpi_crate_path::datatype::UncommittedDatatypeRef::from(#field_datatypes)),*],
                             )
                         });
