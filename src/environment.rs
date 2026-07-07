@@ -239,15 +239,43 @@ impl From<c_int> for Threading {
     }
 }
 
-/// Whether the MPI library has been initialized
-pub(crate) fn is_initialized() -> bool {
+/// Whether the MPI library has been initialized.
+///
+/// This function can be called at any time, including before initialization and after finalization.
+/// If the goal is to initialize MPI only if it has not been initialized yet, prefer calling
+/// [`initialize`] or [`initialize_with_threading`] directly — they return `None` rather than
+/// failing when MPI is already initialized, and they hold an internal lock that prevents two
+/// threads from both calling `MPI_Init_thread` at the same time.
+///
+/// Using `is_initialized()` as a condition before calling `initialize()` in a multithreaded
+/// program introduces a time-of-check/time-of-use race: another thread (or external C code)
+/// could initialize MPI in the window between the check and the call, causing `MPI_Init_thread`
+/// to fail. This is not a soundness issue, but it means the pattern
+/// `if !is_initialized() { initialize() }` is not useful under concurrent use.
+///
+/// `is_initialized()` is appropriate for diagnostics, assertions, and guard checks in contexts
+/// where no concurrent initialization will be attempted.
+///
+/// # Standard section(s)
+///
+/// 11.2, 11.6
+pub fn is_initialized() -> bool {
     unsafe { with_uninitialized(|initialized| ffi::MPI_Initialized(initialized)).1 != 0 }
 }
 
-/// Whether the MPI library has been initialized
-/// NOTE: Used by "derive" feature
-#[allow(unused)]
-pub(crate) fn is_finalized() -> bool {
+/// Whether the MPI library has been finalized.
+///
+/// This function can be called at any time, including before initialization and after finalization.
+/// Once MPI is finalized, it cannot be reinitialized; calling [`initialize`] or
+/// [`initialize_with_threading`] after finalization is erroneous per the MPI standard.
+///
+/// See [`is_initialized`] for a discussion of the race condition that applies when using
+/// these status functions to guard initialization in a multithreaded program.
+///
+/// # Standard section(s)
+///
+/// 11.2, 11.6
+pub fn is_finalized() -> bool {
     unsafe { with_uninitialized(|finalized| ffi::MPI_Finalized(finalized)).1 != 0 }
 }
 
