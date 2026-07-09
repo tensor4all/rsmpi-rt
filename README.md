@@ -72,7 +72,7 @@ Add the `mpi` crate as a dependency in your `Cargo.toml`:
 ```toml
 # "features" is optional
 [dependencies]
-mpi = { version = "0.8.1", features = ["user-operations", "derive"] }
+mpi = { version = "0.8.2", features = ["user-operations", "derive"] }
 ```
 
 Then use it in your program like this:

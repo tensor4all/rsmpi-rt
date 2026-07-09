@@ -1,6 +1,6 @@
 [package]
 name = "mpi-sys"
-version = "0.2.3"
+version = "0.2.4"
 authors = [
     "Benedikt Steinbusch <ben@rockshrub.de>",
     "Andrew Gaspar <andrew.gaspar@outlook.com>"
@@ -21,7 +21,7 @@ links = "mpi"
 [build-dependencies]
 cc = "1.2.66"
 bindgen = { version = "0.72", default-features = false, features = ["runtime"] }
-build-probe-mpi = { path = "../build-probe-mpi", version = "0.1.5" }
+build-probe-mpi = { path = "../build-probe-mpi", version = "0.1.6" }
 
 [package.metadata.release]
 tag-name = "{{crate_name}}-{{version}}"
