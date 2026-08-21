@@ -21,7 +21,7 @@ pub unsafe fn MPI_Send(
         unsafe extern "C" fn(*const c_void, c_int, MPI_Datatype, c_int, c_int, MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Send\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Send\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, dest, tag, comm)
@@ -47,7 +47,7 @@ pub unsafe fn MPI_Recv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Recv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Recv\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, source, tag, comm, status)
@@ -61,7 +61,7 @@ pub unsafe fn MPI_Get_count(
     type F = unsafe extern "C" fn(*const MPI_Status, MPI_Datatype, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Get_count\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Get_count\0");
         std::mem::transmute(ptr)
     });
     f(status, datatype, count)
@@ -79,7 +79,7 @@ pub unsafe fn MPI_Bsend(
         unsafe extern "C" fn(*const c_void, c_int, MPI_Datatype, c_int, c_int, MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Bsend\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Bsend\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, dest, tag, comm)
@@ -97,7 +97,7 @@ pub unsafe fn MPI_Ssend(
         unsafe extern "C" fn(*const c_void, c_int, MPI_Datatype, c_int, c_int, MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ssend\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ssend\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, dest, tag, comm)
@@ -115,7 +115,7 @@ pub unsafe fn MPI_Rsend(
         unsafe extern "C" fn(*const c_void, c_int, MPI_Datatype, c_int, c_int, MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Rsend\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Rsend\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, dest, tag, comm)
@@ -125,7 +125,7 @@ pub unsafe fn MPI_Buffer_attach(buffer: *mut c_void, size: c_int) -> c_int {
     type F = unsafe extern "C" fn(*mut c_void, c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Buffer_attach\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Buffer_attach\0");
         std::mem::transmute(ptr)
     });
     f(buffer, size)
@@ -135,7 +135,7 @@ pub unsafe fn MPI_Buffer_detach(buffer_addr: *mut c_void, size: *mut c_int) -> c
     type F = unsafe extern "C" fn(*mut c_void, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Buffer_detach\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Buffer_detach\0");
         std::mem::transmute(ptr)
     });
     f(buffer_addr, size)
@@ -161,7 +161,7 @@ pub unsafe fn MPI_Isend(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Isend\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Isend\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, dest, tag, comm, request)
@@ -187,7 +187,7 @@ pub unsafe fn MPI_Ibsend(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ibsend\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ibsend\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, dest, tag, comm, request)
@@ -213,7 +213,7 @@ pub unsafe fn MPI_Issend(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Issend\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Issend\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, dest, tag, comm, request)
@@ -239,7 +239,7 @@ pub unsafe fn MPI_Irsend(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Irsend\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Irsend\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, dest, tag, comm, request)
@@ -265,7 +265,7 @@ pub unsafe fn MPI_Irecv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Irecv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Irecv\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, source, tag, comm, request)
@@ -275,7 +275,7 @@ pub unsafe fn MPI_Wait(request: *mut MPI_Request, status: *mut MPI_Status) -> c_
     type F = unsafe extern "C" fn(*mut MPI_Request, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Wait\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Wait\0");
         std::mem::transmute(ptr)
     });
     f(request, status)
@@ -289,7 +289,7 @@ pub unsafe fn MPI_Test(
     type F = unsafe extern "C" fn(*mut MPI_Request, *mut c_int, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Test\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Test\0");
         std::mem::transmute(ptr)
     });
     f(request, flag, status)
@@ -299,7 +299,7 @@ pub unsafe fn MPI_Request_free(request: *mut MPI_Request) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_Request) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Request_free\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Request_free\0");
         std::mem::transmute(ptr)
     });
     f(request)
@@ -314,7 +314,7 @@ pub unsafe fn MPI_Waitany(
     type F = unsafe extern "C" fn(c_int, *mut MPI_Request, *mut c_int, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Waitany\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Waitany\0");
         std::mem::transmute(ptr)
     });
     f(count, array_of_requests, index, status)
@@ -336,7 +336,7 @@ pub unsafe fn MPI_Testany(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Testany\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Testany\0");
         std::mem::transmute(ptr)
     });
     f(count, array_of_requests, index, flag, status)
@@ -350,7 +350,7 @@ pub unsafe fn MPI_Waitall(
     type F = unsafe extern "C" fn(c_int, *mut MPI_Request, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Waitall\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Waitall\0");
         std::mem::transmute(ptr)
     });
     f(count, array_of_requests, array_of_statuses)
@@ -365,7 +365,7 @@ pub unsafe fn MPI_Testall(
     type F = unsafe extern "C" fn(c_int, *mut MPI_Request, *mut c_int, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Testall\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Testall\0");
         std::mem::transmute(ptr)
     });
     f(count, array_of_requests, flag, array_of_statuses)
@@ -387,7 +387,7 @@ pub unsafe fn MPI_Waitsome(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Waitsome\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Waitsome\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -415,7 +415,7 @@ pub unsafe fn MPI_Testsome(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Testsome\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Testsome\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -435,7 +435,7 @@ pub unsafe fn MPI_Request_get_status(
     type F = unsafe extern "C" fn(MPI_Request, *mut c_int, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Request_get_status\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Request_get_status\0");
         std::mem::transmute(ptr)
     });
     f(request, flag, status)
@@ -451,7 +451,7 @@ pub unsafe fn MPI_Iprobe(
     type F = unsafe extern "C" fn(c_int, c_int, MPI_Comm, *mut c_int, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Iprobe\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Iprobe\0");
         std::mem::transmute(ptr)
     });
     f(source, tag, comm, flag, status)
@@ -466,7 +466,7 @@ pub unsafe fn MPI_Probe(
     type F = unsafe extern "C" fn(c_int, c_int, MPI_Comm, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Probe\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Probe\0");
         std::mem::transmute(ptr)
     });
     f(source, tag, comm, status)
@@ -490,7 +490,7 @@ pub unsafe fn MPI_Improbe(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Improbe\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Improbe\0");
         std::mem::transmute(ptr)
     });
     f(source, tag, comm, flag, message, status)
@@ -507,7 +507,7 @@ pub unsafe fn MPI_Mprobe(
         unsafe extern "C" fn(c_int, c_int, MPI_Comm, *mut MPI_Message, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Mprobe\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Mprobe\0");
         std::mem::transmute(ptr)
     });
     f(source, tag, comm, message, status)
@@ -529,7 +529,7 @@ pub unsafe fn MPI_Mrecv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Mrecv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Mrecv\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, message, status)
@@ -551,7 +551,7 @@ pub unsafe fn MPI_Imrecv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Imrecv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Imrecv\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, message, request)
@@ -561,7 +561,7 @@ pub unsafe fn MPI_Cancel(request: *mut MPI_Request) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_Request) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Cancel\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Cancel\0");
         std::mem::transmute(ptr)
     });
     f(request)
@@ -571,7 +571,7 @@ pub unsafe fn MPI_Test_cancelled(status: *const MPI_Status, flag: *mut c_int) ->
     type F = unsafe extern "C" fn(*const MPI_Status, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Test_cancelled\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Test_cancelled\0");
         std::mem::transmute(ptr)
     });
     f(status, flag)
@@ -597,7 +597,7 @@ pub unsafe fn MPI_Send_init(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Send_init\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Send_init\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, dest, tag, comm, request)
@@ -623,7 +623,7 @@ pub unsafe fn MPI_Bsend_init(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Bsend_init\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Bsend_init\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, dest, tag, comm, request)
@@ -649,7 +649,7 @@ pub unsafe fn MPI_Ssend_init(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ssend_init\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ssend_init\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, dest, tag, comm, request)
@@ -675,7 +675,7 @@ pub unsafe fn MPI_Rsend_init(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Rsend_init\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Rsend_init\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, dest, tag, comm, request)
@@ -701,7 +701,7 @@ pub unsafe fn MPI_Recv_init(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Recv_init\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Recv_init\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, source, tag, comm, request)
@@ -711,7 +711,7 @@ pub unsafe fn MPI_Start(request: *mut MPI_Request) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_Request) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Start\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Start\0");
         std::mem::transmute(ptr)
     });
     f(request)
@@ -721,7 +721,7 @@ pub unsafe fn MPI_Startall(count: c_int, array_of_requests: *mut MPI_Request) ->
     type F = unsafe extern "C" fn(c_int, *mut MPI_Request) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Startall\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Startall\0");
         std::mem::transmute(ptr)
     });
     f(count, array_of_requests)
@@ -757,7 +757,7 @@ pub unsafe fn MPI_Sendrecv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Sendrecv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Sendrecv\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -790,7 +790,7 @@ pub unsafe fn MPI_Sendrecv_replace(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Sendrecv_replace\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Sendrecv_replace\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -806,7 +806,7 @@ pub unsafe fn MPI_Type_contiguous(
     type F = unsafe extern "C" fn(c_int, MPI_Datatype, *mut MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_contiguous\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_contiguous\0");
         std::mem::transmute(ptr)
     });
     f(count, oldtype, newtype)
@@ -822,7 +822,7 @@ pub unsafe fn MPI_Type_vector(
     type F = unsafe extern "C" fn(c_int, c_int, c_int, MPI_Datatype, *mut MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_vector\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_vector\0");
         std::mem::transmute(ptr)
     });
     f(count, blocklength, stride, oldtype, newtype)
@@ -838,7 +838,7 @@ pub unsafe fn MPI_Type_create_hvector(
     type F = unsafe extern "C" fn(c_int, c_int, MPI_Aint, MPI_Datatype, *mut MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_create_hvector\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_create_hvector\0");
         std::mem::transmute(ptr)
     });
     f(count, blocklength, stride, oldtype, newtype)
@@ -860,7 +860,7 @@ pub unsafe fn MPI_Type_indexed(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_indexed\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_indexed\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -888,7 +888,7 @@ pub unsafe fn MPI_Type_create_hindexed(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_create_hindexed\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_create_hindexed\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -911,7 +911,7 @@ pub unsafe fn MPI_Type_create_indexed_block(
         unsafe extern "C" fn(c_int, c_int, *const c_int, MPI_Datatype, *mut MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_create_indexed_block\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_create_indexed_block\0");
         std::mem::transmute(ptr)
     });
     f(count, blocklength, array_of_displacements, oldtype, newtype)
@@ -933,7 +933,7 @@ pub unsafe fn MPI_Type_create_hindexed_block(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_create_hindexed_block\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_create_hindexed_block\0");
         std::mem::transmute(ptr)
     });
     f(count, blocklength, array_of_displacements, oldtype, newtype)
@@ -955,7 +955,7 @@ pub unsafe fn MPI_Type_create_struct(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_create_struct\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_create_struct\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -983,7 +983,7 @@ pub unsafe fn MPI_Type_struct(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_struct\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_struct\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -1015,7 +1015,7 @@ pub unsafe fn MPI_Type_create_subarray(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_create_subarray\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_create_subarray\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -1055,7 +1055,7 @@ pub unsafe fn MPI_Type_create_darray(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_create_darray\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_create_darray\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -1076,7 +1076,7 @@ pub unsafe fn MPI_Get_address(location: *const c_void, address: *mut MPI_Aint) -
     type F = unsafe extern "C" fn(*const c_void, *mut MPI_Aint) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Get_address\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Get_address\0");
         std::mem::transmute(ptr)
     });
     f(location, address)
@@ -1086,7 +1086,7 @@ pub unsafe fn MPI_Aint_add(base: MPI_Aint, disp: MPI_Aint) -> MPI_Aint {
     type F = unsafe extern "C" fn(MPI_Aint, MPI_Aint) -> MPI_Aint;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Aint_add\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Aint_add\0");
         std::mem::transmute(ptr)
     });
     f(base, disp)
@@ -1096,7 +1096,7 @@ pub unsafe fn MPI_Aint_diff(addr1: MPI_Aint, addr2: MPI_Aint) -> MPI_Aint {
     type F = unsafe extern "C" fn(MPI_Aint, MPI_Aint) -> MPI_Aint;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Aint_diff\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Aint_diff\0");
         std::mem::transmute(ptr)
     });
     f(addr1, addr2)
@@ -1106,7 +1106,7 @@ pub unsafe fn MPI_Type_size(datatype: MPI_Datatype, size: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Datatype, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_size\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_size\0");
         std::mem::transmute(ptr)
     });
     f(datatype, size)
@@ -1116,7 +1116,7 @@ pub unsafe fn MPI_Type_size_x(datatype: MPI_Datatype, size: *mut MPI_Count) -> c
     type F = unsafe extern "C" fn(MPI_Datatype, *mut MPI_Count) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_size_x\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_size_x\0");
         std::mem::transmute(ptr)
     });
     f(datatype, size)
@@ -1130,7 +1130,7 @@ pub unsafe fn MPI_Type_get_extent(
     type F = unsafe extern "C" fn(MPI_Datatype, *mut MPI_Aint, *mut MPI_Aint) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_get_extent\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_get_extent\0");
         std::mem::transmute(ptr)
     });
     f(datatype, lb, extent)
@@ -1144,7 +1144,7 @@ pub unsafe fn MPI_Type_get_extent_x(
     type F = unsafe extern "C" fn(MPI_Datatype, *mut MPI_Count, *mut MPI_Count) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_get_extent_x\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_get_extent_x\0");
         std::mem::transmute(ptr)
     });
     f(datatype, lb, extent)
@@ -1159,7 +1159,7 @@ pub unsafe fn MPI_Type_create_resized(
     type F = unsafe extern "C" fn(MPI_Datatype, MPI_Aint, MPI_Aint, *mut MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_create_resized\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_create_resized\0");
         std::mem::transmute(ptr)
     });
     f(oldtype, lb, extent, newtype)
@@ -1173,7 +1173,7 @@ pub unsafe fn MPI_Type_get_true_extent(
     type F = unsafe extern "C" fn(MPI_Datatype, *mut MPI_Aint, *mut MPI_Aint) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_get_true_extent\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_get_true_extent\0");
         std::mem::transmute(ptr)
     });
     f(datatype, true_lb, true_extent)
@@ -1187,7 +1187,7 @@ pub unsafe fn MPI_Type_get_true_extent_x(
     type F = unsafe extern "C" fn(MPI_Datatype, *mut MPI_Count, *mut MPI_Count) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_get_true_extent_x\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_get_true_extent_x\0");
         std::mem::transmute(ptr)
     });
     f(datatype, true_lb, true_extent)
@@ -1197,7 +1197,7 @@ pub unsafe fn MPI_Type_commit(datatype: *mut MPI_Datatype) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_commit\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_commit\0");
         std::mem::transmute(ptr)
     });
     f(datatype)
@@ -1207,7 +1207,7 @@ pub unsafe fn MPI_Type_free(datatype: *mut MPI_Datatype) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_free\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_free\0");
         std::mem::transmute(ptr)
     });
     f(datatype)
@@ -1217,7 +1217,7 @@ pub unsafe fn MPI_Type_dup(oldtype: MPI_Datatype, newtype: *mut MPI_Datatype) ->
     type F = unsafe extern "C" fn(MPI_Datatype, *mut MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_dup\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_dup\0");
         std::mem::transmute(ptr)
     });
     f(oldtype, newtype)
@@ -1231,7 +1231,7 @@ pub unsafe fn MPI_Get_elements(
     type F = unsafe extern "C" fn(*const MPI_Status, MPI_Datatype, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Get_elements\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Get_elements\0");
         std::mem::transmute(ptr)
     });
     f(status, datatype, count)
@@ -1245,7 +1245,7 @@ pub unsafe fn MPI_Get_elements_x(
     type F = unsafe extern "C" fn(*const MPI_Status, MPI_Datatype, *mut MPI_Count) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Get_elements_x\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Get_elements_x\0");
         std::mem::transmute(ptr)
     });
     f(status, datatype, count)
@@ -1262,7 +1262,7 @@ pub unsafe fn MPI_Type_get_envelope(
         unsafe extern "C" fn(MPI_Datatype, *mut c_int, *mut c_int, *mut c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_get_envelope\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_get_envelope\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -1294,7 +1294,7 @@ pub unsafe fn MPI_Type_get_contents(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_get_contents\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_get_contents\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -1328,7 +1328,7 @@ pub unsafe fn MPI_Pack(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Pack\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Pack\0");
         std::mem::transmute(ptr)
     });
     f(inbuf, incount, datatype, outbuf, outsize, position, comm)
@@ -1354,7 +1354,7 @@ pub unsafe fn MPI_Unpack(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Unpack\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Unpack\0");
         std::mem::transmute(ptr)
     });
     f(inbuf, insize, position, outbuf, outcount, datatype, comm)
@@ -1369,7 +1369,7 @@ pub unsafe fn MPI_Pack_size(
     type F = unsafe extern "C" fn(c_int, MPI_Datatype, MPI_Comm, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Pack_size\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Pack_size\0");
         std::mem::transmute(ptr)
     });
     f(incount, datatype, comm, size)
@@ -1395,7 +1395,7 @@ pub unsafe fn MPI_Pack_external(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Pack_external\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Pack_external\0");
         std::mem::transmute(ptr)
     });
     f(datarep, inbuf, incount, datatype, outbuf, outsize, position)
@@ -1421,7 +1421,7 @@ pub unsafe fn MPI_Unpack_external(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Unpack_external\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Unpack_external\0");
         std::mem::transmute(ptr)
     });
     f(datarep, inbuf, insize, position, outbuf, outcount, datatype)
@@ -1436,7 +1436,7 @@ pub unsafe fn MPI_Pack_external_size(
     type F = unsafe extern "C" fn(*const c_char, c_int, MPI_Datatype, *mut MPI_Aint) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Pack_external_size\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Pack_external_size\0");
         std::mem::transmute(ptr)
     });
     f(datarep, incount, datatype, size)
@@ -1446,7 +1446,7 @@ pub unsafe fn MPI_Barrier(comm: MPI_Comm) -> c_int {
     type F = unsafe extern "C" fn(MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Barrier\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Barrier\0");
         std::mem::transmute(ptr)
     });
     f(comm)
@@ -1462,7 +1462,7 @@ pub unsafe fn MPI_Bcast(
     type F = unsafe extern "C" fn(*mut c_void, c_int, MPI_Datatype, c_int, MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Bcast\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Bcast\0");
         std::mem::transmute(ptr)
     });
     f(buffer, count, datatype, root, comm)
@@ -1490,7 +1490,7 @@ pub unsafe fn MPI_Gather(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Gather\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Gather\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -1522,7 +1522,7 @@ pub unsafe fn MPI_Gatherv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Gatherv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Gatherv\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -1552,7 +1552,7 @@ pub unsafe fn MPI_Scatter(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Scatter\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Scatter\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -1584,7 +1584,7 @@ pub unsafe fn MPI_Scatterv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Scatterv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Scatterv\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -1612,7 +1612,7 @@ pub unsafe fn MPI_Allgather(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Allgather\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Allgather\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -1642,7 +1642,7 @@ pub unsafe fn MPI_Allgatherv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Allgatherv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Allgatherv\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -1670,7 +1670,7 @@ pub unsafe fn MPI_Alltoall(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Alltoall\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Alltoall\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -1702,7 +1702,7 @@ pub unsafe fn MPI_Alltoallv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Alltoallv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Alltoallv\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -1734,7 +1734,7 @@ pub unsafe fn MPI_Alltoallw(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Alltoallw\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Alltoallw\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -1762,7 +1762,7 @@ pub unsafe fn MPI_Reduce(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Reduce\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Reduce\0");
         std::mem::transmute(ptr)
     });
     f(sendbuf, recvbuf, count, datatype, op, root, comm)
@@ -1772,7 +1772,7 @@ pub unsafe fn MPI_Op_create(user_fn: MPI_User_function, commute: c_int, op: *mut
     type F = unsafe extern "C" fn(MPI_User_function, c_int, *mut MPI_Op) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Op_create\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Op_create\0");
         std::mem::transmute(ptr)
     });
     f(user_fn, commute, op)
@@ -1782,7 +1782,7 @@ pub unsafe fn MPI_Op_free(op: *mut MPI_Op) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_Op) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Op_free\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Op_free\0");
         std::mem::transmute(ptr)
     });
     f(op)
@@ -1806,7 +1806,7 @@ pub unsafe fn MPI_Allreduce(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Allreduce\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Allreduce\0");
         std::mem::transmute(ptr)
     });
     f(sendbuf, recvbuf, count, datatype, op, comm)
@@ -1816,7 +1816,7 @@ pub unsafe fn MPI_Op_commutative(op: MPI_Op, commute: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Op, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Op_commutative\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Op_commutative\0");
         std::mem::transmute(ptr)
     });
     f(op, commute)
@@ -1832,7 +1832,7 @@ pub unsafe fn MPI_Reduce_local(
     type F = unsafe extern "C" fn(*const c_void, *mut c_void, c_int, MPI_Datatype, MPI_Op) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Reduce_local\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Reduce_local\0");
         std::mem::transmute(ptr)
     });
     f(inbuf, inoutbuf, count, datatype, op)
@@ -1856,7 +1856,7 @@ pub unsafe fn MPI_Reduce_scatter_block(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Reduce_scatter_block\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Reduce_scatter_block\0");
         std::mem::transmute(ptr)
     });
     f(sendbuf, recvbuf, recvcount, datatype, op, comm)
@@ -1880,7 +1880,7 @@ pub unsafe fn MPI_Reduce_scatter(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Reduce_scatter\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Reduce_scatter\0");
         std::mem::transmute(ptr)
     });
     f(sendbuf, recvbuf, recvcounts, datatype, op, comm)
@@ -1904,7 +1904,7 @@ pub unsafe fn MPI_Scan(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Scan\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Scan\0");
         std::mem::transmute(ptr)
     });
     f(sendbuf, recvbuf, count, datatype, op, comm)
@@ -1928,7 +1928,7 @@ pub unsafe fn MPI_Exscan(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Exscan\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Exscan\0");
         std::mem::transmute(ptr)
     });
     f(sendbuf, recvbuf, count, datatype, op, comm)
@@ -1938,7 +1938,7 @@ pub unsafe fn MPI_Ibarrier(comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
     type F = unsafe extern "C" fn(MPI_Comm, *mut MPI_Request) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ibarrier\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ibarrier\0");
         std::mem::transmute(ptr)
     });
     f(comm, request)
@@ -1962,7 +1962,7 @@ pub unsafe fn MPI_Ibcast(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ibcast\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ibcast\0");
         std::mem::transmute(ptr)
     });
     f(buffer, count, datatype, root, comm, request)
@@ -1992,7 +1992,7 @@ pub unsafe fn MPI_Igather(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Igather\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Igather\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -2026,7 +2026,7 @@ pub unsafe fn MPI_Igatherv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Igatherv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Igatherv\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -2058,7 +2058,7 @@ pub unsafe fn MPI_Iscatter(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Iscatter\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Iscatter\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -2092,7 +2092,7 @@ pub unsafe fn MPI_Iscatterv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Iscatterv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Iscatterv\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -2122,7 +2122,7 @@ pub unsafe fn MPI_Iallgather(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Iallgather\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Iallgather\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -2154,7 +2154,7 @@ pub unsafe fn MPI_Iallgatherv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Iallgatherv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Iallgatherv\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -2184,7 +2184,7 @@ pub unsafe fn MPI_Ialltoall(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ialltoall\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ialltoall\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -2218,7 +2218,7 @@ pub unsafe fn MPI_Ialltoallv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ialltoallv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ialltoallv\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -2253,7 +2253,7 @@ pub unsafe fn MPI_Ialltoallw(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ialltoallw\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ialltoallw\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -2284,7 +2284,7 @@ pub unsafe fn MPI_Ireduce(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ireduce\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ireduce\0");
         std::mem::transmute(ptr)
     });
     f(sendbuf, recvbuf, count, datatype, op, root, comm, request)
@@ -2310,7 +2310,7 @@ pub unsafe fn MPI_Iallreduce(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Iallreduce\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Iallreduce\0");
         std::mem::transmute(ptr)
     });
     f(sendbuf, recvbuf, count, datatype, op, comm, request)
@@ -2336,7 +2336,7 @@ pub unsafe fn MPI_Ireduce_scatter_block(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ireduce_scatter_block\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ireduce_scatter_block\0");
         std::mem::transmute(ptr)
     });
     f(sendbuf, recvbuf, recvcount, datatype, op, comm, request)
@@ -2362,7 +2362,7 @@ pub unsafe fn MPI_Ireduce_scatter(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ireduce_scatter\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ireduce_scatter\0");
         std::mem::transmute(ptr)
     });
     f(sendbuf, recvbuf, recvcounts, datatype, op, comm, request)
@@ -2388,7 +2388,7 @@ pub unsafe fn MPI_Iscan(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Iscan\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Iscan\0");
         std::mem::transmute(ptr)
     });
     f(sendbuf, recvbuf, count, datatype, op, comm, request)
@@ -2414,7 +2414,7 @@ pub unsafe fn MPI_Iexscan(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Iexscan\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Iexscan\0");
         std::mem::transmute(ptr)
     });
     f(sendbuf, recvbuf, count, datatype, op, comm, request)
@@ -2424,7 +2424,7 @@ pub unsafe fn MPI_Group_size(group: MPI_Group, size: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Group, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Group_size\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Group_size\0");
         std::mem::transmute(ptr)
     });
     f(group, size)
@@ -2434,7 +2434,7 @@ pub unsafe fn MPI_Group_rank(group: MPI_Group, rank: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Group, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Group_rank\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Group_rank\0");
         std::mem::transmute(ptr)
     });
     f(group, rank)
@@ -2450,7 +2450,7 @@ pub unsafe fn MPI_Group_translate_ranks(
     type F = unsafe extern "C" fn(MPI_Group, c_int, *const c_int, MPI_Group, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Group_translate_ranks\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Group_translate_ranks\0");
         std::mem::transmute(ptr)
     });
     f(group1, n, ranks1, group2, ranks2)
@@ -2460,7 +2460,7 @@ pub unsafe fn MPI_Group_compare(group1: MPI_Group, group2: MPI_Group, result: *m
     type F = unsafe extern "C" fn(MPI_Group, MPI_Group, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Group_compare\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Group_compare\0");
         std::mem::transmute(ptr)
     });
     f(group1, group2, result)
@@ -2470,7 +2470,7 @@ pub unsafe fn MPI_Comm_group(comm: MPI_Comm, group: *mut MPI_Group) -> c_int {
     type F = unsafe extern "C" fn(MPI_Comm, *mut MPI_Group) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_group\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_group\0");
         std::mem::transmute(ptr)
     });
     f(comm, group)
@@ -2484,7 +2484,7 @@ pub unsafe fn MPI_Group_union(
     type F = unsafe extern "C" fn(MPI_Group, MPI_Group, *mut MPI_Group) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Group_union\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Group_union\0");
         std::mem::transmute(ptr)
     });
     f(group1, group2, newgroup)
@@ -2498,7 +2498,7 @@ pub unsafe fn MPI_Group_intersection(
     type F = unsafe extern "C" fn(MPI_Group, MPI_Group, *mut MPI_Group) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Group_intersection\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Group_intersection\0");
         std::mem::transmute(ptr)
     });
     f(group1, group2, newgroup)
@@ -2512,7 +2512,7 @@ pub unsafe fn MPI_Group_difference(
     type F = unsafe extern "C" fn(MPI_Group, MPI_Group, *mut MPI_Group) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Group_difference\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Group_difference\0");
         std::mem::transmute(ptr)
     });
     f(group1, group2, newgroup)
@@ -2527,7 +2527,7 @@ pub unsafe fn MPI_Group_incl(
     type F = unsafe extern "C" fn(MPI_Group, c_int, *const c_int, *mut MPI_Group) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Group_incl\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Group_incl\0");
         std::mem::transmute(ptr)
     });
     f(group, n, ranks, newgroup)
@@ -2542,7 +2542,7 @@ pub unsafe fn MPI_Group_excl(
     type F = unsafe extern "C" fn(MPI_Group, c_int, *const c_int, *mut MPI_Group) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Group_excl\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Group_excl\0");
         std::mem::transmute(ptr)
     });
     f(group, n, ranks, newgroup)
@@ -2557,7 +2557,7 @@ pub unsafe fn MPI_Group_range_incl(
     type F = unsafe extern "C" fn(MPI_Group, c_int, *mut [c_int; 3], *mut MPI_Group) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Group_range_incl\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Group_range_incl\0");
         std::mem::transmute(ptr)
     });
     f(group, n, ranges, newgroup)
@@ -2572,7 +2572,7 @@ pub unsafe fn MPI_Group_range_excl(
     type F = unsafe extern "C" fn(MPI_Group, c_int, *mut [c_int; 3], *mut MPI_Group) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Group_range_excl\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Group_range_excl\0");
         std::mem::transmute(ptr)
     });
     f(group, n, ranges, newgroup)
@@ -2582,7 +2582,7 @@ pub unsafe fn MPI_Group_free(group: *mut MPI_Group) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_Group) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Group_free\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Group_free\0");
         std::mem::transmute(ptr)
     });
     f(group)
@@ -2592,7 +2592,7 @@ pub unsafe fn MPI_Comm_size(comm: MPI_Comm, size: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Comm, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_size\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_size\0");
         std::mem::transmute(ptr)
     });
     f(comm, size)
@@ -2602,7 +2602,7 @@ pub unsafe fn MPI_Comm_rank(comm: MPI_Comm, rank: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Comm, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_rank\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_rank\0");
         std::mem::transmute(ptr)
     });
     f(comm, rank)
@@ -2612,7 +2612,7 @@ pub unsafe fn MPI_Comm_compare(comm1: MPI_Comm, comm2: MPI_Comm, result: *mut c_
     type F = unsafe extern "C" fn(MPI_Comm, MPI_Comm, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_compare\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_compare\0");
         std::mem::transmute(ptr)
     });
     f(comm1, comm2, result)
@@ -2622,7 +2622,7 @@ pub unsafe fn MPI_Comm_dup(comm: MPI_Comm, newcomm: *mut MPI_Comm) -> c_int {
     type F = unsafe extern "C" fn(MPI_Comm, *mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_dup\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_dup\0");
         std::mem::transmute(ptr)
     });
     f(comm, newcomm)
@@ -2636,7 +2636,7 @@ pub unsafe fn MPI_Comm_dup_with_info(
     type F = unsafe extern "C" fn(MPI_Comm, MPI_Info, *mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_dup_with_info\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_dup_with_info\0");
         std::mem::transmute(ptr)
     });
     f(comm, info, newcomm)
@@ -2650,7 +2650,7 @@ pub unsafe fn MPI_Comm_idup(
     type F = unsafe extern "C" fn(MPI_Comm, *mut MPI_Comm, *mut MPI_Request) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_idup\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_idup\0");
         std::mem::transmute(ptr)
     });
     f(comm, newcomm, request)
@@ -2660,7 +2660,7 @@ pub unsafe fn MPI_Comm_create(comm: MPI_Comm, group: MPI_Group, newcomm: *mut MP
     type F = unsafe extern "C" fn(MPI_Comm, MPI_Group, *mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_create\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_create\0");
         std::mem::transmute(ptr)
     });
     f(comm, group, newcomm)
@@ -2675,7 +2675,7 @@ pub unsafe fn MPI_Comm_create_group(
     type F = unsafe extern "C" fn(MPI_Comm, MPI_Group, c_int, *mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_create_group\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_create_group\0");
         std::mem::transmute(ptr)
     });
     f(comm, group, tag, newcomm)
@@ -2690,7 +2690,7 @@ pub unsafe fn MPI_Comm_split(
     type F = unsafe extern "C" fn(MPI_Comm, c_int, c_int, *mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_split\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_split\0");
         std::mem::transmute(ptr)
     });
     f(comm, color, key, newcomm)
@@ -2706,7 +2706,7 @@ pub unsafe fn MPI_Comm_split_type(
     type F = unsafe extern "C" fn(MPI_Comm, c_int, c_int, MPI_Info, *mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_split_type\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_split_type\0");
         std::mem::transmute(ptr)
     });
     f(comm, split_type, key, info, newcomm)
@@ -2716,7 +2716,7 @@ pub unsafe fn MPI_Comm_free(comm: *mut MPI_Comm) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_free\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_free\0");
         std::mem::transmute(ptr)
     });
     f(comm)
@@ -2726,7 +2726,7 @@ pub unsafe fn MPI_Comm_set_info(comm: MPI_Comm, info: MPI_Info) -> c_int {
     type F = unsafe extern "C" fn(MPI_Comm, MPI_Info) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_set_info\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_set_info\0");
         std::mem::transmute(ptr)
     });
     f(comm, info)
@@ -2736,7 +2736,7 @@ pub unsafe fn MPI_Comm_get_info(comm: MPI_Comm, info: *mut MPI_Info) -> c_int {
     type F = unsafe extern "C" fn(MPI_Comm, *mut MPI_Info) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_get_info\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_get_info\0");
         std::mem::transmute(ptr)
     });
     f(comm, info)
@@ -2746,7 +2746,7 @@ pub unsafe fn MPI_Comm_test_inter(comm: MPI_Comm, flag: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Comm, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_test_inter\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_test_inter\0");
         std::mem::transmute(ptr)
     });
     f(comm, flag)
@@ -2756,7 +2756,7 @@ pub unsafe fn MPI_Comm_remote_size(comm: MPI_Comm, size: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Comm, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_remote_size\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_remote_size\0");
         std::mem::transmute(ptr)
     });
     f(comm, size)
@@ -2766,7 +2766,7 @@ pub unsafe fn MPI_Comm_remote_group(comm: MPI_Comm, group: *mut MPI_Group) -> c_
     type F = unsafe extern "C" fn(MPI_Comm, *mut MPI_Group) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_remote_group\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_remote_group\0");
         std::mem::transmute(ptr)
     });
     f(comm, group)
@@ -2783,7 +2783,7 @@ pub unsafe fn MPI_Intercomm_create(
     type F = unsafe extern "C" fn(MPI_Comm, c_int, MPI_Comm, c_int, c_int, *mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Intercomm_create\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Intercomm_create\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -2804,7 +2804,7 @@ pub unsafe fn MPI_Intercomm_merge(
     type F = unsafe extern "C" fn(MPI_Comm, c_int, *mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Intercomm_merge\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Intercomm_merge\0");
         std::mem::transmute(ptr)
     });
     f(intercomm, high, newintracomm)
@@ -2824,7 +2824,7 @@ pub unsafe fn MPI_Comm_create_keyval(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_create_keyval\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_create_keyval\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -2839,7 +2839,7 @@ pub unsafe fn MPI_Comm_free_keyval(comm_keyval: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(*mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_free_keyval\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_free_keyval\0");
         std::mem::transmute(ptr)
     });
     f(comm_keyval)
@@ -2853,7 +2853,7 @@ pub unsafe fn MPI_Comm_set_attr(
     type F = unsafe extern "C" fn(MPI_Comm, c_int, *mut c_void) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_set_attr\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_set_attr\0");
         std::mem::transmute(ptr)
     });
     f(comm, comm_keyval, attribute_val)
@@ -2868,7 +2868,7 @@ pub unsafe fn MPI_Comm_get_attr(
     type F = unsafe extern "C" fn(MPI_Comm, c_int, *mut c_void, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_get_attr\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_get_attr\0");
         std::mem::transmute(ptr)
     });
     f(comm, comm_keyval, attribute_val, flag)
@@ -2878,7 +2878,7 @@ pub unsafe fn MPI_Comm_delete_attr(comm: MPI_Comm, comm_keyval: c_int) -> c_int 
     type F = unsafe extern "C" fn(MPI_Comm, c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_delete_attr\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_delete_attr\0");
         std::mem::transmute(ptr)
     });
     f(comm, comm_keyval)
@@ -2898,7 +2898,7 @@ pub unsafe fn MPI_Win_create_keyval(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_create_keyval\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_create_keyval\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -2913,7 +2913,7 @@ pub unsafe fn MPI_Win_free_keyval(win_keyval: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(*mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_free_keyval\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_free_keyval\0");
         std::mem::transmute(ptr)
     });
     f(win_keyval)
@@ -2927,7 +2927,7 @@ pub unsafe fn MPI_Win_set_attr(
     type F = unsafe extern "C" fn(MPI_Win, c_int, *mut c_void) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_set_attr\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_set_attr\0");
         std::mem::transmute(ptr)
     });
     f(win, win_keyval, attribute_val)
@@ -2942,7 +2942,7 @@ pub unsafe fn MPI_Win_get_attr(
     type F = unsafe extern "C" fn(MPI_Win, c_int, *mut c_void, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_get_attr\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_get_attr\0");
         std::mem::transmute(ptr)
     });
     f(win, win_keyval, attribute_val, flag)
@@ -2952,7 +2952,7 @@ pub unsafe fn MPI_Win_delete_attr(win: MPI_Win, win_keyval: c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Win, c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_delete_attr\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_delete_attr\0");
         std::mem::transmute(ptr)
     });
     f(win, win_keyval)
@@ -2972,7 +2972,7 @@ pub unsafe fn MPI_Type_create_keyval(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_create_keyval\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_create_keyval\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -2987,7 +2987,7 @@ pub unsafe fn MPI_Type_free_keyval(type_keyval: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(*mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_free_keyval\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_free_keyval\0");
         std::mem::transmute(ptr)
     });
     f(type_keyval)
@@ -3001,7 +3001,7 @@ pub unsafe fn MPI_Type_set_attr(
     type F = unsafe extern "C" fn(MPI_Datatype, c_int, *mut c_void) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_set_attr\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_set_attr\0");
         std::mem::transmute(ptr)
     });
     f(type_, type_keyval, attribute_val)
@@ -3016,7 +3016,7 @@ pub unsafe fn MPI_Type_get_attr(
     type F = unsafe extern "C" fn(MPI_Datatype, c_int, *mut c_void, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_get_attr\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_get_attr\0");
         std::mem::transmute(ptr)
     });
     f(type_, type_keyval, attribute_val, flag)
@@ -3026,7 +3026,7 @@ pub unsafe fn MPI_Type_delete_attr(type_: MPI_Datatype, type_keyval: c_int) -> c
     type F = unsafe extern "C" fn(MPI_Datatype, c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_delete_attr\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_delete_attr\0");
         std::mem::transmute(ptr)
     });
     f(type_, type_keyval)
@@ -3036,7 +3036,7 @@ pub unsafe fn MPI_Comm_set_name(comm: MPI_Comm, comm_name: *const c_char) -> c_i
     type F = unsafe extern "C" fn(MPI_Comm, *const c_char) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_set_name\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_set_name\0");
         std::mem::transmute(ptr)
     });
     f(comm, comm_name)
@@ -3050,7 +3050,7 @@ pub unsafe fn MPI_Comm_get_name(
     type F = unsafe extern "C" fn(MPI_Comm, *mut c_char, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_get_name\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_get_name\0");
         std::mem::transmute(ptr)
     });
     f(comm, comm_name, resultlen)
@@ -3060,7 +3060,7 @@ pub unsafe fn MPI_Type_set_name(type_: MPI_Datatype, type_name: *const c_char) -
     type F = unsafe extern "C" fn(MPI_Datatype, *const c_char) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_set_name\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_set_name\0");
         std::mem::transmute(ptr)
     });
     f(type_, type_name)
@@ -3074,7 +3074,7 @@ pub unsafe fn MPI_Type_get_name(
     type F = unsafe extern "C" fn(MPI_Datatype, *mut c_char, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_get_name\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_get_name\0");
         std::mem::transmute(ptr)
     });
     f(type_, type_name, resultlen)
@@ -3084,7 +3084,7 @@ pub unsafe fn MPI_Win_set_name(win: MPI_Win, win_name: *const c_char) -> c_int {
     type F = unsafe extern "C" fn(MPI_Win, *const c_char) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_set_name\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_set_name\0");
         std::mem::transmute(ptr)
     });
     f(win, win_name)
@@ -3098,7 +3098,7 @@ pub unsafe fn MPI_Win_get_name(
     type F = unsafe extern "C" fn(MPI_Win, *mut c_char, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_get_name\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_get_name\0");
         std::mem::transmute(ptr)
     });
     f(win, win_name, resultlen)
@@ -3122,7 +3122,7 @@ pub unsafe fn MPI_Cart_create(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Cart_create\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Cart_create\0");
         std::mem::transmute(ptr)
     });
     f(comm_old, ndims, dims, periods, reorder, comm_cart)
@@ -3132,7 +3132,7 @@ pub unsafe fn MPI_Dims_create(nnodes: c_int, ndims: c_int, dims: *mut c_int) -> 
     type F = unsafe extern "C" fn(c_int, c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Dims_create\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Dims_create\0");
         std::mem::transmute(ptr)
     });
     f(nnodes, ndims, dims)
@@ -3156,7 +3156,7 @@ pub unsafe fn MPI_Graph_create(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Graph_create\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Graph_create\0");
         std::mem::transmute(ptr)
     });
     f(comm_old, nnodes, index, edges, reorder, comm_graph)
@@ -3188,7 +3188,7 @@ pub unsafe fn MPI_Dist_graph_create_adjacent(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Dist_graph_create_adjacent\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Dist_graph_create_adjacent\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -3229,7 +3229,7 @@ pub unsafe fn MPI_Dist_graph_create(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Dist_graph_create\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Dist_graph_create\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -3249,7 +3249,7 @@ pub unsafe fn MPI_Topo_test(comm: MPI_Comm, status: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Comm, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Topo_test\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Topo_test\0");
         std::mem::transmute(ptr)
     });
     f(comm, status)
@@ -3259,7 +3259,7 @@ pub unsafe fn MPI_Graphdims_get(comm: MPI_Comm, nnodes: *mut c_int, nedges: *mut
     type F = unsafe extern "C" fn(MPI_Comm, *mut c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Graphdims_get\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Graphdims_get\0");
         std::mem::transmute(ptr)
     });
     f(comm, nnodes, nedges)
@@ -3275,7 +3275,7 @@ pub unsafe fn MPI_Graph_get(
     type F = unsafe extern "C" fn(MPI_Comm, c_int, c_int, *mut c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Graph_get\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Graph_get\0");
         std::mem::transmute(ptr)
     });
     f(comm, maxindex, maxedges, index, edges)
@@ -3285,7 +3285,7 @@ pub unsafe fn MPI_Cartdim_get(comm: MPI_Comm, ndims: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Comm, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Cartdim_get\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Cartdim_get\0");
         std::mem::transmute(ptr)
     });
     f(comm, ndims)
@@ -3301,7 +3301,7 @@ pub unsafe fn MPI_Cart_get(
     type F = unsafe extern "C" fn(MPI_Comm, c_int, *mut c_int, *mut c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Cart_get\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Cart_get\0");
         std::mem::transmute(ptr)
     });
     f(comm, maxdims, dims, periods, coords)
@@ -3311,7 +3311,7 @@ pub unsafe fn MPI_Cart_rank(comm: MPI_Comm, coords: *const c_int, rank: *mut c_i
     type F = unsafe extern "C" fn(MPI_Comm, *const c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Cart_rank\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Cart_rank\0");
         std::mem::transmute(ptr)
     });
     f(comm, coords, rank)
@@ -3326,7 +3326,7 @@ pub unsafe fn MPI_Cart_coords(
     type F = unsafe extern "C" fn(MPI_Comm, c_int, c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Cart_coords\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Cart_coords\0");
         std::mem::transmute(ptr)
     });
     f(comm, rank, maxdims, coords)
@@ -3340,7 +3340,7 @@ pub unsafe fn MPI_Graph_neighbors_count(
     type F = unsafe extern "C" fn(MPI_Comm, c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Graph_neighbors_count\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Graph_neighbors_count\0");
         std::mem::transmute(ptr)
     });
     f(comm, rank, nneighbors)
@@ -3355,7 +3355,7 @@ pub unsafe fn MPI_Graph_neighbors(
     type F = unsafe extern "C" fn(MPI_Comm, c_int, c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Graph_neighbors\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Graph_neighbors\0");
         std::mem::transmute(ptr)
     });
     f(comm, rank, maxneighbors, neighbors)
@@ -3370,7 +3370,7 @@ pub unsafe fn MPI_Dist_graph_neighbors_count(
     type F = unsafe extern "C" fn(MPI_Comm, *mut c_int, *mut c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Dist_graph_neighbors_count\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Dist_graph_neighbors_count\0");
         std::mem::transmute(ptr)
     });
     f(comm, indegree, outdegree, weighted)
@@ -3396,7 +3396,7 @@ pub unsafe fn MPI_Dist_graph_neighbors(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Dist_graph_neighbors\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Dist_graph_neighbors\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -3420,7 +3420,7 @@ pub unsafe fn MPI_Cart_shift(
     type F = unsafe extern "C" fn(MPI_Comm, c_int, c_int, *mut c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Cart_shift\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Cart_shift\0");
         std::mem::transmute(ptr)
     });
     f(comm, direction, disp, rank_source, rank_dest)
@@ -3434,7 +3434,7 @@ pub unsafe fn MPI_Cart_sub(
     type F = unsafe extern "C" fn(MPI_Comm, *const c_int, *mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Cart_sub\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Cart_sub\0");
         std::mem::transmute(ptr)
     });
     f(comm, remain_dims, newcomm)
@@ -3450,7 +3450,7 @@ pub unsafe fn MPI_Cart_map(
     type F = unsafe extern "C" fn(MPI_Comm, c_int, *const c_int, *const c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Cart_map\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Cart_map\0");
         std::mem::transmute(ptr)
     });
     f(comm, ndims, dims, periods, newrank)
@@ -3466,7 +3466,7 @@ pub unsafe fn MPI_Graph_map(
     type F = unsafe extern "C" fn(MPI_Comm, c_int, *const c_int, *const c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Graph_map\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Graph_map\0");
         std::mem::transmute(ptr)
     });
     f(comm, nnodes, index, edges, newrank)
@@ -3492,7 +3492,7 @@ pub unsafe fn MPI_Neighbor_allgather(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Neighbor_allgather\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Neighbor_allgather\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -3522,7 +3522,7 @@ pub unsafe fn MPI_Neighbor_allgatherv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Neighbor_allgatherv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Neighbor_allgatherv\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -3550,7 +3550,7 @@ pub unsafe fn MPI_Neighbor_alltoall(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Neighbor_alltoall\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Neighbor_alltoall\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -3582,7 +3582,7 @@ pub unsafe fn MPI_Neighbor_alltoallv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Neighbor_alltoallv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Neighbor_alltoallv\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -3614,7 +3614,7 @@ pub unsafe fn MPI_Neighbor_alltoallw(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Neighbor_alltoallw\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Neighbor_alltoallw\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -3644,7 +3644,7 @@ pub unsafe fn MPI_Ineighbor_allgather(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ineighbor_allgather\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ineighbor_allgather\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -3676,7 +3676,7 @@ pub unsafe fn MPI_Ineighbor_allgatherv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ineighbor_allgatherv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ineighbor_allgatherv\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -3706,7 +3706,7 @@ pub unsafe fn MPI_Ineighbor_alltoall(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ineighbor_alltoall\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ineighbor_alltoall\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -3740,7 +3740,7 @@ pub unsafe fn MPI_Ineighbor_alltoallv(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ineighbor_alltoallv\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ineighbor_alltoallv\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -3775,7 +3775,7 @@ pub unsafe fn MPI_Ineighbor_alltoallw(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Ineighbor_alltoallw\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Ineighbor_alltoallw\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -3788,7 +3788,7 @@ pub unsafe fn MPI_Get_version(version: *mut c_int, subversion: *mut c_int) -> c_
     type F = unsafe extern "C" fn(*mut c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Get_version\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Get_version\0");
         std::mem::transmute(ptr)
     });
     f(version, subversion)
@@ -3798,7 +3798,7 @@ pub unsafe fn MPI_Get_library_version(version: *mut c_char, resultlen: *mut c_in
     type F = unsafe extern "C" fn(*mut c_char, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Get_library_version\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Get_library_version\0");
         std::mem::transmute(ptr)
     });
     f(version, resultlen)
@@ -3808,7 +3808,7 @@ pub unsafe fn MPI_Get_processor_name(name: *mut c_char, resultlen: *mut c_int) -
     type F = unsafe extern "C" fn(*mut c_char, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Get_processor_name\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Get_processor_name\0");
         std::mem::transmute(ptr)
     });
     f(name, resultlen)
@@ -3818,7 +3818,7 @@ pub unsafe fn MPI_Alloc_mem(size: MPI_Aint, info: MPI_Info, baseptr: *mut c_void
     type F = unsafe extern "C" fn(MPI_Aint, MPI_Info, *mut c_void) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Alloc_mem\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Alloc_mem\0");
         std::mem::transmute(ptr)
     });
     f(size, info, baseptr)
@@ -3828,7 +3828,7 @@ pub unsafe fn MPI_Free_mem(base: *mut c_void) -> c_int {
     type F = unsafe extern "C" fn(*mut c_void) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Free_mem\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Free_mem\0");
         std::mem::transmute(ptr)
     });
     f(base)
@@ -3841,7 +3841,7 @@ pub unsafe fn MPI_Comm_create_errhandler(
     type F = unsafe extern "C" fn(MPI_Comm_errhandler_function, *mut MPI_Errhandler) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_create_errhandler\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_create_errhandler\0");
         std::mem::transmute(ptr)
     });
     f(comm_errhandler_fn, errhandler)
@@ -3851,7 +3851,7 @@ pub unsafe fn MPI_Comm_set_errhandler(comm: MPI_Comm, errhandler: MPI_Errhandler
     type F = unsafe extern "C" fn(MPI_Comm, MPI_Errhandler) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_set_errhandler\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_set_errhandler\0");
         std::mem::transmute(ptr)
     });
     f(comm, errhandler)
@@ -3861,7 +3861,7 @@ pub unsafe fn MPI_Comm_get_errhandler(comm: MPI_Comm, errhandler: *mut MPI_Errha
     type F = unsafe extern "C" fn(MPI_Comm, *mut MPI_Errhandler) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_get_errhandler\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_get_errhandler\0");
         std::mem::transmute(ptr)
     });
     f(comm, errhandler)
@@ -3874,7 +3874,7 @@ pub unsafe fn MPI_Win_create_errhandler(
     type F = unsafe extern "C" fn(MPI_Win_errhandler_function, *mut MPI_Errhandler) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_create_errhandler\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_create_errhandler\0");
         std::mem::transmute(ptr)
     });
     f(win_errhandler_fn, errhandler)
@@ -3884,7 +3884,7 @@ pub unsafe fn MPI_Win_set_errhandler(win: MPI_Win, errhandler: MPI_Errhandler) -
     type F = unsafe extern "C" fn(MPI_Win, MPI_Errhandler) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_set_errhandler\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_set_errhandler\0");
         std::mem::transmute(ptr)
     });
     f(win, errhandler)
@@ -3894,7 +3894,7 @@ pub unsafe fn MPI_Win_get_errhandler(win: MPI_Win, errhandler: *mut MPI_Errhandl
     type F = unsafe extern "C" fn(MPI_Win, *mut MPI_Errhandler) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_get_errhandler\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_get_errhandler\0");
         std::mem::transmute(ptr)
     });
     f(win, errhandler)
@@ -3907,7 +3907,7 @@ pub unsafe fn MPI_File_create_errhandler(
     type F = unsafe extern "C" fn(MPI_File_errhandler_function, *mut MPI_Errhandler) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_create_errhandler\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_create_errhandler\0");
         std::mem::transmute(ptr)
     });
     f(file_errhandler_fn, errhandler)
@@ -3917,7 +3917,7 @@ pub unsafe fn MPI_File_set_errhandler(file: MPI_File, errhandler: MPI_Errhandler
     type F = unsafe extern "C" fn(MPI_File, MPI_Errhandler) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_set_errhandler\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_set_errhandler\0");
         std::mem::transmute(ptr)
     });
     f(file, errhandler)
@@ -3927,7 +3927,7 @@ pub unsafe fn MPI_File_get_errhandler(file: MPI_File, errhandler: *mut MPI_Errha
     type F = unsafe extern "C" fn(MPI_File, *mut MPI_Errhandler) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_get_errhandler\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_get_errhandler\0");
         std::mem::transmute(ptr)
     });
     f(file, errhandler)
@@ -3937,7 +3937,7 @@ pub unsafe fn MPI_Errhandler_free(errhandler: *mut MPI_Errhandler) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_Errhandler) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Errhandler_free\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Errhandler_free\0");
         std::mem::transmute(ptr)
     });
     f(errhandler)
@@ -3951,7 +3951,7 @@ pub unsafe fn MPI_Error_string(
     type F = unsafe extern "C" fn(c_int, *mut c_char, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Error_string\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Error_string\0");
         std::mem::transmute(ptr)
     });
     f(errorcode, string, resultlen)
@@ -3961,7 +3961,7 @@ pub unsafe fn MPI_Error_class(errorcode: c_int, errorclass: *mut c_int) -> c_int
     type F = unsafe extern "C" fn(c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Error_class\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Error_class\0");
         std::mem::transmute(ptr)
     });
     f(errorcode, errorclass)
@@ -3971,7 +3971,7 @@ pub unsafe fn MPI_Add_error_class(errorclass: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(*mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Add_error_class\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Add_error_class\0");
         std::mem::transmute(ptr)
     });
     f(errorclass)
@@ -3981,7 +3981,7 @@ pub unsafe fn MPI_Add_error_code(errorclass: c_int, errorcode: *mut c_int) -> c_
     type F = unsafe extern "C" fn(c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Add_error_code\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Add_error_code\0");
         std::mem::transmute(ptr)
     });
     f(errorclass, errorcode)
@@ -3991,7 +3991,7 @@ pub unsafe fn MPI_Add_error_string(errorcode: c_int, string: *const c_char) -> c
     type F = unsafe extern "C" fn(c_int, *const c_char) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Add_error_string\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Add_error_string\0");
         std::mem::transmute(ptr)
     });
     f(errorcode, string)
@@ -4001,7 +4001,7 @@ pub unsafe fn MPI_Comm_call_errhandler(comm: MPI_Comm, errorcode: c_int) -> c_in
     type F = unsafe extern "C" fn(MPI_Comm, c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_call_errhandler\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_call_errhandler\0");
         std::mem::transmute(ptr)
     });
     f(comm, errorcode)
@@ -4011,7 +4011,7 @@ pub unsafe fn MPI_Win_call_errhandler(win: MPI_Win, errorcode: c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Win, c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_call_errhandler\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_call_errhandler\0");
         std::mem::transmute(ptr)
     });
     f(win, errorcode)
@@ -4021,7 +4021,7 @@ pub unsafe fn MPI_File_call_errhandler(file: MPI_File, errorcode: c_int) -> c_in
     type F = unsafe extern "C" fn(MPI_File, c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_call_errhandler\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_call_errhandler\0");
         std::mem::transmute(ptr)
     });
     f(file, errorcode)
@@ -4031,7 +4031,7 @@ pub unsafe fn MPI_Wtime() -> c_double {
     type F = unsafe extern "C" fn() -> c_double;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Wtime\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Wtime\0");
         std::mem::transmute(ptr)
     });
     f()
@@ -4041,7 +4041,7 @@ pub unsafe fn MPI_Wtick() -> c_double {
     type F = unsafe extern "C" fn() -> c_double;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Wtick\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Wtick\0");
         std::mem::transmute(ptr)
     });
     f()
@@ -4051,7 +4051,7 @@ pub unsafe fn MPI_Init(argc: *mut c_int, argv: *mut *mut *mut c_char) -> c_int {
     type F = unsafe extern "C" fn(*mut c_int, *mut *mut *mut c_char) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Init\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Init\0");
         std::mem::transmute(ptr)
     });
     f(argc, argv)
@@ -4061,7 +4061,7 @@ pub unsafe fn MPI_Finalize() -> c_int {
     type F = unsafe extern "C" fn() -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Finalize\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Finalize\0");
         std::mem::transmute(ptr)
     });
     f()
@@ -4071,7 +4071,7 @@ pub unsafe fn MPI_Initialized(flag: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(*mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Initialized\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Initialized\0");
         std::mem::transmute(ptr)
     });
     f(flag)
@@ -4081,7 +4081,7 @@ pub unsafe fn MPI_Abort(comm: MPI_Comm, errorcode: c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Comm, c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Abort\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Abort\0");
         std::mem::transmute(ptr)
     });
     f(comm, errorcode)
@@ -4091,7 +4091,7 @@ pub unsafe fn MPI_Finalized(flag: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(*mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Finalized\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Finalized\0");
         std::mem::transmute(ptr)
     });
     f(flag)
@@ -4101,7 +4101,7 @@ pub unsafe fn MPI_Info_create(info: *mut MPI_Info) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_Info) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Info_create\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Info_create\0");
         std::mem::transmute(ptr)
     });
     f(info)
@@ -4111,7 +4111,7 @@ pub unsafe fn MPI_Info_set(info: MPI_Info, key: *const c_char, value: *const c_c
     type F = unsafe extern "C" fn(MPI_Info, *const c_char, *const c_char) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Info_set\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Info_set\0");
         std::mem::transmute(ptr)
     });
     f(info, key, value)
@@ -4121,7 +4121,7 @@ pub unsafe fn MPI_Info_delete(info: MPI_Info, key: *const c_char) -> c_int {
     type F = unsafe extern "C" fn(MPI_Info, *const c_char) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Info_delete\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Info_delete\0");
         std::mem::transmute(ptr)
     });
     f(info, key)
@@ -4137,7 +4137,7 @@ pub unsafe fn MPI_Info_get(
     type F = unsafe extern "C" fn(MPI_Info, *const c_char, c_int, *mut c_char, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Info_get\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Info_get\0");
         std::mem::transmute(ptr)
     });
     f(info, key, valuelen, value, flag)
@@ -4152,7 +4152,7 @@ pub unsafe fn MPI_Info_get_valuelen(
     type F = unsafe extern "C" fn(MPI_Info, *const c_char, *mut c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Info_get_valuelen\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Info_get_valuelen\0");
         std::mem::transmute(ptr)
     });
     f(info, key, valuelen, flag)
@@ -4162,7 +4162,7 @@ pub unsafe fn MPI_Info_get_nkeys(info: MPI_Info, nkeys: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Info, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Info_get_nkeys\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Info_get_nkeys\0");
         std::mem::transmute(ptr)
     });
     f(info, nkeys)
@@ -4172,7 +4172,7 @@ pub unsafe fn MPI_Info_get_nthkey(info: MPI_Info, n: c_int, key: *mut c_char) ->
     type F = unsafe extern "C" fn(MPI_Info, c_int, *mut c_char) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Info_get_nthkey\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Info_get_nthkey\0");
         std::mem::transmute(ptr)
     });
     f(info, n, key)
@@ -4182,7 +4182,7 @@ pub unsafe fn MPI_Info_dup(info: MPI_Info, newinfo: *mut MPI_Info) -> c_int {
     type F = unsafe extern "C" fn(MPI_Info, *mut MPI_Info) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Info_dup\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Info_dup\0");
         std::mem::transmute(ptr)
     });
     f(info, newinfo)
@@ -4192,7 +4192,7 @@ pub unsafe fn MPI_Info_free(info: *mut MPI_Info) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_Info) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Info_free\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Info_free\0");
         std::mem::transmute(ptr)
     });
     f(info)
@@ -4220,7 +4220,7 @@ pub unsafe fn MPI_Comm_spawn(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_spawn\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_spawn\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -4239,7 +4239,7 @@ pub unsafe fn MPI_Comm_get_parent(parent: *mut MPI_Comm) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_get_parent\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_get_parent\0");
         std::mem::transmute(ptr)
     });
     f(parent)
@@ -4269,7 +4269,7 @@ pub unsafe fn MPI_Comm_spawn_multiple(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_spawn_multiple\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_spawn_multiple\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -4289,7 +4289,7 @@ pub unsafe fn MPI_Open_port(info: MPI_Info, port_name: *mut c_char) -> c_int {
     type F = unsafe extern "C" fn(MPI_Info, *mut c_char) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Open_port\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Open_port\0");
         std::mem::transmute(ptr)
     });
     f(info, port_name)
@@ -4299,7 +4299,7 @@ pub unsafe fn MPI_Close_port(port_name: *const c_char) -> c_int {
     type F = unsafe extern "C" fn(*const c_char) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Close_port\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Close_port\0");
         std::mem::transmute(ptr)
     });
     f(port_name)
@@ -4315,7 +4315,7 @@ pub unsafe fn MPI_Comm_accept(
     type F = unsafe extern "C" fn(*const c_char, MPI_Info, c_int, MPI_Comm, *mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_accept\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_accept\0");
         std::mem::transmute(ptr)
     });
     f(port_name, info, root, comm, newcomm)
@@ -4331,7 +4331,7 @@ pub unsafe fn MPI_Comm_connect(
     type F = unsafe extern "C" fn(*const c_char, MPI_Info, c_int, MPI_Comm, *mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_connect\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_connect\0");
         std::mem::transmute(ptr)
     });
     f(port_name, info, root, comm, newcomm)
@@ -4345,7 +4345,7 @@ pub unsafe fn MPI_Publish_name(
     type F = unsafe extern "C" fn(*const c_char, MPI_Info, *const c_char) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Publish_name\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Publish_name\0");
         std::mem::transmute(ptr)
     });
     f(service_name, info, port_name)
@@ -4359,7 +4359,7 @@ pub unsafe fn MPI_Unpublish_name(
     type F = unsafe extern "C" fn(*const c_char, MPI_Info, *const c_char) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Unpublish_name\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Unpublish_name\0");
         std::mem::transmute(ptr)
     });
     f(service_name, info, port_name)
@@ -4373,7 +4373,7 @@ pub unsafe fn MPI_Lookup_name(
     type F = unsafe extern "C" fn(*const c_char, MPI_Info, *mut c_char) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Lookup_name\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Lookup_name\0");
         std::mem::transmute(ptr)
     });
     f(service_name, info, port_name)
@@ -4383,7 +4383,7 @@ pub unsafe fn MPI_Comm_disconnect(comm: *mut MPI_Comm) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_disconnect\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_disconnect\0");
         std::mem::transmute(ptr)
     });
     f(comm)
@@ -4393,7 +4393,7 @@ pub unsafe fn MPI_Comm_join(fd: c_int, intercomm: *mut MPI_Comm) -> c_int {
     type F = unsafe extern "C" fn(c_int, *mut MPI_Comm) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_join\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_join\0");
         std::mem::transmute(ptr)
     });
     f(fd, intercomm)
@@ -4417,7 +4417,7 @@ pub unsafe fn MPI_Win_create(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_create\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_create\0");
         std::mem::transmute(ptr)
     });
     f(base, size, disp_unit, info, comm, win)
@@ -4441,7 +4441,7 @@ pub unsafe fn MPI_Win_allocate(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_allocate\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_allocate\0");
         std::mem::transmute(ptr)
     });
     f(size, disp_unit, info, comm, baseptr, win)
@@ -4465,7 +4465,7 @@ pub unsafe fn MPI_Win_allocate_shared(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_allocate_shared\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_allocate_shared\0");
         std::mem::transmute(ptr)
     });
     f(size, disp_unit, info, comm, baseptr, win)
@@ -4481,7 +4481,7 @@ pub unsafe fn MPI_Win_shared_query(
     type F = unsafe extern "C" fn(MPI_Win, c_int, *mut MPI_Aint, *mut c_int, *mut c_void) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_shared_query\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_shared_query\0");
         std::mem::transmute(ptr)
     });
     f(win, rank, size, disp_unit, baseptr)
@@ -4491,7 +4491,7 @@ pub unsafe fn MPI_Win_create_dynamic(info: MPI_Info, comm: MPI_Comm, win: *mut M
     type F = unsafe extern "C" fn(MPI_Info, MPI_Comm, *mut MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_create_dynamic\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_create_dynamic\0");
         std::mem::transmute(ptr)
     });
     f(info, comm, win)
@@ -4501,7 +4501,7 @@ pub unsafe fn MPI_Win_attach(win: MPI_Win, base: *mut c_void, size: MPI_Aint) ->
     type F = unsafe extern "C" fn(MPI_Win, *mut c_void, MPI_Aint) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_attach\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_attach\0");
         std::mem::transmute(ptr)
     });
     f(win, base, size)
@@ -4511,7 +4511,7 @@ pub unsafe fn MPI_Win_detach(win: MPI_Win, base: *const c_void) -> c_int {
     type F = unsafe extern "C" fn(MPI_Win, *const c_void) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_detach\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_detach\0");
         std::mem::transmute(ptr)
     });
     f(win, base)
@@ -4521,7 +4521,7 @@ pub unsafe fn MPI_Win_free(win: *mut MPI_Win) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_free\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_free\0");
         std::mem::transmute(ptr)
     });
     f(win)
@@ -4531,7 +4531,7 @@ pub unsafe fn MPI_Win_get_group(win: MPI_Win, group: *mut MPI_Group) -> c_int {
     type F = unsafe extern "C" fn(MPI_Win, *mut MPI_Group) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_get_group\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_get_group\0");
         std::mem::transmute(ptr)
     });
     f(win, group)
@@ -4541,7 +4541,7 @@ pub unsafe fn MPI_Win_set_info(win: MPI_Win, info: MPI_Info) -> c_int {
     type F = unsafe extern "C" fn(MPI_Win, MPI_Info) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_set_info\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_set_info\0");
         std::mem::transmute(ptr)
     });
     f(win, info)
@@ -4551,7 +4551,7 @@ pub unsafe fn MPI_Win_get_info(win: MPI_Win, info_used: *mut MPI_Info) -> c_int 
     type F = unsafe extern "C" fn(MPI_Win, *mut MPI_Info) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_get_info\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_get_info\0");
         std::mem::transmute(ptr)
     });
     f(win, info_used)
@@ -4579,7 +4579,7 @@ pub unsafe fn MPI_Put(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Put\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Put\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -4616,7 +4616,7 @@ pub unsafe fn MPI_Get(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Get\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Get\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -4655,7 +4655,7 @@ pub unsafe fn MPI_Accumulate(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Accumulate\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Accumulate\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -4701,7 +4701,7 @@ pub unsafe fn MPI_Get_accumulate(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Get_accumulate\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Get_accumulate\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -4740,7 +4740,7 @@ pub unsafe fn MPI_Fetch_and_op(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Fetch_and_op\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Fetch_and_op\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -4774,7 +4774,7 @@ pub unsafe fn MPI_Compare_and_swap(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Compare_and_swap\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Compare_and_swap\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -4812,7 +4812,7 @@ pub unsafe fn MPI_Rput(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Rput\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Rput\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -4852,7 +4852,7 @@ pub unsafe fn MPI_Rget(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Rget\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Rget\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -4894,7 +4894,7 @@ pub unsafe fn MPI_Raccumulate(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Raccumulate\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Raccumulate\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -4943,7 +4943,7 @@ pub unsafe fn MPI_Rget_accumulate(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Rget_accumulate\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Rget_accumulate\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -4967,7 +4967,7 @@ pub unsafe fn MPI_Win_fence(assert: c_int, win: MPI_Win) -> c_int {
     type F = unsafe extern "C" fn(c_int, MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_fence\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_fence\0");
         std::mem::transmute(ptr)
     });
     f(assert, win)
@@ -4977,7 +4977,7 @@ pub unsafe fn MPI_Win_start(group: MPI_Group, assert: c_int, win: MPI_Win) -> c_
     type F = unsafe extern "C" fn(MPI_Group, c_int, MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_start\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_start\0");
         std::mem::transmute(ptr)
     });
     f(group, assert, win)
@@ -4987,7 +4987,7 @@ pub unsafe fn MPI_Win_complete(win: MPI_Win) -> c_int {
     type F = unsafe extern "C" fn(MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_complete\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_complete\0");
         std::mem::transmute(ptr)
     });
     f(win)
@@ -4997,7 +4997,7 @@ pub unsafe fn MPI_Win_post(group: MPI_Group, assert: c_int, win: MPI_Win) -> c_i
     type F = unsafe extern "C" fn(MPI_Group, c_int, MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_post\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_post\0");
         std::mem::transmute(ptr)
     });
     f(group, assert, win)
@@ -5007,7 +5007,7 @@ pub unsafe fn MPI_Win_wait(win: MPI_Win) -> c_int {
     type F = unsafe extern "C" fn(MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_wait\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_wait\0");
         std::mem::transmute(ptr)
     });
     f(win)
@@ -5017,7 +5017,7 @@ pub unsafe fn MPI_Win_test(win: MPI_Win, flag: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_Win, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_test\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_test\0");
         std::mem::transmute(ptr)
     });
     f(win, flag)
@@ -5027,7 +5027,7 @@ pub unsafe fn MPI_Win_lock(lock_type: c_int, rank: c_int, assert: c_int, win: MP
     type F = unsafe extern "C" fn(c_int, c_int, c_int, MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_lock\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_lock\0");
         std::mem::transmute(ptr)
     });
     f(lock_type, rank, assert, win)
@@ -5037,7 +5037,7 @@ pub unsafe fn MPI_Win_lock_all(assert: c_int, win: MPI_Win) -> c_int {
     type F = unsafe extern "C" fn(c_int, MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_lock_all\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_lock_all\0");
         std::mem::transmute(ptr)
     });
     f(assert, win)
@@ -5047,7 +5047,7 @@ pub unsafe fn MPI_Win_unlock(rank: c_int, win: MPI_Win) -> c_int {
     type F = unsafe extern "C" fn(c_int, MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_unlock\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_unlock\0");
         std::mem::transmute(ptr)
     });
     f(rank, win)
@@ -5057,7 +5057,7 @@ pub unsafe fn MPI_Win_unlock_all(win: MPI_Win) -> c_int {
     type F = unsafe extern "C" fn(MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_unlock_all\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_unlock_all\0");
         std::mem::transmute(ptr)
     });
     f(win)
@@ -5067,7 +5067,7 @@ pub unsafe fn MPI_Win_flush(rank: c_int, win: MPI_Win) -> c_int {
     type F = unsafe extern "C" fn(c_int, MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_flush\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_flush\0");
         std::mem::transmute(ptr)
     });
     f(rank, win)
@@ -5077,7 +5077,7 @@ pub unsafe fn MPI_Win_flush_all(win: MPI_Win) -> c_int {
     type F = unsafe extern "C" fn(MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_flush_all\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_flush_all\0");
         std::mem::transmute(ptr)
     });
     f(win)
@@ -5087,7 +5087,7 @@ pub unsafe fn MPI_Win_flush_local(rank: c_int, win: MPI_Win) -> c_int {
     type F = unsafe extern "C" fn(c_int, MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_flush_local\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_flush_local\0");
         std::mem::transmute(ptr)
     });
     f(rank, win)
@@ -5097,7 +5097,7 @@ pub unsafe fn MPI_Win_flush_local_all(win: MPI_Win) -> c_int {
     type F = unsafe extern "C" fn(MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_flush_local_all\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_flush_local_all\0");
         std::mem::transmute(ptr)
     });
     f(win)
@@ -5107,7 +5107,7 @@ pub unsafe fn MPI_Win_sync(win: MPI_Win) -> c_int {
     type F = unsafe extern "C" fn(MPI_Win) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_sync\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_sync\0");
         std::mem::transmute(ptr)
     });
     f(win)
@@ -5129,7 +5129,7 @@ pub unsafe fn MPI_Grequest_start(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Grequest_start\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Grequest_start\0");
         std::mem::transmute(ptr)
     });
     f(query_fn, free_fn, cancel_fn, extra_state, request)
@@ -5139,7 +5139,7 @@ pub unsafe fn MPI_Grequest_complete(request: MPI_Request) -> c_int {
     type F = unsafe extern "C" fn(MPI_Request) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Grequest_complete\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Grequest_complete\0");
         std::mem::transmute(ptr)
     });
     f(request)
@@ -5153,7 +5153,7 @@ pub unsafe fn MPI_Status_set_elements(
     type F = unsafe extern "C" fn(*mut MPI_Status, MPI_Datatype, c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Status_set_elements\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Status_set_elements\0");
         std::mem::transmute(ptr)
     });
     f(status, datatype, count)
@@ -5167,7 +5167,7 @@ pub unsafe fn MPI_Status_set_elements_x(
     type F = unsafe extern "C" fn(*mut MPI_Status, MPI_Datatype, MPI_Count) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Status_set_elements_x\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Status_set_elements_x\0");
         std::mem::transmute(ptr)
     });
     f(status, datatype, count)
@@ -5177,7 +5177,7 @@ pub unsafe fn MPI_Status_set_cancelled(status: *mut MPI_Status, flag: c_int) -> 
     type F = unsafe extern "C" fn(*mut MPI_Status, c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Status_set_cancelled\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Status_set_cancelled\0");
         std::mem::transmute(ptr)
     });
     f(status, flag)
@@ -5192,7 +5192,7 @@ pub unsafe fn MPI_Init_thread(
     type F = unsafe extern "C" fn(*mut c_int, *mut *mut *mut c_char, c_int, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Init_thread\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Init_thread\0");
         std::mem::transmute(ptr)
     });
     f(argc, argv, required, provided)
@@ -5202,7 +5202,7 @@ pub unsafe fn MPI_Query_thread(provided: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(*mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Query_thread\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Query_thread\0");
         std::mem::transmute(ptr)
     });
     f(provided)
@@ -5212,7 +5212,7 @@ pub unsafe fn MPI_Is_thread_main(flag: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(*mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Is_thread_main\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Is_thread_main\0");
         std::mem::transmute(ptr)
     });
     f(flag)
@@ -5228,7 +5228,7 @@ pub unsafe fn MPI_File_open(
     type F = unsafe extern "C" fn(MPI_Comm, *const c_char, c_int, MPI_Info, *mut MPI_File) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_open\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_open\0");
         std::mem::transmute(ptr)
     });
     f(comm, filename, amode, info, fh)
@@ -5238,7 +5238,7 @@ pub unsafe fn MPI_File_close(fh: *mut MPI_File) -> c_int {
     type F = unsafe extern "C" fn(*mut MPI_File) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_close\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_close\0");
         std::mem::transmute(ptr)
     });
     f(fh)
@@ -5248,7 +5248,7 @@ pub unsafe fn MPI_File_delete(filename: *const c_char, info: MPI_Info) -> c_int 
     type F = unsafe extern "C" fn(*const c_char, MPI_Info) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_delete\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_delete\0");
         std::mem::transmute(ptr)
     });
     f(filename, info)
@@ -5258,7 +5258,7 @@ pub unsafe fn MPI_File_set_size(fh: MPI_File, size: MPI_Offset) -> c_int {
     type F = unsafe extern "C" fn(MPI_File, MPI_Offset) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_set_size\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_set_size\0");
         std::mem::transmute(ptr)
     });
     f(fh, size)
@@ -5268,7 +5268,7 @@ pub unsafe fn MPI_File_preallocate(fh: MPI_File, size: MPI_Offset) -> c_int {
     type F = unsafe extern "C" fn(MPI_File, MPI_Offset) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_preallocate\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_preallocate\0");
         std::mem::transmute(ptr)
     });
     f(fh, size)
@@ -5278,7 +5278,7 @@ pub unsafe fn MPI_File_get_size(fh: MPI_File, size: *mut MPI_Offset) -> c_int {
     type F = unsafe extern "C" fn(MPI_File, *mut MPI_Offset) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_get_size\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_get_size\0");
         std::mem::transmute(ptr)
     });
     f(fh, size)
@@ -5288,7 +5288,7 @@ pub unsafe fn MPI_File_get_group(fh: MPI_File, group: *mut MPI_Group) -> c_int {
     type F = unsafe extern "C" fn(MPI_File, *mut MPI_Group) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_get_group\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_get_group\0");
         std::mem::transmute(ptr)
     });
     f(fh, group)
@@ -5298,7 +5298,7 @@ pub unsafe fn MPI_File_get_amode(fh: MPI_File, amode: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_File, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_get_amode\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_get_amode\0");
         std::mem::transmute(ptr)
     });
     f(fh, amode)
@@ -5308,7 +5308,7 @@ pub unsafe fn MPI_File_set_info(fh: MPI_File, info: MPI_Info) -> c_int {
     type F = unsafe extern "C" fn(MPI_File, MPI_Info) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_set_info\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_set_info\0");
         std::mem::transmute(ptr)
     });
     f(fh, info)
@@ -5318,7 +5318,7 @@ pub unsafe fn MPI_File_get_info(fh: MPI_File, info_used: *mut MPI_Info) -> c_int
     type F = unsafe extern "C" fn(MPI_File, *mut MPI_Info) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_get_info\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_get_info\0");
         std::mem::transmute(ptr)
     });
     f(fh, info_used)
@@ -5342,7 +5342,7 @@ pub unsafe fn MPI_File_set_view(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_set_view\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_set_view\0");
         std::mem::transmute(ptr)
     });
     f(fh, disp, etype, filetype, datarep, info)
@@ -5364,7 +5364,7 @@ pub unsafe fn MPI_File_get_view(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_get_view\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_get_view\0");
         std::mem::transmute(ptr)
     });
     f(fh, disp, etype, filetype, datarep)
@@ -5388,7 +5388,7 @@ pub unsafe fn MPI_File_read_at(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_read_at\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_read_at\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset, buf, count, datatype, status)
@@ -5412,7 +5412,7 @@ pub unsafe fn MPI_File_read_at_all(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_read_at_all\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_read_at_all\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset, buf, count, datatype, status)
@@ -5436,7 +5436,7 @@ pub unsafe fn MPI_File_write_at(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_write_at\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_write_at\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset, buf, count, datatype, status)
@@ -5460,7 +5460,7 @@ pub unsafe fn MPI_File_write_at_all(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_write_at_all\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_write_at_all\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset, buf, count, datatype, status)
@@ -5484,7 +5484,7 @@ pub unsafe fn MPI_File_iread_at(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_iread_at\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_iread_at\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset, buf, count, datatype, request)
@@ -5508,7 +5508,7 @@ pub unsafe fn MPI_File_iread_at_all(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_iread_at_all\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_iread_at_all\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset, buf, count, datatype, request)
@@ -5532,7 +5532,7 @@ pub unsafe fn MPI_File_iwrite_at(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_iwrite_at\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_iwrite_at\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset, buf, count, datatype, request)
@@ -5556,7 +5556,7 @@ pub unsafe fn MPI_File_iwrite_at_all(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_iwrite_at_all\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_iwrite_at_all\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset, buf, count, datatype, request)
@@ -5573,7 +5573,7 @@ pub unsafe fn MPI_File_read(
         unsafe extern "C" fn(MPI_File, *mut c_void, c_int, MPI_Datatype, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_read\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_read\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype, status)
@@ -5590,7 +5590,7 @@ pub unsafe fn MPI_File_read_all(
         unsafe extern "C" fn(MPI_File, *mut c_void, c_int, MPI_Datatype, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_read_all\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_read_all\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype, status)
@@ -5612,7 +5612,7 @@ pub unsafe fn MPI_File_write(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_write\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_write\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype, status)
@@ -5634,7 +5634,7 @@ pub unsafe fn MPI_File_write_all(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_write_all\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_write_all\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype, status)
@@ -5651,7 +5651,7 @@ pub unsafe fn MPI_File_iread(
         unsafe extern "C" fn(MPI_File, *mut c_void, c_int, MPI_Datatype, *mut MPI_Request) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_iread\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_iread\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype, request)
@@ -5668,7 +5668,7 @@ pub unsafe fn MPI_File_iread_all(
         unsafe extern "C" fn(MPI_File, *mut c_void, c_int, MPI_Datatype, *mut MPI_Request) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_iread_all\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_iread_all\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype, request)
@@ -5690,7 +5690,7 @@ pub unsafe fn MPI_File_iwrite(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_iwrite\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_iwrite\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype, request)
@@ -5712,7 +5712,7 @@ pub unsafe fn MPI_File_iwrite_all(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_iwrite_all\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_iwrite_all\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype, request)
@@ -5722,7 +5722,7 @@ pub unsafe fn MPI_File_seek(fh: MPI_File, offset: MPI_Offset, whence: c_int) -> 
     type F = unsafe extern "C" fn(MPI_File, MPI_Offset, c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_seek\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_seek\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset, whence)
@@ -5732,7 +5732,7 @@ pub unsafe fn MPI_File_get_position(fh: MPI_File, offset: *mut MPI_Offset) -> c_
     type F = unsafe extern "C" fn(MPI_File, *mut MPI_Offset) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_get_position\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_get_position\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset)
@@ -5746,7 +5746,7 @@ pub unsafe fn MPI_File_get_byte_offset(
     type F = unsafe extern "C" fn(MPI_File, MPI_Offset, *mut MPI_Offset) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_get_byte_offset\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_get_byte_offset\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset, disp)
@@ -5763,7 +5763,7 @@ pub unsafe fn MPI_File_read_shared(
         unsafe extern "C" fn(MPI_File, *mut c_void, c_int, MPI_Datatype, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_read_shared\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_read_shared\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype, status)
@@ -5785,7 +5785,7 @@ pub unsafe fn MPI_File_write_shared(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_write_shared\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_write_shared\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype, status)
@@ -5802,7 +5802,7 @@ pub unsafe fn MPI_File_iread_shared(
         unsafe extern "C" fn(MPI_File, *mut c_void, c_int, MPI_Datatype, *mut MPI_Request) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_iread_shared\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_iread_shared\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype, request)
@@ -5824,7 +5824,7 @@ pub unsafe fn MPI_File_iwrite_shared(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_iwrite_shared\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_iwrite_shared\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype, request)
@@ -5841,7 +5841,7 @@ pub unsafe fn MPI_File_read_ordered(
         unsafe extern "C" fn(MPI_File, *mut c_void, c_int, MPI_Datatype, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_read_ordered\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_read_ordered\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype, status)
@@ -5863,7 +5863,7 @@ pub unsafe fn MPI_File_write_ordered(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_write_ordered\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_write_ordered\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype, status)
@@ -5873,7 +5873,7 @@ pub unsafe fn MPI_File_seek_shared(fh: MPI_File, offset: MPI_Offset, whence: c_i
     type F = unsafe extern "C" fn(MPI_File, MPI_Offset, c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_seek_shared\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_seek_shared\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset, whence)
@@ -5883,7 +5883,7 @@ pub unsafe fn MPI_File_get_position_shared(fh: MPI_File, offset: *mut MPI_Offset
     type F = unsafe extern "C" fn(MPI_File, *mut MPI_Offset) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_get_position_shared\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_get_position_shared\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset)
@@ -5899,7 +5899,7 @@ pub unsafe fn MPI_File_read_at_all_begin(
     type F = unsafe extern "C" fn(MPI_File, MPI_Offset, *mut c_void, c_int, MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_read_at_all_begin\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_read_at_all_begin\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset, buf, count, datatype)
@@ -5913,7 +5913,7 @@ pub unsafe fn MPI_File_read_at_all_end(
     type F = unsafe extern "C" fn(MPI_File, *mut c_void, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_read_at_all_end\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_read_at_all_end\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, status)
@@ -5930,7 +5930,7 @@ pub unsafe fn MPI_File_write_at_all_begin(
         unsafe extern "C" fn(MPI_File, MPI_Offset, *const c_void, c_int, MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_write_at_all_begin\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_write_at_all_begin\0");
         std::mem::transmute(ptr)
     });
     f(fh, offset, buf, count, datatype)
@@ -5944,7 +5944,7 @@ pub unsafe fn MPI_File_write_at_all_end(
     type F = unsafe extern "C" fn(MPI_File, *const c_void, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_write_at_all_end\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_write_at_all_end\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, status)
@@ -5959,7 +5959,7 @@ pub unsafe fn MPI_File_read_all_begin(
     type F = unsafe extern "C" fn(MPI_File, *mut c_void, c_int, MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_read_all_begin\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_read_all_begin\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype)
@@ -5973,7 +5973,7 @@ pub unsafe fn MPI_File_read_all_end(
     type F = unsafe extern "C" fn(MPI_File, *mut c_void, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_read_all_end\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_read_all_end\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, status)
@@ -5988,7 +5988,7 @@ pub unsafe fn MPI_File_write_all_begin(
     type F = unsafe extern "C" fn(MPI_File, *const c_void, c_int, MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_write_all_begin\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_write_all_begin\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype)
@@ -6002,7 +6002,7 @@ pub unsafe fn MPI_File_write_all_end(
     type F = unsafe extern "C" fn(MPI_File, *const c_void, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_write_all_end\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_write_all_end\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, status)
@@ -6017,7 +6017,7 @@ pub unsafe fn MPI_File_read_ordered_begin(
     type F = unsafe extern "C" fn(MPI_File, *mut c_void, c_int, MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_read_ordered_begin\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_read_ordered_begin\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype)
@@ -6031,7 +6031,7 @@ pub unsafe fn MPI_File_read_ordered_end(
     type F = unsafe extern "C" fn(MPI_File, *mut c_void, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_read_ordered_end\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_read_ordered_end\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, status)
@@ -6046,7 +6046,7 @@ pub unsafe fn MPI_File_write_ordered_begin(
     type F = unsafe extern "C" fn(MPI_File, *const c_void, c_int, MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_write_ordered_begin\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_write_ordered_begin\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, count, datatype)
@@ -6060,7 +6060,7 @@ pub unsafe fn MPI_File_write_ordered_end(
     type F = unsafe extern "C" fn(MPI_File, *const c_void, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_write_ordered_end\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_write_ordered_end\0");
         std::mem::transmute(ptr)
     });
     f(fh, buf, status)
@@ -6074,7 +6074,7 @@ pub unsafe fn MPI_File_get_type_extent(
     type F = unsafe extern "C" fn(MPI_File, MPI_Datatype, *mut MPI_Aint) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_get_type_extent\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_get_type_extent\0");
         std::mem::transmute(ptr)
     });
     f(fh, datatype, extent)
@@ -6096,7 +6096,7 @@ pub unsafe fn MPI_Register_datarep(
     ) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Register_datarep\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Register_datarep\0");
         std::mem::transmute(ptr)
     });
     f(
@@ -6112,7 +6112,7 @@ pub unsafe fn MPI_File_set_atomicity(fh: MPI_File, flag: c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_File, c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_set_atomicity\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_set_atomicity\0");
         std::mem::transmute(ptr)
     });
     f(fh, flag)
@@ -6122,7 +6122,7 @@ pub unsafe fn MPI_File_get_atomicity(fh: MPI_File, flag: *mut c_int) -> c_int {
     type F = unsafe extern "C" fn(MPI_File, *mut c_int) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_get_atomicity\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_get_atomicity\0");
         std::mem::transmute(ptr)
     });
     f(fh, flag)
@@ -6132,7 +6132,7 @@ pub unsafe fn MPI_File_sync(fh: MPI_File) -> c_int {
     type F = unsafe extern "C" fn(MPI_File) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_sync\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_sync\0");
         std::mem::transmute(ptr)
     });
     f(fh)
@@ -6146,7 +6146,7 @@ pub unsafe fn MPI_Type_create_f90_real(
     type F = unsafe extern "C" fn(c_int, c_int, *mut MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_create_f90_real\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_create_f90_real\0");
         std::mem::transmute(ptr)
     });
     f(precision, range, newtype)
@@ -6160,7 +6160,7 @@ pub unsafe fn MPI_Type_create_f90_complex(
     type F = unsafe extern "C" fn(c_int, c_int, *mut MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_create_f90_complex\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_create_f90_complex\0");
         std::mem::transmute(ptr)
     });
     f(precision, range, newtype)
@@ -6170,7 +6170,7 @@ pub unsafe fn MPI_Type_create_f90_integer(range: c_int, newtype: *mut MPI_Dataty
     type F = unsafe extern "C" fn(c_int, *mut MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_create_f90_integer\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_create_f90_integer\0");
         std::mem::transmute(ptr)
     });
     f(range, newtype)
@@ -6184,7 +6184,7 @@ pub unsafe fn MPI_Type_match_size(
     type F = unsafe extern "C" fn(c_int, c_int, *mut MPI_Datatype) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_match_size\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_match_size\0");
         std::mem::transmute(ptr)
     });
     f(typeclass, size, datatype)
@@ -6194,7 +6194,7 @@ pub unsafe fn MPI_Comm_f2c(comm: MPI_Fint) -> MPI_Comm {
     type F = unsafe extern "C" fn(MPI_Fint) -> MPI_Comm;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_f2c\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_f2c\0");
         std::mem::transmute(ptr)
     });
     f(comm)
@@ -6204,7 +6204,7 @@ pub unsafe fn MPI_Comm_c2f(comm: MPI_Comm) -> MPI_Fint {
     type F = unsafe extern "C" fn(MPI_Comm) -> MPI_Fint;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Comm_c2f\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Comm_c2f\0");
         std::mem::transmute(ptr)
     });
     f(comm)
@@ -6214,7 +6214,7 @@ pub unsafe fn MPI_Type_f2c(datatype: MPI_Fint) -> MPI_Datatype {
     type F = unsafe extern "C" fn(MPI_Fint) -> MPI_Datatype;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_f2c\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_f2c\0");
         std::mem::transmute(ptr)
     });
     f(datatype)
@@ -6224,7 +6224,7 @@ pub unsafe fn MPI_Type_c2f(datatype: MPI_Datatype) -> MPI_Fint {
     type F = unsafe extern "C" fn(MPI_Datatype) -> MPI_Fint;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Type_c2f\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Type_c2f\0");
         std::mem::transmute(ptr)
     });
     f(datatype)
@@ -6234,7 +6234,7 @@ pub unsafe fn MPI_Group_f2c(group: MPI_Fint) -> MPI_Group {
     type F = unsafe extern "C" fn(MPI_Fint) -> MPI_Group;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Group_f2c\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Group_f2c\0");
         std::mem::transmute(ptr)
     });
     f(group)
@@ -6244,7 +6244,7 @@ pub unsafe fn MPI_Group_c2f(group: MPI_Group) -> MPI_Fint {
     type F = unsafe extern "C" fn(MPI_Group) -> MPI_Fint;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Group_c2f\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Group_c2f\0");
         std::mem::transmute(ptr)
     });
     f(group)
@@ -6254,7 +6254,7 @@ pub unsafe fn MPI_Request_f2c(request: MPI_Fint) -> MPI_Request {
     type F = unsafe extern "C" fn(MPI_Fint) -> MPI_Request;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Request_f2c\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Request_f2c\0");
         std::mem::transmute(ptr)
     });
     f(request)
@@ -6264,7 +6264,7 @@ pub unsafe fn MPI_Request_c2f(request: MPI_Request) -> MPI_Fint {
     type F = unsafe extern "C" fn(MPI_Request) -> MPI_Fint;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Request_c2f\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Request_c2f\0");
         std::mem::transmute(ptr)
     });
     f(request)
@@ -6274,7 +6274,7 @@ pub unsafe fn MPI_File_f2c(file: MPI_Fint) -> MPI_File {
     type F = unsafe extern "C" fn(MPI_Fint) -> MPI_File;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_f2c\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_f2c\0");
         std::mem::transmute(ptr)
     });
     f(file)
@@ -6284,7 +6284,7 @@ pub unsafe fn MPI_File_c2f(file: MPI_File) -> MPI_Fint {
     type F = unsafe extern "C" fn(MPI_File) -> MPI_Fint;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_File_c2f\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_File_c2f\0");
         std::mem::transmute(ptr)
     });
     f(file)
@@ -6294,7 +6294,7 @@ pub unsafe fn MPI_Win_f2c(win: MPI_Fint) -> MPI_Win {
     type F = unsafe extern "C" fn(MPI_Fint) -> MPI_Win;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_f2c\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_f2c\0");
         std::mem::transmute(ptr)
     });
     f(win)
@@ -6304,7 +6304,7 @@ pub unsafe fn MPI_Win_c2f(win: MPI_Win) -> MPI_Fint {
     type F = unsafe extern "C" fn(MPI_Win) -> MPI_Fint;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Win_c2f\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Win_c2f\0");
         std::mem::transmute(ptr)
     });
     f(win)
@@ -6314,7 +6314,7 @@ pub unsafe fn MPI_Op_f2c(op: MPI_Fint) -> MPI_Op {
     type F = unsafe extern "C" fn(MPI_Fint) -> MPI_Op;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Op_f2c\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Op_f2c\0");
         std::mem::transmute(ptr)
     });
     f(op)
@@ -6324,7 +6324,7 @@ pub unsafe fn MPI_Op_c2f(op: MPI_Op) -> MPI_Fint {
     type F = unsafe extern "C" fn(MPI_Op) -> MPI_Fint;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Op_c2f\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Op_c2f\0");
         std::mem::transmute(ptr)
     });
     f(op)
@@ -6334,7 +6334,7 @@ pub unsafe fn MPI_Info_f2c(info: MPI_Fint) -> MPI_Info {
     type F = unsafe extern "C" fn(MPI_Fint) -> MPI_Info;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Info_f2c\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Info_f2c\0");
         std::mem::transmute(ptr)
     });
     f(info)
@@ -6344,7 +6344,7 @@ pub unsafe fn MPI_Info_c2f(info: MPI_Info) -> MPI_Fint {
     type F = unsafe extern "C" fn(MPI_Info) -> MPI_Fint;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Info_c2f\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Info_c2f\0");
         std::mem::transmute(ptr)
     });
     f(info)
@@ -6354,7 +6354,7 @@ pub unsafe fn MPI_Errhandler_f2c(info: MPI_Fint) -> MPI_Errhandler {
     type F = unsafe extern "C" fn(MPI_Fint) -> MPI_Errhandler;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Errhandler_f2c\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Errhandler_f2c\0");
         std::mem::transmute(ptr)
     });
     f(info)
@@ -6364,7 +6364,7 @@ pub unsafe fn MPI_Errhandler_c2f(info: MPI_Errhandler) -> MPI_Fint {
     type F = unsafe extern "C" fn(MPI_Errhandler) -> MPI_Fint;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Errhandler_c2f\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Errhandler_c2f\0");
         std::mem::transmute(ptr)
     });
     f(info)
@@ -6374,7 +6374,7 @@ pub unsafe fn MPI_Message_f2c(message: MPI_Fint) -> MPI_Message {
     type F = unsafe extern "C" fn(MPI_Fint) -> MPI_Message;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Message_f2c\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Message_f2c\0");
         std::mem::transmute(ptr)
     });
     f(message)
@@ -6384,7 +6384,7 @@ pub unsafe fn MPI_Message_c2f(message: MPI_Message) -> MPI_Fint {
     type F = unsafe extern "C" fn(MPI_Message) -> MPI_Fint;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Message_c2f\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Message_c2f\0");
         std::mem::transmute(ptr)
     });
     f(message)
@@ -6394,7 +6394,7 @@ pub unsafe fn MPI_Status_f2c(f_status: *const MPI_Fint, c_status: *mut MPI_Statu
     type F = unsafe extern "C" fn(*const MPI_Fint, *mut MPI_Status) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Status_f2c\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Status_f2c\0");
         std::mem::transmute(ptr)
     });
     f(f_status, c_status)
@@ -6404,7 +6404,7 @@ pub unsafe fn MPI_Status_c2f(c_status: *const MPI_Status, f_status: *mut MPI_Fin
     type F = unsafe extern "C" fn(*const MPI_Status, *mut MPI_Fint) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Status_c2f\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Status_c2f\0");
         std::mem::transmute(ptr)
     });
     f(c_status, f_status)
@@ -6414,7 +6414,7 @@ pub unsafe fn MPIX_Query_cuda_support() -> c_int {
     type F = unsafe extern "C" fn() -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPIX_Query_cuda_support\0");
+        let ptr = loader::get_symbol::<F>(b"MPIXABI_Query_cuda_support\0");
         std::mem::transmute(ptr)
     });
     f()
@@ -6424,7 +6424,7 @@ pub unsafe fn MPIX_Query_hip_support() -> c_int {
     type F = unsafe extern "C" fn() -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPIX_Query_hip_support\0");
+        let ptr = loader::get_symbol::<F>(b"MPIXABI_Query_hip_support\0");
         std::mem::transmute(ptr)
     });
     f()
@@ -6434,7 +6434,7 @@ pub unsafe fn MPIX_Query_rocm_support() -> c_int {
     type F = unsafe extern "C" fn() -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPIX_Query_rocm_support\0");
+        let ptr = loader::get_symbol::<F>(b"MPIXABI_Query_rocm_support\0");
         std::mem::transmute(ptr)
     });
     f()
@@ -6444,7 +6444,7 @@ pub unsafe fn MPIX_Query_ze_support() -> c_int {
     type F = unsafe extern "C" fn() -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPIX_Query_ze_support\0");
+        let ptr = loader::get_symbol::<F>(b"MPIXABI_Query_ze_support\0");
         std::mem::transmute(ptr)
     });
     f()

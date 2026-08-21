@@ -43,7 +43,7 @@ libmpi.so (native MPI: OpenMPI, MPICH, etc.)
 
 ### The Loader (`mpi-rt-sys/src/loader.rs`)
 
-The loader uses `libloading` + `OnceLock` for thread-safe lazy initialization:
+The loader uses `libloading` + `OnceLock` for thread-safe lazy initialization. Runtime function lookups resolve MPIABI adapter symbols, never native MPI dependencies:
 
 ```rust
 static LIBRARY: OnceLock<Library> = OnceLock::new();
@@ -74,7 +74,7 @@ pub unsafe fn MPI_Send(
     type F = unsafe extern "C" fn(...) -> c_int;
     static FN: OnceLock<F> = OnceLock::new();
     let f = FN.get_or_init(|| {
-        let ptr = loader::get_symbol::<F>(b"MPI_Send\0");
+        let ptr = loader::get_symbol::<F>(b"MPIABI_Send\0");
         std::mem::transmute(ptr)
     });
     f(buf, count, datatype, dest, tag, comm)
@@ -95,14 +95,14 @@ struct MpiConstants {
 static CONSTANTS: OnceLock<MpiConstants> = OnceLock::new();
 ```
 
-Constants are read from MPIABI-prefixed symbols (e.g., `MPIABI_COMM_WORLD`) and exposed through `RSMPI_*_fn()` accessor functions to match the `mpi-sys` API.
+Constants are read from MPIABI-prefixed data symbols (e.g., `MPIABI_COMM_WORLD`) and exposed through `RSMPI_*_fn()` accessor functions to match the `mpi-sys` API. The loader resolves a data symbol as `Symbol<*const T>` and copies the value stored at that address. This indirection is required because `dlsym` returns the address of a data object, not the object's value.
 
 ## MPIwrapper
 
 [MPIwrapper](https://github.com/eschnett/MPIwrapper) is a shared library that implements the MPIABI interface by translating calls to a native MPI implementation. It:
 
 1. Is compiled against a specific MPI installation (OpenMPI, MPICH, etc.)
-2. Exports all MPI functions with their standard names
+2. Exports MPIABI adapter functions as `MPIABI_*` symbols
 3. Exports all MPI constants as `MPIABI_*` symbols
 4. Translates between MPIABI integer handles and native MPI handles
 

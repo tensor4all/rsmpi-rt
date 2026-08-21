@@ -34,3 +34,22 @@ pub unsafe fn get_symbol<T>(name: &[u8]) -> *const T {
     });
     *sym
 }
+
+/// Load and copy the value stored in an MPIABI data symbol.
+///
+/// # Safety
+/// `name` must identify an exported data symbol whose storage contains a value
+/// of type `T`. The symbol must not be a function symbol: `get_symbol` must be
+/// used for those. The storage must remain valid for the duration of this call,
+/// and the ABI must guarantee that reading and copying `T` is valid.
+pub(crate) unsafe fn get_constant<T: Copy>(name: &[u8]) -> T {
+    let lib = library();
+    let sym: libloading::Symbol<*const T> = lib.get(name).unwrap_or_else(|e| {
+        panic!(
+            "Failed to load symbol '{}': {}",
+            String::from_utf8_lossy(name),
+            e
+        )
+    });
+    **sym
+}

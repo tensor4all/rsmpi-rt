@@ -49,8 +49,10 @@ The generator produces three files in `mpi-rt-sys/src/`:
 
 Dynamic-dispatch wrappers for each MPI function. Each function:
 1. Defines the C function pointer type
-2. Uses `OnceLock` to lazily load the symbol from the shared library
+2. Uses `OnceLock` to lazily load the `MPIABI_*` adapter symbol from the shared library
 3. Calls through the function pointer
+
+Function lookups resolve MPIABI adapter symbols, never native MPI dependencies; the public Rust wrapper names and types remain unchanged.
 
 ### `constants.rs`
 
@@ -59,6 +61,11 @@ Constant loading and accessor functions:
 - `get_constants()` that loads all constants from the library on first call
 - `RSMPI_*_fn()` accessor functions matching the `mpi-sys` API
 - `RSMPI_*()` convenience aliases
+
+MPIABI constants are exported data symbols. Generated accessors use the
+crate-private `loader::get_constant` helper, which resolves each symbol as a
+pointer to its storage and copies the stored value; function symbols continue
+to use `loader::get_symbol`.
 
 ### `callback_types.rs`
 

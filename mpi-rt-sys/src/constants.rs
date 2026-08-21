@@ -281,789 +281,332 @@ unsafe impl Sync for MpiConstants {}
 static CONSTANTS: OnceLock<MpiConstants> = OnceLock::new();
 
 fn get_constants() -> &'static MpiConstants {
-    CONSTANTS.get_or_init(|| {
-        let lib = loader::library();
-        unsafe {
-            MpiConstants {
-                mpi_any_source: *lib
-                    .get::<c_int>(b"MPIABI_ANY_SOURCE\0")
-                    .expect("symbol MPIABI_ANY_SOURCE"),
-                mpi_any_tag: *lib
-                    .get::<c_int>(b"MPIABI_ANY_TAG\0")
-                    .expect("symbol MPIABI_ANY_TAG"),
-                mpi_proc_null: *lib
-                    .get::<c_int>(b"MPIABI_PROC_NULL\0")
-                    .expect("symbol MPIABI_PROC_NULL"),
-                mpi_root: *lib
-                    .get::<c_int>(b"MPIABI_ROOT\0")
-                    .expect("symbol MPIABI_ROOT"),
-                mpi_cart: *lib
-                    .get::<c_int>(b"MPIABI_CART\0")
-                    .expect("symbol MPIABI_CART"),
-                mpi_dist_graph: *lib
-                    .get::<c_int>(b"MPIABI_DIST_GRAPH\0")
-                    .expect("symbol MPIABI_DIST_GRAPH"),
-                mpi_graph: *lib
-                    .get::<c_int>(b"MPIABI_GRAPH\0")
-                    .expect("symbol MPIABI_GRAPH"),
-                mpi_congruent: *lib
-                    .get::<c_int>(b"MPIABI_CONGRUENT\0")
-                    .expect("symbol MPIABI_CONGRUENT"),
-                mpi_ident: *lib
-                    .get::<c_int>(b"MPIABI_IDENT\0")
-                    .expect("symbol MPIABI_IDENT"),
-                mpi_similar: *lib
-                    .get::<c_int>(b"MPIABI_SIMILAR\0")
-                    .expect("symbol MPIABI_SIMILAR"),
-                mpi_unequal: *lib
-                    .get::<c_int>(b"MPIABI_UNEQUAL\0")
-                    .expect("symbol MPIABI_UNEQUAL"),
-                mpi_bsend_overhead: *lib
-                    .get::<c_int>(b"MPIABI_BSEND_OVERHEAD\0")
-                    .expect("symbol MPIABI_BSEND_OVERHEAD"),
-                mpi_keyval_invalid: *lib
-                    .get::<c_int>(b"MPIABI_KEYVAL_INVALID\0")
-                    .expect("symbol MPIABI_KEYVAL_INVALID"),
-                mpi_undefined: *lib
-                    .get::<c_int>(b"MPIABI_UNDEFINED\0")
-                    .expect("symbol MPIABI_UNDEFINED"),
-                mpi_appnum: *lib
-                    .get::<c_int>(b"MPIABI_APPNUM\0")
-                    .expect("symbol MPIABI_APPNUM"),
-                mpi_host: *lib
-                    .get::<c_int>(b"MPIABI_HOST\0")
-                    .expect("symbol MPIABI_HOST"),
-                mpi_io: *lib.get::<c_int>(b"MPIABI_IO\0").expect("symbol MPIABI_IO"),
-                mpi_lastusedcode: *lib
-                    .get::<c_int>(b"MPIABI_LASTUSEDCODE\0")
-                    .expect("symbol MPIABI_LASTUSEDCODE"),
-                mpi_tag_ub: *lib
-                    .get::<c_int>(b"MPIABI_TAG_UB\0")
-                    .expect("symbol MPIABI_TAG_UB"),
-                mpi_universe_size: *lib
-                    .get::<c_int>(b"MPIABI_UNIVERSE_SIZE\0")
-                    .expect("symbol MPIABI_UNIVERSE_SIZE"),
-                mpi_win_base: *lib
-                    .get::<c_int>(b"MPIABI_WIN_BASE\0")
-                    .expect("symbol MPIABI_WIN_BASE"),
-                mpi_win_create_flavor: *lib
-                    .get::<c_int>(b"MPIABI_WIN_CREATE_FLAVOR\0")
-                    .expect("symbol MPIABI_WIN_CREATE_FLAVOR"),
-                mpi_win_disp_unit: *lib
-                    .get::<c_int>(b"MPIABI_WIN_DISP_UNIT\0")
-                    .expect("symbol MPIABI_WIN_DISP_UNIT"),
-                mpi_win_model: *lib
-                    .get::<c_int>(b"MPIABI_WIN_MODEL\0")
-                    .expect("symbol MPIABI_WIN_MODEL"),
-                mpi_win_size: *lib
-                    .get::<c_int>(b"MPIABI_WIN_SIZE\0")
-                    .expect("symbol MPIABI_WIN_SIZE"),
-                mpi_wtime_is_global: *lib
-                    .get::<c_int>(b"MPIABI_WTIME_IS_GLOBAL\0")
-                    .expect("symbol MPIABI_WTIME_IS_GLOBAL"),
-                mpi_combiner_contiguous: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_CONTIGUOUS\0")
-                    .expect("symbol MPIABI_COMBINER_CONTIGUOUS"),
-                mpi_combiner_darray: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_DARRAY\0")
-                    .expect("symbol MPIABI_COMBINER_DARRAY"),
-                mpi_combiner_dup: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_DUP\0")
-                    .expect("symbol MPIABI_COMBINER_DUP"),
-                mpi_combiner_f90_complex: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_F90_COMPLEX\0")
-                    .expect("symbol MPIABI_COMBINER_F90_COMPLEX"),
-                mpi_combiner_f90_integer: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_F90_INTEGER\0")
-                    .expect("symbol MPIABI_COMBINER_F90_INTEGER"),
-                mpi_combiner_f90_real: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_F90_REAL\0")
-                    .expect("symbol MPIABI_COMBINER_F90_REAL"),
-                mpi_combiner_hindexed: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_HINDEXED\0")
-                    .expect("symbol MPIABI_COMBINER_HINDEXED"),
-                mpi_combiner_hindexed_block: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_HINDEXED_BLOCK\0")
-                    .expect("symbol MPIABI_COMBINER_HINDEXED_BLOCK"),
-                mpi_combiner_hvector: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_HVECTOR\0")
-                    .expect("symbol MPIABI_COMBINER_HVECTOR"),
-                mpi_combiner_indexed: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_INDEXED\0")
-                    .expect("symbol MPIABI_COMBINER_INDEXED"),
-                mpi_combiner_indexed_block: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_INDEXED_BLOCK\0")
-                    .expect("symbol MPIABI_COMBINER_INDEXED_BLOCK"),
-                mpi_combiner_named: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_NAMED\0")
-                    .expect("symbol MPIABI_COMBINER_NAMED"),
-                mpi_combiner_resized: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_RESIZED\0")
-                    .expect("symbol MPIABI_COMBINER_RESIZED"),
-                mpi_combiner_struct: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_STRUCT\0")
-                    .expect("symbol MPIABI_COMBINER_STRUCT"),
-                mpi_combiner_subarray: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_SUBARRAY\0")
-                    .expect("symbol MPIABI_COMBINER_SUBARRAY"),
-                mpi_combiner_vector: *lib
-                    .get::<c_int>(b"MPIABI_COMBINER_VECTOR\0")
-                    .expect("symbol MPIABI_COMBINER_VECTOR"),
-                mpi_comm_type_shared: *lib
-                    .get::<c_int>(b"MPIABI_COMM_TYPE_SHARED\0")
-                    .expect("symbol MPIABI_COMM_TYPE_SHARED"),
-                mpi_distribute_block: *lib
-                    .get::<c_int>(b"MPIABI_DISTRIBUTE_BLOCK\0")
-                    .expect("symbol MPIABI_DISTRIBUTE_BLOCK"),
-                mpi_distribute_cyclic: *lib
-                    .get::<c_int>(b"MPIABI_DISTRIBUTE_CYCLIC\0")
-                    .expect("symbol MPIABI_DISTRIBUTE_CYCLIC"),
-                mpi_distribute_dflt_darg: *lib
-                    .get::<c_int>(b"MPIABI_DISTRIBUTE_DFLT_DARG\0")
-                    .expect("symbol MPIABI_DISTRIBUTE_DFLT_DARG"),
-                mpi_distribute_none: *lib
-                    .get::<c_int>(b"MPIABI_DISTRIBUTE_NONE\0")
-                    .expect("symbol MPIABI_DISTRIBUTE_NONE"),
-                mpi_err_access: *lib
-                    .get::<c_int>(b"MPIABI_ERR_ACCESS\0")
-                    .expect("symbol MPIABI_ERR_ACCESS"),
-                mpi_err_amode: *lib
-                    .get::<c_int>(b"MPIABI_ERR_AMODE\0")
-                    .expect("symbol MPIABI_ERR_AMODE"),
-                mpi_err_arg: *lib
-                    .get::<c_int>(b"MPIABI_ERR_ARG\0")
-                    .expect("symbol MPIABI_ERR_ARG"),
-                mpi_err_assert: *lib
-                    .get::<c_int>(b"MPIABI_ERR_ASSERT\0")
-                    .expect("symbol MPIABI_ERR_ASSERT"),
-                mpi_err_bad_file: *lib
-                    .get::<c_int>(b"MPIABI_ERR_BAD_FILE\0")
-                    .expect("symbol MPIABI_ERR_BAD_FILE"),
-                mpi_err_base: *lib
-                    .get::<c_int>(b"MPIABI_ERR_BASE\0")
-                    .expect("symbol MPIABI_ERR_BASE"),
-                mpi_err_buffer: *lib
-                    .get::<c_int>(b"MPIABI_ERR_BUFFER\0")
-                    .expect("symbol MPIABI_ERR_BUFFER"),
-                mpi_err_comm: *lib
-                    .get::<c_int>(b"MPIABI_ERR_COMM\0")
-                    .expect("symbol MPIABI_ERR_COMM"),
-                mpi_err_conversion: *lib
-                    .get::<c_int>(b"MPIABI_ERR_CONVERSION\0")
-                    .expect("symbol MPIABI_ERR_CONVERSION"),
-                mpi_err_count: *lib
-                    .get::<c_int>(b"MPIABI_ERR_COUNT\0")
-                    .expect("symbol MPIABI_ERR_COUNT"),
-                mpi_err_dims: *lib
-                    .get::<c_int>(b"MPIABI_ERR_DIMS\0")
-                    .expect("symbol MPIABI_ERR_DIMS"),
-                mpi_err_disp: *lib
-                    .get::<c_int>(b"MPIABI_ERR_DISP\0")
-                    .expect("symbol MPIABI_ERR_DISP"),
-                mpi_err_dup_datarep: *lib
-                    .get::<c_int>(b"MPIABI_ERR_DUP_DATAREP\0")
-                    .expect("symbol MPIABI_ERR_DUP_DATAREP"),
-                mpi_err_file: *lib
-                    .get::<c_int>(b"MPIABI_ERR_FILE\0")
-                    .expect("symbol MPIABI_ERR_FILE"),
-                mpi_err_file_exists: *lib
-                    .get::<c_int>(b"MPIABI_ERR_FILE_EXISTS\0")
-                    .expect("symbol MPIABI_ERR_FILE_EXISTS"),
-                mpi_err_file_in_use: *lib
-                    .get::<c_int>(b"MPIABI_ERR_FILE_IN_USE\0")
-                    .expect("symbol MPIABI_ERR_FILE_IN_USE"),
-                mpi_err_group: *lib
-                    .get::<c_int>(b"MPIABI_ERR_GROUP\0")
-                    .expect("symbol MPIABI_ERR_GROUP"),
-                mpi_err_info: *lib
-                    .get::<c_int>(b"MPIABI_ERR_INFO\0")
-                    .expect("symbol MPIABI_ERR_INFO"),
-                mpi_err_info_key: *lib
-                    .get::<c_int>(b"MPIABI_ERR_INFO_KEY\0")
-                    .expect("symbol MPIABI_ERR_INFO_KEY"),
-                mpi_err_info_nokey: *lib
-                    .get::<c_int>(b"MPIABI_ERR_INFO_NOKEY\0")
-                    .expect("symbol MPIABI_ERR_INFO_NOKEY"),
-                mpi_err_info_value: *lib
-                    .get::<c_int>(b"MPIABI_ERR_INFO_VALUE\0")
-                    .expect("symbol MPIABI_ERR_INFO_VALUE"),
-                mpi_err_intern: *lib
-                    .get::<c_int>(b"MPIABI_ERR_INTERN\0")
-                    .expect("symbol MPIABI_ERR_INTERN"),
-                mpi_err_in_status: *lib
-                    .get::<c_int>(b"MPIABI_ERR_IN_STATUS\0")
-                    .expect("symbol MPIABI_ERR_IN_STATUS"),
-                mpi_err_io: *lib
-                    .get::<c_int>(b"MPIABI_ERR_IO\0")
-                    .expect("symbol MPIABI_ERR_IO"),
-                mpi_err_keyval: *lib
-                    .get::<c_int>(b"MPIABI_ERR_KEYVAL\0")
-                    .expect("symbol MPIABI_ERR_KEYVAL"),
-                mpi_err_lastcode: *lib
-                    .get::<c_int>(b"MPIABI_ERR_LASTCODE\0")
-                    .expect("symbol MPIABI_ERR_LASTCODE"),
-                mpi_err_locktype: *lib
-                    .get::<c_int>(b"MPIABI_ERR_LOCKTYPE\0")
-                    .expect("symbol MPIABI_ERR_LOCKTYPE"),
-                mpi_err_name: *lib
-                    .get::<c_int>(b"MPIABI_ERR_NAME\0")
-                    .expect("symbol MPIABI_ERR_NAME"),
-                mpi_err_not_same: *lib
-                    .get::<c_int>(b"MPIABI_ERR_NOT_SAME\0")
-                    .expect("symbol MPIABI_ERR_NOT_SAME"),
-                mpi_err_no_mem: *lib
-                    .get::<c_int>(b"MPIABI_ERR_NO_MEM\0")
-                    .expect("symbol MPIABI_ERR_NO_MEM"),
-                mpi_err_no_space: *lib
-                    .get::<c_int>(b"MPIABI_ERR_NO_SPACE\0")
-                    .expect("symbol MPIABI_ERR_NO_SPACE"),
-                mpi_err_no_such_file: *lib
-                    .get::<c_int>(b"MPIABI_ERR_NO_SUCH_FILE\0")
-                    .expect("symbol MPIABI_ERR_NO_SUCH_FILE"),
-                mpi_err_op: *lib
-                    .get::<c_int>(b"MPIABI_ERR_OP\0")
-                    .expect("symbol MPIABI_ERR_OP"),
-                mpi_err_other: *lib
-                    .get::<c_int>(b"MPIABI_ERR_OTHER\0")
-                    .expect("symbol MPIABI_ERR_OTHER"),
-                mpi_err_pending: *lib
-                    .get::<c_int>(b"MPIABI_ERR_PENDING\0")
-                    .expect("symbol MPIABI_ERR_PENDING"),
-                mpi_err_port: *lib
-                    .get::<c_int>(b"MPIABI_ERR_PORT\0")
-                    .expect("symbol MPIABI_ERR_PORT"),
-                mpi_err_quota: *lib
-                    .get::<c_int>(b"MPIABI_ERR_QUOTA\0")
-                    .expect("symbol MPIABI_ERR_QUOTA"),
-                mpi_err_rank: *lib
-                    .get::<c_int>(b"MPIABI_ERR_RANK\0")
-                    .expect("symbol MPIABI_ERR_RANK"),
-                mpi_err_read_only: *lib
-                    .get::<c_int>(b"MPIABI_ERR_READ_ONLY\0")
-                    .expect("symbol MPIABI_ERR_READ_ONLY"),
-                mpi_err_request: *lib
-                    .get::<c_int>(b"MPIABI_ERR_REQUEST\0")
-                    .expect("symbol MPIABI_ERR_REQUEST"),
-                mpi_err_rma_attach: *lib
-                    .get::<c_int>(b"MPIABI_ERR_RMA_ATTACH\0")
-                    .expect("symbol MPIABI_ERR_RMA_ATTACH"),
-                mpi_err_rma_conflict: *lib
-                    .get::<c_int>(b"MPIABI_ERR_RMA_CONFLICT\0")
-                    .expect("symbol MPIABI_ERR_RMA_CONFLICT"),
-                mpi_err_rma_flavor: *lib
-                    .get::<c_int>(b"MPIABI_ERR_RMA_FLAVOR\0")
-                    .expect("symbol MPIABI_ERR_RMA_FLAVOR"),
-                mpi_err_rma_range: *lib
-                    .get::<c_int>(b"MPIABI_ERR_RMA_RANGE\0")
-                    .expect("symbol MPIABI_ERR_RMA_RANGE"),
-                mpi_err_rma_shared: *lib
-                    .get::<c_int>(b"MPIABI_ERR_RMA_SHARED\0")
-                    .expect("symbol MPIABI_ERR_RMA_SHARED"),
-                mpi_err_rma_sync: *lib
-                    .get::<c_int>(b"MPIABI_ERR_RMA_SYNC\0")
-                    .expect("symbol MPIABI_ERR_RMA_SYNC"),
-                mpi_err_root: *lib
-                    .get::<c_int>(b"MPIABI_ERR_ROOT\0")
-                    .expect("symbol MPIABI_ERR_ROOT"),
-                mpi_err_service: *lib
-                    .get::<c_int>(b"MPIABI_ERR_SERVICE\0")
-                    .expect("symbol MPIABI_ERR_SERVICE"),
-                mpi_err_size: *lib
-                    .get::<c_int>(b"MPIABI_ERR_SIZE\0")
-                    .expect("symbol MPIABI_ERR_SIZE"),
-                mpi_err_spawn: *lib
-                    .get::<c_int>(b"MPIABI_ERR_SPAWN\0")
-                    .expect("symbol MPIABI_ERR_SPAWN"),
-                mpi_err_tag: *lib
-                    .get::<c_int>(b"MPIABI_ERR_TAG\0")
-                    .expect("symbol MPIABI_ERR_TAG"),
-                mpi_err_topology: *lib
-                    .get::<c_int>(b"MPIABI_ERR_TOPOLOGY\0")
-                    .expect("symbol MPIABI_ERR_TOPOLOGY"),
-                mpi_err_truncate: *lib
-                    .get::<c_int>(b"MPIABI_ERR_TRUNCATE\0")
-                    .expect("symbol MPIABI_ERR_TRUNCATE"),
-                mpi_err_type: *lib
-                    .get::<c_int>(b"MPIABI_ERR_TYPE\0")
-                    .expect("symbol MPIABI_ERR_TYPE"),
-                mpi_err_unknown: *lib
-                    .get::<c_int>(b"MPIABI_ERR_UNKNOWN\0")
-                    .expect("symbol MPIABI_ERR_UNKNOWN"),
-                mpi_err_unsupported_datarep: *lib
-                    .get::<c_int>(b"MPIABI_ERR_UNSUPPORTED_DATAREP\0")
-                    .expect("symbol MPIABI_ERR_UNSUPPORTED_DATAREP"),
-                mpi_err_unsupported_operation: *lib
-                    .get::<c_int>(b"MPIABI_ERR_UNSUPPORTED_OPERATION\0")
-                    .expect("symbol MPIABI_ERR_UNSUPPORTED_OPERATION"),
-                mpi_err_win: *lib
-                    .get::<c_int>(b"MPIABI_ERR_WIN\0")
-                    .expect("symbol MPIABI_ERR_WIN"),
-                mpi_success: *lib
-                    .get::<c_int>(b"MPIABI_SUCCESS\0")
-                    .expect("symbol MPIABI_SUCCESS"),
-                mpi_lock_exclusive: *lib
-                    .get::<c_int>(b"MPIABI_LOCK_EXCLUSIVE\0")
-                    .expect("symbol MPIABI_LOCK_EXCLUSIVE"),
-                mpi_lock_shared: *lib
-                    .get::<c_int>(b"MPIABI_LOCK_SHARED\0")
-                    .expect("symbol MPIABI_LOCK_SHARED"),
-                mpi_mode_append: *lib
-                    .get::<c_int>(b"MPIABI_MODE_APPEND\0")
-                    .expect("symbol MPIABI_MODE_APPEND"),
-                mpi_mode_create: *lib
-                    .get::<c_int>(b"MPIABI_MODE_CREATE\0")
-                    .expect("symbol MPIABI_MODE_CREATE"),
-                mpi_mode_delete_on_close: *lib
-                    .get::<c_int>(b"MPIABI_MODE_DELETE_ON_CLOSE\0")
-                    .expect("symbol MPIABI_MODE_DELETE_ON_CLOSE"),
-                mpi_mode_excl: *lib
-                    .get::<c_int>(b"MPIABI_MODE_EXCL\0")
-                    .expect("symbol MPIABI_MODE_EXCL"),
-                mpi_mode_nocheck: *lib
-                    .get::<c_int>(b"MPIABI_MODE_NOCHECK\0")
-                    .expect("symbol MPIABI_MODE_NOCHECK"),
-                mpi_mode_noprecede: *lib
-                    .get::<c_int>(b"MPIABI_MODE_NOPRECEDE\0")
-                    .expect("symbol MPIABI_MODE_NOPRECEDE"),
-                mpi_mode_noput: *lib
-                    .get::<c_int>(b"MPIABI_MODE_NOPUT\0")
-                    .expect("symbol MPIABI_MODE_NOPUT"),
-                mpi_mode_nostore: *lib
-                    .get::<c_int>(b"MPIABI_MODE_NOSTORE\0")
-                    .expect("symbol MPIABI_MODE_NOSTORE"),
-                mpi_mode_nosucceed: *lib
-                    .get::<c_int>(b"MPIABI_MODE_NOSUCCEED\0")
-                    .expect("symbol MPIABI_MODE_NOSUCCEED"),
-                mpi_mode_rdonly: *lib
-                    .get::<c_int>(b"MPIABI_MODE_RDONLY\0")
-                    .expect("symbol MPIABI_MODE_RDONLY"),
-                mpi_mode_rdwr: *lib
-                    .get::<c_int>(b"MPIABI_MODE_RDWR\0")
-                    .expect("symbol MPIABI_MODE_RDWR"),
-                mpi_mode_sequential: *lib
-                    .get::<c_int>(b"MPIABI_MODE_SEQUENTIAL\0")
-                    .expect("symbol MPIABI_MODE_SEQUENTIAL"),
-                mpi_mode_unique_open: *lib
-                    .get::<c_int>(b"MPIABI_MODE_UNIQUE_OPEN\0")
-                    .expect("symbol MPIABI_MODE_UNIQUE_OPEN"),
-                mpi_mode_wronly: *lib
-                    .get::<c_int>(b"MPIABI_MODE_WRONLY\0")
-                    .expect("symbol MPIABI_MODE_WRONLY"),
-                mpi_order_c: *lib
-                    .get::<c_int>(b"MPIABI_ORDER_C\0")
-                    .expect("symbol MPIABI_ORDER_C"),
-                mpi_order_fortran: *lib
-                    .get::<c_int>(b"MPIABI_ORDER_FORTRAN\0")
-                    .expect("symbol MPIABI_ORDER_FORTRAN"),
-                mpi_seek_cur: *lib
-                    .get::<c_int>(b"MPIABI_SEEK_CUR\0")
-                    .expect("symbol MPIABI_SEEK_CUR"),
-                mpi_seek_end: *lib
-                    .get::<c_int>(b"MPIABI_SEEK_END\0")
-                    .expect("symbol MPIABI_SEEK_END"),
-                mpi_seek_set: *lib
-                    .get::<c_int>(b"MPIABI_SEEK_SET\0")
-                    .expect("symbol MPIABI_SEEK_SET"),
-                mpi_thread_funneled: *lib
-                    .get::<c_int>(b"MPIABI_THREAD_FUNNELED\0")
-                    .expect("symbol MPIABI_THREAD_FUNNELED"),
-                mpi_thread_multiple: *lib
-                    .get::<c_int>(b"MPIABI_THREAD_MULTIPLE\0")
-                    .expect("symbol MPIABI_THREAD_MULTIPLE"),
-                mpi_thread_serialized: *lib
-                    .get::<c_int>(b"MPIABI_THREAD_SERIALIZED\0")
-                    .expect("symbol MPIABI_THREAD_SERIALIZED"),
-                mpi_thread_single: *lib
-                    .get::<c_int>(b"MPIABI_THREAD_SINGLE\0")
-                    .expect("symbol MPIABI_THREAD_SINGLE"),
-                mpi_typeclass_complex: *lib
-                    .get::<c_int>(b"MPIABI_TYPECLASS_COMPLEX\0")
-                    .expect("symbol MPIABI_TYPECLASS_COMPLEX"),
-                mpi_typeclass_integer: *lib
-                    .get::<c_int>(b"MPIABI_TYPECLASS_INTEGER\0")
-                    .expect("symbol MPIABI_TYPECLASS_INTEGER"),
-                mpi_typeclass_real: *lib
-                    .get::<c_int>(b"MPIABI_TYPECLASS_REAL\0")
-                    .expect("symbol MPIABI_TYPECLASS_REAL"),
-                mpi_win_flavor_allocate: *lib
-                    .get::<c_int>(b"MPIABI_WIN_FLAVOR_ALLOCATE\0")
-                    .expect("symbol MPIABI_WIN_FLAVOR_ALLOCATE"),
-                mpi_win_flavor_create: *lib
-                    .get::<c_int>(b"MPIABI_WIN_FLAVOR_CREATE\0")
-                    .expect("symbol MPIABI_WIN_FLAVOR_CREATE"),
-                mpi_win_flavor_dynamic: *lib
-                    .get::<c_int>(b"MPIABI_WIN_FLAVOR_DYNAMIC\0")
-                    .expect("symbol MPIABI_WIN_FLAVOR_DYNAMIC"),
-                mpi_win_flavor_shared: *lib
-                    .get::<c_int>(b"MPIABI_WIN_FLAVOR_SHARED\0")
-                    .expect("symbol MPIABI_WIN_FLAVOR_SHARED"),
-                mpi_win_separate: *lib
-                    .get::<c_int>(b"MPIABI_WIN_SEPARATE\0")
-                    .expect("symbol MPIABI_WIN_SEPARATE"),
-                mpi_win_unified: *lib
-                    .get::<c_int>(b"MPIABI_WIN_UNIFIED\0")
-                    .expect("symbol MPIABI_WIN_UNIFIED"),
-                mpi_argv_null: *lib
-                    .get::<*mut *mut c_char>(b"MPIABI_ARGV_NULL\0")
-                    .expect("symbol MPIABI_ARGV_NULL"),
-                mpi_argvs_null: *lib
-                    .get::<*mut *mut *mut c_char>(b"MPIABI_ARGVS_NULL\0")
-                    .expect("symbol MPIABI_ARGVS_NULL"),
-                mpi_errcodes_ignore: *lib
-                    .get::<*mut c_int>(b"MPIABI_ERRCODES_IGNORE\0")
-                    .expect("symbol MPIABI_ERRCODES_IGNORE"),
-                mpi_unweighted: *lib
-                    .get::<*mut c_int>(b"MPIABI_UNWEIGHTED\0")
-                    .expect("symbol MPIABI_UNWEIGHTED"),
-                mpi_weights_empty: *lib
-                    .get::<*mut c_int>(b"MPIABI_WEIGHTS_EMPTY\0")
-                    .expect("symbol MPIABI_WEIGHTS_EMPTY"),
-                mpi_bottom: *lib
-                    .get::<*mut c_void>(b"MPIABI_BOTTOM\0")
-                    .expect("symbol MPIABI_BOTTOM"),
-                mpi_in_place: *lib
-                    .get::<*mut c_void>(b"MPIABI_IN_PLACE\0")
-                    .expect("symbol MPIABI_IN_PLACE"),
-                mpi_comm_null: *lib
-                    .get::<MPI_Comm>(b"MPIABI_COMM_NULL\0")
-                    .expect("symbol MPIABI_COMM_NULL"),
-                mpi_comm_self: *lib
-                    .get::<MPI_Comm>(b"MPIABI_COMM_SELF\0")
-                    .expect("symbol MPIABI_COMM_SELF"),
-                mpi_comm_world: *lib
-                    .get::<MPI_Comm>(b"MPIABI_COMM_WORLD\0")
-                    .expect("symbol MPIABI_COMM_WORLD"),
-                mpi_comm_dup_fn: *lib
-                    .get::<MPI_Comm_copy_attr_function>(b"MPIABI_COMM_DUP_FN\0")
-                    .expect("symbol MPIABI_COMM_DUP_FN"),
-                mpi_comm_null_copy_fn: *lib
-                    .get::<MPI_Comm_copy_attr_function>(b"MPIABI_COMM_NULL_COPY_FN\0")
-                    .expect("symbol MPIABI_COMM_NULL_COPY_FN"),
-                mpi_comm_null_delete_fn: *lib
-                    .get::<MPI_Comm_delete_attr_function>(b"MPIABI_COMM_NULL_DELETE_FN\0")
-                    .expect("symbol MPIABI_COMM_NULL_DELETE_FN"),
-                mpi_dup_fn: *lib
-                    .get::<MPI_Copy_function>(b"MPIABI_DUP_FN\0")
-                    .expect("symbol MPIABI_DUP_FN"),
-                mpi_null_copy_fn: *lib
-                    .get::<MPI_Copy_function>(b"MPIABI_NULL_COPY_FN\0")
-                    .expect("symbol MPIABI_NULL_COPY_FN"),
-                mpi_conversion_fn_null: *lib
-                    .get::<MPI_Datarep_conversion_function>(b"MPIABI_CONVERSION_FN_NULL\0")
-                    .expect("symbol MPIABI_CONVERSION_FN_NULL"),
-                mpi_2double_precision: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_2DOUBLE_PRECISION\0")
-                    .expect("symbol MPIABI_2DOUBLE_PRECISION"),
-                mpi_2int: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_2INT\0")
-                    .expect("symbol MPIABI_2INT"),
-                mpi_2integer: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_2INTEGER\0")
-                    .expect("symbol MPIABI_2INTEGER"),
-                mpi_2real: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_2REAL\0")
-                    .expect("symbol MPIABI_2REAL"),
-                mpi_aint: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_AINT\0")
-                    .expect("symbol MPIABI_AINT"),
-                mpi_byte: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_BYTE\0")
-                    .expect("symbol MPIABI_BYTE"),
-                mpi_char: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_CHAR\0")
-                    .expect("symbol MPIABI_CHAR"),
-                mpi_character: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_CHARACTER\0")
-                    .expect("symbol MPIABI_CHARACTER"),
-                mpi_complex: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_COMPLEX\0")
-                    .expect("symbol MPIABI_COMPLEX"),
-                mpi_complex16: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_COMPLEX16\0")
-                    .expect("symbol MPIABI_COMPLEX16"),
-                mpi_complex32: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_COMPLEX32\0")
-                    .expect("symbol MPIABI_COMPLEX32"),
-                mpi_complex8: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_COMPLEX8\0")
-                    .expect("symbol MPIABI_COMPLEX8"),
-                mpi_count: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_COUNT\0")
-                    .expect("symbol MPIABI_COUNT"),
-                mpi_cxx_bool: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_CXX_BOOL\0")
-                    .expect("symbol MPIABI_CXX_BOOL"),
-                mpi_cxx_double_complex: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_CXX_DOUBLE_COMPLEX\0")
-                    .expect("symbol MPIABI_CXX_DOUBLE_COMPLEX"),
-                mpi_cxx_float_complex: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_CXX_FLOAT_COMPLEX\0")
-                    .expect("symbol MPIABI_CXX_FLOAT_COMPLEX"),
-                mpi_cxx_long_double_complex: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_CXX_LONG_DOUBLE_COMPLEX\0")
-                    .expect("symbol MPIABI_CXX_LONG_DOUBLE_COMPLEX"),
-                mpi_c_bool: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_C_BOOL\0")
-                    .expect("symbol MPIABI_C_BOOL"),
-                mpi_c_complex: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_C_COMPLEX\0")
-                    .expect("symbol MPIABI_C_COMPLEX"),
-                mpi_c_double_complex: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_C_DOUBLE_COMPLEX\0")
-                    .expect("symbol MPIABI_C_DOUBLE_COMPLEX"),
-                mpi_c_float_complex: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_C_FLOAT_COMPLEX\0")
-                    .expect("symbol MPIABI_C_FLOAT_COMPLEX"),
-                mpi_c_long_double_complex: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_C_LONG_DOUBLE_COMPLEX\0")
-                    .expect("symbol MPIABI_C_LONG_DOUBLE_COMPLEX"),
-                mpi_datatype_null: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_DATATYPE_NULL\0")
-                    .expect("symbol MPIABI_DATATYPE_NULL"),
-                mpi_double: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_DOUBLE\0")
-                    .expect("symbol MPIABI_DOUBLE"),
-                mpi_double_complex: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_DOUBLE_COMPLEX\0")
-                    .expect("symbol MPIABI_DOUBLE_COMPLEX"),
-                mpi_double_int: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_DOUBLE_INT\0")
-                    .expect("symbol MPIABI_DOUBLE_INT"),
-                mpi_double_precision: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_DOUBLE_PRECISION\0")
-                    .expect("symbol MPIABI_DOUBLE_PRECISION"),
-                mpi_float: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_FLOAT\0")
-                    .expect("symbol MPIABI_FLOAT"),
-                mpi_float_int: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_FLOAT_INT\0")
-                    .expect("symbol MPIABI_FLOAT_INT"),
-                mpi_int: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_INT\0")
-                    .expect("symbol MPIABI_INT"),
-                mpi_int16_t: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_INT16_T\0")
-                    .expect("symbol MPIABI_INT16_T"),
-                mpi_int32_t: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_INT32_T\0")
-                    .expect("symbol MPIABI_INT32_T"),
-                mpi_int64_t: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_INT64_T\0")
-                    .expect("symbol MPIABI_INT64_T"),
-                mpi_int8_t: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_INT8_T\0")
-                    .expect("symbol MPIABI_INT8_T"),
-                mpi_integer: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_INTEGER\0")
-                    .expect("symbol MPIABI_INTEGER"),
-                mpi_integer1: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_INTEGER1\0")
-                    .expect("symbol MPIABI_INTEGER1"),
-                mpi_integer2: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_INTEGER2\0")
-                    .expect("symbol MPIABI_INTEGER2"),
-                mpi_integer4: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_INTEGER4\0")
-                    .expect("symbol MPIABI_INTEGER4"),
-                mpi_integer8: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_INTEGER8\0")
-                    .expect("symbol MPIABI_INTEGER8"),
-                mpi_logical: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_LOGICAL\0")
-                    .expect("symbol MPIABI_LOGICAL"),
-                mpi_long: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_LONG\0")
-                    .expect("symbol MPIABI_LONG"),
-                mpi_long_double: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_LONG_DOUBLE\0")
-                    .expect("symbol MPIABI_LONG_DOUBLE"),
-                mpi_long_double_int: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_LONG_DOUBLE_INT\0")
-                    .expect("symbol MPIABI_LONG_DOUBLE_INT"),
-                mpi_long_int: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_LONG_INT\0")
-                    .expect("symbol MPIABI_LONG_INT"),
-                mpi_long_long: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_LONG_LONG\0")
-                    .expect("symbol MPIABI_LONG_LONG"),
-                mpi_long_long_int: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_LONG_LONG_INT\0")
-                    .expect("symbol MPIABI_LONG_LONG_INT"),
-                mpi_offset: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_OFFSET\0")
-                    .expect("symbol MPIABI_OFFSET"),
-                mpi_packed: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_PACKED\0")
-                    .expect("symbol MPIABI_PACKED"),
-                mpi_real: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_REAL\0")
-                    .expect("symbol MPIABI_REAL"),
-                mpi_real16: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_REAL16\0")
-                    .expect("symbol MPIABI_REAL16"),
-                mpi_real4: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_REAL4\0")
-                    .expect("symbol MPIABI_REAL4"),
-                mpi_real8: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_REAL8\0")
-                    .expect("symbol MPIABI_REAL8"),
-                mpi_short: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_SHORT\0")
-                    .expect("symbol MPIABI_SHORT"),
-                mpi_short_int: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_SHORT_INT\0")
-                    .expect("symbol MPIABI_SHORT_INT"),
-                mpi_signed_char: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_SIGNED_CHAR\0")
-                    .expect("symbol MPIABI_SIGNED_CHAR"),
-                mpi_uint16_t: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_UINT16_T\0")
-                    .expect("symbol MPIABI_UINT16_T"),
-                mpi_uint32_t: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_UINT32_T\0")
-                    .expect("symbol MPIABI_UINT32_T"),
-                mpi_uint64_t: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_UINT64_T\0")
-                    .expect("symbol MPIABI_UINT64_T"),
-                mpi_uint8_t: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_UINT8_T\0")
-                    .expect("symbol MPIABI_UINT8_T"),
-                mpi_unsigned: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_UNSIGNED\0")
-                    .expect("symbol MPIABI_UNSIGNED"),
-                mpi_unsigned_char: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_UNSIGNED_CHAR\0")
-                    .expect("symbol MPIABI_UNSIGNED_CHAR"),
-                mpi_unsigned_long: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_UNSIGNED_LONG\0")
-                    .expect("symbol MPIABI_UNSIGNED_LONG"),
-                mpi_unsigned_long_long: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_UNSIGNED_LONG_LONG\0")
-                    .expect("symbol MPIABI_UNSIGNED_LONG_LONG"),
-                mpi_unsigned_short: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_UNSIGNED_SHORT\0")
-                    .expect("symbol MPIABI_UNSIGNED_SHORT"),
-                mpi_wchar: *lib
-                    .get::<MPI_Datatype>(b"MPIABI_WCHAR\0")
-                    .expect("symbol MPIABI_WCHAR"),
-                mpi_null_delete_fn: *lib
-                    .get::<MPI_Delete_function>(b"MPIABI_NULL_DELETE_FN\0")
-                    .expect("symbol MPIABI_NULL_DELETE_FN"),
-                mpi_errhandler_null: *lib
-                    .get::<MPI_Errhandler>(b"MPIABI_ERRHANDLER_NULL\0")
-                    .expect("symbol MPIABI_ERRHANDLER_NULL"),
-                mpi_errors_are_fatal: *lib
-                    .get::<MPI_Errhandler>(b"MPIABI_ERRORS_ARE_FATAL\0")
-                    .expect("symbol MPIABI_ERRORS_ARE_FATAL"),
-                mpi_errors_return: *lib
-                    .get::<MPI_Errhandler>(b"MPIABI_ERRORS_RETURN\0")
-                    .expect("symbol MPIABI_ERRORS_RETURN"),
-                mpi_file_null: *lib
-                    .get::<MPI_File>(b"MPIABI_FILE_NULL\0")
-                    .expect("symbol MPIABI_FILE_NULL"),
-                mpi_f_status_ignore: *lib
-                    .get::<*mut MPI_Fint>(b"MPIABI_F_STATUS_IGNORE\0")
-                    .expect("symbol MPIABI_F_STATUS_IGNORE"),
-                mpi_f_statuses_ignore: *lib
-                    .get::<*mut MPI_Fint>(b"MPIABI_F_STATUSES_IGNORE\0")
-                    .expect("symbol MPIABI_F_STATUSES_IGNORE"),
-                mpi_group_empty: *lib
-                    .get::<MPI_Group>(b"MPIABI_GROUP_EMPTY\0")
-                    .expect("symbol MPIABI_GROUP_EMPTY"),
-                mpi_group_null: *lib
-                    .get::<MPI_Group>(b"MPIABI_GROUP_NULL\0")
-                    .expect("symbol MPIABI_GROUP_NULL"),
-                mpi_info_env: *lib
-                    .get::<MPI_Info>(b"MPIABI_INFO_ENV\0")
-                    .expect("symbol MPIABI_INFO_ENV"),
-                mpi_info_null: *lib
-                    .get::<MPI_Info>(b"MPIABI_INFO_NULL\0")
-                    .expect("symbol MPIABI_INFO_NULL"),
-                mpi_message_no_proc: *lib
-                    .get::<MPI_Message>(b"MPIABI_MESSAGE_NO_PROC\0")
-                    .expect("symbol MPIABI_MESSAGE_NO_PROC"),
-                mpi_message_null: *lib
-                    .get::<MPI_Message>(b"MPIABI_MESSAGE_NULL\0")
-                    .expect("symbol MPIABI_MESSAGE_NULL"),
-                mpi_displacement_current: *lib
-                    .get::<MPI_Offset>(b"MPIABI_DISPLACEMENT_CURRENT\0")
-                    .expect("symbol MPIABI_DISPLACEMENT_CURRENT"),
-                mpi_band: *lib
-                    .get::<MPI_Op>(b"MPIABI_BAND\0")
-                    .expect("symbol MPIABI_BAND"),
-                mpi_bor: *lib
-                    .get::<MPI_Op>(b"MPIABI_BOR\0")
-                    .expect("symbol MPIABI_BOR"),
-                mpi_bxor: *lib
-                    .get::<MPI_Op>(b"MPIABI_BXOR\0")
-                    .expect("symbol MPIABI_BXOR"),
-                mpi_land: *lib
-                    .get::<MPI_Op>(b"MPIABI_LAND\0")
-                    .expect("symbol MPIABI_LAND"),
-                mpi_lor: *lib
-                    .get::<MPI_Op>(b"MPIABI_LOR\0")
-                    .expect("symbol MPIABI_LOR"),
-                mpi_lxor: *lib
-                    .get::<MPI_Op>(b"MPIABI_LXOR\0")
-                    .expect("symbol MPIABI_LXOR"),
-                mpi_max: *lib
-                    .get::<MPI_Op>(b"MPIABI_MAX\0")
-                    .expect("symbol MPIABI_MAX"),
-                mpi_maxloc: *lib
-                    .get::<MPI_Op>(b"MPIABI_MAXLOC\0")
-                    .expect("symbol MPIABI_MAXLOC"),
-                mpi_min: *lib
-                    .get::<MPI_Op>(b"MPIABI_MIN\0")
-                    .expect("symbol MPIABI_MIN"),
-                mpi_minloc: *lib
-                    .get::<MPI_Op>(b"MPIABI_MINLOC\0")
-                    .expect("symbol MPIABI_MINLOC"),
-                mpi_no_op: *lib
-                    .get::<MPI_Op>(b"MPIABI_NO_OP\0")
-                    .expect("symbol MPIABI_NO_OP"),
-                mpi_op_null: *lib
-                    .get::<MPI_Op>(b"MPIABI_OP_NULL\0")
-                    .expect("symbol MPIABI_OP_NULL"),
-                mpi_prod: *lib
-                    .get::<MPI_Op>(b"MPIABI_PROD\0")
-                    .expect("symbol MPIABI_PROD"),
-                mpi_replace: *lib
-                    .get::<MPI_Op>(b"MPIABI_REPLACE\0")
-                    .expect("symbol MPIABI_REPLACE"),
-                mpi_sum: *lib
-                    .get::<MPI_Op>(b"MPIABI_SUM\0")
-                    .expect("symbol MPIABI_SUM"),
-                mpi_request_null: *lib
-                    .get::<MPI_Request>(b"MPIABI_REQUEST_NULL\0")
-                    .expect("symbol MPIABI_REQUEST_NULL"),
-                mpi_status_ignore: *lib
-                    .get::<*mut MPI_Status>(b"MPIABI_STATUS_IGNORE\0")
-                    .expect("symbol MPIABI_STATUS_IGNORE"),
-                mpi_statuses_ignore: *lib
-                    .get::<*mut MPI_Status>(b"MPIABI_STATUSES_IGNORE\0")
-                    .expect("symbol MPIABI_STATUSES_IGNORE"),
-                mpi_type_dup_fn: *lib
-                    .get::<MPI_Type_copy_attr_function>(b"MPIABI_TYPE_DUP_FN\0")
-                    .expect("symbol MPIABI_TYPE_DUP_FN"),
-                mpi_type_null_copy_fn: *lib
-                    .get::<MPI_Type_copy_attr_function>(b"MPIABI_TYPE_NULL_COPY_FN\0")
-                    .expect("symbol MPIABI_TYPE_NULL_COPY_FN"),
-                mpi_type_null_delete_fn: *lib
-                    .get::<MPI_Type_delete_attr_function>(b"MPIABI_TYPE_NULL_DELETE_FN\0")
-                    .expect("symbol MPIABI_TYPE_NULL_DELETE_FN"),
-                mpi_win_null: *lib
-                    .get::<MPI_Win>(b"MPIABI_WIN_NULL\0")
-                    .expect("symbol MPIABI_WIN_NULL"),
-                mpi_win_dup_fn: *lib
-                    .get::<MPI_Win_copy_attr_function>(b"MPIABI_WIN_DUP_FN\0")
-                    .expect("symbol MPIABI_WIN_DUP_FN"),
-                mpi_win_null_copy_fn: *lib
-                    .get::<MPI_Win_copy_attr_function>(b"MPIABI_WIN_NULL_COPY_FN\0")
-                    .expect("symbol MPIABI_WIN_NULL_COPY_FN"),
-                mpi_win_null_delete_fn: *lib
-                    .get::<MPI_Win_delete_attr_function>(b"MPIABI_WIN_NULL_DELETE_FN\0")
-                    .expect("symbol MPIABI_WIN_NULL_DELETE_FN"),
-            }
+    CONSTANTS.get_or_init(|| unsafe {
+        MpiConstants {
+            mpi_any_source: loader::get_constant::<c_int>(b"MPIABI_ANY_SOURCE\0"),
+            mpi_any_tag: loader::get_constant::<c_int>(b"MPIABI_ANY_TAG\0"),
+            mpi_proc_null: loader::get_constant::<c_int>(b"MPIABI_PROC_NULL\0"),
+            mpi_root: loader::get_constant::<c_int>(b"MPIABI_ROOT\0"),
+            mpi_cart: loader::get_constant::<c_int>(b"MPIABI_CART\0"),
+            mpi_dist_graph: loader::get_constant::<c_int>(b"MPIABI_DIST_GRAPH\0"),
+            mpi_graph: loader::get_constant::<c_int>(b"MPIABI_GRAPH\0"),
+            mpi_congruent: loader::get_constant::<c_int>(b"MPIABI_CONGRUENT\0"),
+            mpi_ident: loader::get_constant::<c_int>(b"MPIABI_IDENT\0"),
+            mpi_similar: loader::get_constant::<c_int>(b"MPIABI_SIMILAR\0"),
+            mpi_unequal: loader::get_constant::<c_int>(b"MPIABI_UNEQUAL\0"),
+            mpi_bsend_overhead: loader::get_constant::<c_int>(b"MPIABI_BSEND_OVERHEAD\0"),
+            mpi_keyval_invalid: loader::get_constant::<c_int>(b"MPIABI_KEYVAL_INVALID\0"),
+            mpi_undefined: loader::get_constant::<c_int>(b"MPIABI_UNDEFINED\0"),
+            mpi_appnum: loader::get_constant::<c_int>(b"MPIABI_APPNUM\0"),
+            mpi_host: loader::get_constant::<c_int>(b"MPIABI_HOST\0"),
+            mpi_io: loader::get_constant::<c_int>(b"MPIABI_IO\0"),
+            mpi_lastusedcode: loader::get_constant::<c_int>(b"MPIABI_LASTUSEDCODE\0"),
+            mpi_tag_ub: loader::get_constant::<c_int>(b"MPIABI_TAG_UB\0"),
+            mpi_universe_size: loader::get_constant::<c_int>(b"MPIABI_UNIVERSE_SIZE\0"),
+            mpi_win_base: loader::get_constant::<c_int>(b"MPIABI_WIN_BASE\0"),
+            mpi_win_create_flavor: loader::get_constant::<c_int>(b"MPIABI_WIN_CREATE_FLAVOR\0"),
+            mpi_win_disp_unit: loader::get_constant::<c_int>(b"MPIABI_WIN_DISP_UNIT\0"),
+            mpi_win_model: loader::get_constant::<c_int>(b"MPIABI_WIN_MODEL\0"),
+            mpi_win_size: loader::get_constant::<c_int>(b"MPIABI_WIN_SIZE\0"),
+            mpi_wtime_is_global: loader::get_constant::<c_int>(b"MPIABI_WTIME_IS_GLOBAL\0"),
+            mpi_combiner_contiguous: loader::get_constant::<c_int>(b"MPIABI_COMBINER_CONTIGUOUS\0"),
+            mpi_combiner_darray: loader::get_constant::<c_int>(b"MPIABI_COMBINER_DARRAY\0"),
+            mpi_combiner_dup: loader::get_constant::<c_int>(b"MPIABI_COMBINER_DUP\0"),
+            mpi_combiner_f90_complex: loader::get_constant::<c_int>(
+                b"MPIABI_COMBINER_F90_COMPLEX\0",
+            ),
+            mpi_combiner_f90_integer: loader::get_constant::<c_int>(
+                b"MPIABI_COMBINER_F90_INTEGER\0",
+            ),
+            mpi_combiner_f90_real: loader::get_constant::<c_int>(b"MPIABI_COMBINER_F90_REAL\0"),
+            mpi_combiner_hindexed: loader::get_constant::<c_int>(b"MPIABI_COMBINER_HINDEXED\0"),
+            mpi_combiner_hindexed_block: loader::get_constant::<c_int>(
+                b"MPIABI_COMBINER_HINDEXED_BLOCK\0",
+            ),
+            mpi_combiner_hvector: loader::get_constant::<c_int>(b"MPIABI_COMBINER_HVECTOR\0"),
+            mpi_combiner_indexed: loader::get_constant::<c_int>(b"MPIABI_COMBINER_INDEXED\0"),
+            mpi_combiner_indexed_block: loader::get_constant::<c_int>(
+                b"MPIABI_COMBINER_INDEXED_BLOCK\0",
+            ),
+            mpi_combiner_named: loader::get_constant::<c_int>(b"MPIABI_COMBINER_NAMED\0"),
+            mpi_combiner_resized: loader::get_constant::<c_int>(b"MPIABI_COMBINER_RESIZED\0"),
+            mpi_combiner_struct: loader::get_constant::<c_int>(b"MPIABI_COMBINER_STRUCT\0"),
+            mpi_combiner_subarray: loader::get_constant::<c_int>(b"MPIABI_COMBINER_SUBARRAY\0"),
+            mpi_combiner_vector: loader::get_constant::<c_int>(b"MPIABI_COMBINER_VECTOR\0"),
+            mpi_comm_type_shared: loader::get_constant::<c_int>(b"MPIABI_COMM_TYPE_SHARED\0"),
+            mpi_distribute_block: loader::get_constant::<c_int>(b"MPIABI_DISTRIBUTE_BLOCK\0"),
+            mpi_distribute_cyclic: loader::get_constant::<c_int>(b"MPIABI_DISTRIBUTE_CYCLIC\0"),
+            mpi_distribute_dflt_darg: loader::get_constant::<c_int>(
+                b"MPIABI_DISTRIBUTE_DFLT_DARG\0",
+            ),
+            mpi_distribute_none: loader::get_constant::<c_int>(b"MPIABI_DISTRIBUTE_NONE\0"),
+            mpi_err_access: loader::get_constant::<c_int>(b"MPIABI_ERR_ACCESS\0"),
+            mpi_err_amode: loader::get_constant::<c_int>(b"MPIABI_ERR_AMODE\0"),
+            mpi_err_arg: loader::get_constant::<c_int>(b"MPIABI_ERR_ARG\0"),
+            mpi_err_assert: loader::get_constant::<c_int>(b"MPIABI_ERR_ASSERT\0"),
+            mpi_err_bad_file: loader::get_constant::<c_int>(b"MPIABI_ERR_BAD_FILE\0"),
+            mpi_err_base: loader::get_constant::<c_int>(b"MPIABI_ERR_BASE\0"),
+            mpi_err_buffer: loader::get_constant::<c_int>(b"MPIABI_ERR_BUFFER\0"),
+            mpi_err_comm: loader::get_constant::<c_int>(b"MPIABI_ERR_COMM\0"),
+            mpi_err_conversion: loader::get_constant::<c_int>(b"MPIABI_ERR_CONVERSION\0"),
+            mpi_err_count: loader::get_constant::<c_int>(b"MPIABI_ERR_COUNT\0"),
+            mpi_err_dims: loader::get_constant::<c_int>(b"MPIABI_ERR_DIMS\0"),
+            mpi_err_disp: loader::get_constant::<c_int>(b"MPIABI_ERR_DISP\0"),
+            mpi_err_dup_datarep: loader::get_constant::<c_int>(b"MPIABI_ERR_DUP_DATAREP\0"),
+            mpi_err_file: loader::get_constant::<c_int>(b"MPIABI_ERR_FILE\0"),
+            mpi_err_file_exists: loader::get_constant::<c_int>(b"MPIABI_ERR_FILE_EXISTS\0"),
+            mpi_err_file_in_use: loader::get_constant::<c_int>(b"MPIABI_ERR_FILE_IN_USE\0"),
+            mpi_err_group: loader::get_constant::<c_int>(b"MPIABI_ERR_GROUP\0"),
+            mpi_err_info: loader::get_constant::<c_int>(b"MPIABI_ERR_INFO\0"),
+            mpi_err_info_key: loader::get_constant::<c_int>(b"MPIABI_ERR_INFO_KEY\0"),
+            mpi_err_info_nokey: loader::get_constant::<c_int>(b"MPIABI_ERR_INFO_NOKEY\0"),
+            mpi_err_info_value: loader::get_constant::<c_int>(b"MPIABI_ERR_INFO_VALUE\0"),
+            mpi_err_intern: loader::get_constant::<c_int>(b"MPIABI_ERR_INTERN\0"),
+            mpi_err_in_status: loader::get_constant::<c_int>(b"MPIABI_ERR_IN_STATUS\0"),
+            mpi_err_io: loader::get_constant::<c_int>(b"MPIABI_ERR_IO\0"),
+            mpi_err_keyval: loader::get_constant::<c_int>(b"MPIABI_ERR_KEYVAL\0"),
+            mpi_err_lastcode: loader::get_constant::<c_int>(b"MPIABI_ERR_LASTCODE\0"),
+            mpi_err_locktype: loader::get_constant::<c_int>(b"MPIABI_ERR_LOCKTYPE\0"),
+            mpi_err_name: loader::get_constant::<c_int>(b"MPIABI_ERR_NAME\0"),
+            mpi_err_not_same: loader::get_constant::<c_int>(b"MPIABI_ERR_NOT_SAME\0"),
+            mpi_err_no_mem: loader::get_constant::<c_int>(b"MPIABI_ERR_NO_MEM\0"),
+            mpi_err_no_space: loader::get_constant::<c_int>(b"MPIABI_ERR_NO_SPACE\0"),
+            mpi_err_no_such_file: loader::get_constant::<c_int>(b"MPIABI_ERR_NO_SUCH_FILE\0"),
+            mpi_err_op: loader::get_constant::<c_int>(b"MPIABI_ERR_OP\0"),
+            mpi_err_other: loader::get_constant::<c_int>(b"MPIABI_ERR_OTHER\0"),
+            mpi_err_pending: loader::get_constant::<c_int>(b"MPIABI_ERR_PENDING\0"),
+            mpi_err_port: loader::get_constant::<c_int>(b"MPIABI_ERR_PORT\0"),
+            mpi_err_quota: loader::get_constant::<c_int>(b"MPIABI_ERR_QUOTA\0"),
+            mpi_err_rank: loader::get_constant::<c_int>(b"MPIABI_ERR_RANK\0"),
+            mpi_err_read_only: loader::get_constant::<c_int>(b"MPIABI_ERR_READ_ONLY\0"),
+            mpi_err_request: loader::get_constant::<c_int>(b"MPIABI_ERR_REQUEST\0"),
+            mpi_err_rma_attach: loader::get_constant::<c_int>(b"MPIABI_ERR_RMA_ATTACH\0"),
+            mpi_err_rma_conflict: loader::get_constant::<c_int>(b"MPIABI_ERR_RMA_CONFLICT\0"),
+            mpi_err_rma_flavor: loader::get_constant::<c_int>(b"MPIABI_ERR_RMA_FLAVOR\0"),
+            mpi_err_rma_range: loader::get_constant::<c_int>(b"MPIABI_ERR_RMA_RANGE\0"),
+            mpi_err_rma_shared: loader::get_constant::<c_int>(b"MPIABI_ERR_RMA_SHARED\0"),
+            mpi_err_rma_sync: loader::get_constant::<c_int>(b"MPIABI_ERR_RMA_SYNC\0"),
+            mpi_err_root: loader::get_constant::<c_int>(b"MPIABI_ERR_ROOT\0"),
+            mpi_err_service: loader::get_constant::<c_int>(b"MPIABI_ERR_SERVICE\0"),
+            mpi_err_size: loader::get_constant::<c_int>(b"MPIABI_ERR_SIZE\0"),
+            mpi_err_spawn: loader::get_constant::<c_int>(b"MPIABI_ERR_SPAWN\0"),
+            mpi_err_tag: loader::get_constant::<c_int>(b"MPIABI_ERR_TAG\0"),
+            mpi_err_topology: loader::get_constant::<c_int>(b"MPIABI_ERR_TOPOLOGY\0"),
+            mpi_err_truncate: loader::get_constant::<c_int>(b"MPIABI_ERR_TRUNCATE\0"),
+            mpi_err_type: loader::get_constant::<c_int>(b"MPIABI_ERR_TYPE\0"),
+            mpi_err_unknown: loader::get_constant::<c_int>(b"MPIABI_ERR_UNKNOWN\0"),
+            mpi_err_unsupported_datarep: loader::get_constant::<c_int>(
+                b"MPIABI_ERR_UNSUPPORTED_DATAREP\0",
+            ),
+            mpi_err_unsupported_operation: loader::get_constant::<c_int>(
+                b"MPIABI_ERR_UNSUPPORTED_OPERATION\0",
+            ),
+            mpi_err_win: loader::get_constant::<c_int>(b"MPIABI_ERR_WIN\0"),
+            mpi_success: loader::get_constant::<c_int>(b"MPIABI_SUCCESS\0"),
+            mpi_lock_exclusive: loader::get_constant::<c_int>(b"MPIABI_LOCK_EXCLUSIVE\0"),
+            mpi_lock_shared: loader::get_constant::<c_int>(b"MPIABI_LOCK_SHARED\0"),
+            mpi_mode_append: loader::get_constant::<c_int>(b"MPIABI_MODE_APPEND\0"),
+            mpi_mode_create: loader::get_constant::<c_int>(b"MPIABI_MODE_CREATE\0"),
+            mpi_mode_delete_on_close: loader::get_constant::<c_int>(
+                b"MPIABI_MODE_DELETE_ON_CLOSE\0",
+            ),
+            mpi_mode_excl: loader::get_constant::<c_int>(b"MPIABI_MODE_EXCL\0"),
+            mpi_mode_nocheck: loader::get_constant::<c_int>(b"MPIABI_MODE_NOCHECK\0"),
+            mpi_mode_noprecede: loader::get_constant::<c_int>(b"MPIABI_MODE_NOPRECEDE\0"),
+            mpi_mode_noput: loader::get_constant::<c_int>(b"MPIABI_MODE_NOPUT\0"),
+            mpi_mode_nostore: loader::get_constant::<c_int>(b"MPIABI_MODE_NOSTORE\0"),
+            mpi_mode_nosucceed: loader::get_constant::<c_int>(b"MPIABI_MODE_NOSUCCEED\0"),
+            mpi_mode_rdonly: loader::get_constant::<c_int>(b"MPIABI_MODE_RDONLY\0"),
+            mpi_mode_rdwr: loader::get_constant::<c_int>(b"MPIABI_MODE_RDWR\0"),
+            mpi_mode_sequential: loader::get_constant::<c_int>(b"MPIABI_MODE_SEQUENTIAL\0"),
+            mpi_mode_unique_open: loader::get_constant::<c_int>(b"MPIABI_MODE_UNIQUE_OPEN\0"),
+            mpi_mode_wronly: loader::get_constant::<c_int>(b"MPIABI_MODE_WRONLY\0"),
+            mpi_order_c: loader::get_constant::<c_int>(b"MPIABI_ORDER_C\0"),
+            mpi_order_fortran: loader::get_constant::<c_int>(b"MPIABI_ORDER_FORTRAN\0"),
+            mpi_seek_cur: loader::get_constant::<c_int>(b"MPIABI_SEEK_CUR\0"),
+            mpi_seek_end: loader::get_constant::<c_int>(b"MPIABI_SEEK_END\0"),
+            mpi_seek_set: loader::get_constant::<c_int>(b"MPIABI_SEEK_SET\0"),
+            mpi_thread_funneled: loader::get_constant::<c_int>(b"MPIABI_THREAD_FUNNELED\0"),
+            mpi_thread_multiple: loader::get_constant::<c_int>(b"MPIABI_THREAD_MULTIPLE\0"),
+            mpi_thread_serialized: loader::get_constant::<c_int>(b"MPIABI_THREAD_SERIALIZED\0"),
+            mpi_thread_single: loader::get_constant::<c_int>(b"MPIABI_THREAD_SINGLE\0"),
+            mpi_typeclass_complex: loader::get_constant::<c_int>(b"MPIABI_TYPECLASS_COMPLEX\0"),
+            mpi_typeclass_integer: loader::get_constant::<c_int>(b"MPIABI_TYPECLASS_INTEGER\0"),
+            mpi_typeclass_real: loader::get_constant::<c_int>(b"MPIABI_TYPECLASS_REAL\0"),
+            mpi_win_flavor_allocate: loader::get_constant::<c_int>(b"MPIABI_WIN_FLAVOR_ALLOCATE\0"),
+            mpi_win_flavor_create: loader::get_constant::<c_int>(b"MPIABI_WIN_FLAVOR_CREATE\0"),
+            mpi_win_flavor_dynamic: loader::get_constant::<c_int>(b"MPIABI_WIN_FLAVOR_DYNAMIC\0"),
+            mpi_win_flavor_shared: loader::get_constant::<c_int>(b"MPIABI_WIN_FLAVOR_SHARED\0"),
+            mpi_win_separate: loader::get_constant::<c_int>(b"MPIABI_WIN_SEPARATE\0"),
+            mpi_win_unified: loader::get_constant::<c_int>(b"MPIABI_WIN_UNIFIED\0"),
+            mpi_argv_null: loader::get_constant::<*mut *mut c_char>(b"MPIABI_ARGV_NULL\0"),
+            mpi_argvs_null: loader::get_constant::<*mut *mut *mut c_char>(b"MPIABI_ARGVS_NULL\0"),
+            mpi_errcodes_ignore: loader::get_constant::<*mut c_int>(b"MPIABI_ERRCODES_IGNORE\0"),
+            mpi_unweighted: loader::get_constant::<*mut c_int>(b"MPIABI_UNWEIGHTED\0"),
+            mpi_weights_empty: loader::get_constant::<*mut c_int>(b"MPIABI_WEIGHTS_EMPTY\0"),
+            mpi_bottom: loader::get_constant::<*mut c_void>(b"MPIABI_BOTTOM\0"),
+            mpi_in_place: loader::get_constant::<*mut c_void>(b"MPIABI_IN_PLACE\0"),
+            mpi_comm_null: loader::get_constant::<MPI_Comm>(b"MPIABI_COMM_NULL\0"),
+            mpi_comm_self: loader::get_constant::<MPI_Comm>(b"MPIABI_COMM_SELF\0"),
+            mpi_comm_world: loader::get_constant::<MPI_Comm>(b"MPIABI_COMM_WORLD\0"),
+            mpi_comm_dup_fn: loader::get_constant::<MPI_Comm_copy_attr_function>(
+                b"MPIABI_COMM_DUP_FN\0",
+            ),
+            mpi_comm_null_copy_fn: loader::get_constant::<MPI_Comm_copy_attr_function>(
+                b"MPIABI_COMM_NULL_COPY_FN\0",
+            ),
+            mpi_comm_null_delete_fn: loader::get_constant::<MPI_Comm_delete_attr_function>(
+                b"MPIABI_COMM_NULL_DELETE_FN\0",
+            ),
+            mpi_dup_fn: loader::get_constant::<MPI_Copy_function>(b"MPIABI_DUP_FN\0"),
+            mpi_null_copy_fn: loader::get_constant::<MPI_Copy_function>(b"MPIABI_NULL_COPY_FN\0"),
+            mpi_conversion_fn_null: loader::get_constant::<MPI_Datarep_conversion_function>(
+                b"MPIABI_CONVERSION_FN_NULL\0",
+            ),
+            mpi_2double_precision: loader::get_constant::<MPI_Datatype>(
+                b"MPIABI_2DOUBLE_PRECISION\0",
+            ),
+            mpi_2int: loader::get_constant::<MPI_Datatype>(b"MPIABI_2INT\0"),
+            mpi_2integer: loader::get_constant::<MPI_Datatype>(b"MPIABI_2INTEGER\0"),
+            mpi_2real: loader::get_constant::<MPI_Datatype>(b"MPIABI_2REAL\0"),
+            mpi_aint: loader::get_constant::<MPI_Datatype>(b"MPIABI_AINT\0"),
+            mpi_byte: loader::get_constant::<MPI_Datatype>(b"MPIABI_BYTE\0"),
+            mpi_char: loader::get_constant::<MPI_Datatype>(b"MPIABI_CHAR\0"),
+            mpi_character: loader::get_constant::<MPI_Datatype>(b"MPIABI_CHARACTER\0"),
+            mpi_complex: loader::get_constant::<MPI_Datatype>(b"MPIABI_COMPLEX\0"),
+            mpi_complex16: loader::get_constant::<MPI_Datatype>(b"MPIABI_COMPLEX16\0"),
+            mpi_complex32: loader::get_constant::<MPI_Datatype>(b"MPIABI_COMPLEX32\0"),
+            mpi_complex8: loader::get_constant::<MPI_Datatype>(b"MPIABI_COMPLEX8\0"),
+            mpi_count: loader::get_constant::<MPI_Datatype>(b"MPIABI_COUNT\0"),
+            mpi_cxx_bool: loader::get_constant::<MPI_Datatype>(b"MPIABI_CXX_BOOL\0"),
+            mpi_cxx_double_complex: loader::get_constant::<MPI_Datatype>(
+                b"MPIABI_CXX_DOUBLE_COMPLEX\0",
+            ),
+            mpi_cxx_float_complex: loader::get_constant::<MPI_Datatype>(
+                b"MPIABI_CXX_FLOAT_COMPLEX\0",
+            ),
+            mpi_cxx_long_double_complex: loader::get_constant::<MPI_Datatype>(
+                b"MPIABI_CXX_LONG_DOUBLE_COMPLEX\0",
+            ),
+            mpi_c_bool: loader::get_constant::<MPI_Datatype>(b"MPIABI_C_BOOL\0"),
+            mpi_c_complex: loader::get_constant::<MPI_Datatype>(b"MPIABI_C_COMPLEX\0"),
+            mpi_c_double_complex: loader::get_constant::<MPI_Datatype>(
+                b"MPIABI_C_DOUBLE_COMPLEX\0",
+            ),
+            mpi_c_float_complex: loader::get_constant::<MPI_Datatype>(b"MPIABI_C_FLOAT_COMPLEX\0"),
+            mpi_c_long_double_complex: loader::get_constant::<MPI_Datatype>(
+                b"MPIABI_C_LONG_DOUBLE_COMPLEX\0",
+            ),
+            mpi_datatype_null: loader::get_constant::<MPI_Datatype>(b"MPIABI_DATATYPE_NULL\0"),
+            mpi_double: loader::get_constant::<MPI_Datatype>(b"MPIABI_DOUBLE\0"),
+            mpi_double_complex: loader::get_constant::<MPI_Datatype>(b"MPIABI_DOUBLE_COMPLEX\0"),
+            mpi_double_int: loader::get_constant::<MPI_Datatype>(b"MPIABI_DOUBLE_INT\0"),
+            mpi_double_precision: loader::get_constant::<MPI_Datatype>(
+                b"MPIABI_DOUBLE_PRECISION\0",
+            ),
+            mpi_float: loader::get_constant::<MPI_Datatype>(b"MPIABI_FLOAT\0"),
+            mpi_float_int: loader::get_constant::<MPI_Datatype>(b"MPIABI_FLOAT_INT\0"),
+            mpi_int: loader::get_constant::<MPI_Datatype>(b"MPIABI_INT\0"),
+            mpi_int16_t: loader::get_constant::<MPI_Datatype>(b"MPIABI_INT16_T\0"),
+            mpi_int32_t: loader::get_constant::<MPI_Datatype>(b"MPIABI_INT32_T\0"),
+            mpi_int64_t: loader::get_constant::<MPI_Datatype>(b"MPIABI_INT64_T\0"),
+            mpi_int8_t: loader::get_constant::<MPI_Datatype>(b"MPIABI_INT8_T\0"),
+            mpi_integer: loader::get_constant::<MPI_Datatype>(b"MPIABI_INTEGER\0"),
+            mpi_integer1: loader::get_constant::<MPI_Datatype>(b"MPIABI_INTEGER1\0"),
+            mpi_integer2: loader::get_constant::<MPI_Datatype>(b"MPIABI_INTEGER2\0"),
+            mpi_integer4: loader::get_constant::<MPI_Datatype>(b"MPIABI_INTEGER4\0"),
+            mpi_integer8: loader::get_constant::<MPI_Datatype>(b"MPIABI_INTEGER8\0"),
+            mpi_logical: loader::get_constant::<MPI_Datatype>(b"MPIABI_LOGICAL\0"),
+            mpi_long: loader::get_constant::<MPI_Datatype>(b"MPIABI_LONG\0"),
+            mpi_long_double: loader::get_constant::<MPI_Datatype>(b"MPIABI_LONG_DOUBLE\0"),
+            mpi_long_double_int: loader::get_constant::<MPI_Datatype>(b"MPIABI_LONG_DOUBLE_INT\0"),
+            mpi_long_int: loader::get_constant::<MPI_Datatype>(b"MPIABI_LONG_INT\0"),
+            mpi_long_long: loader::get_constant::<MPI_Datatype>(b"MPIABI_LONG_LONG\0"),
+            mpi_long_long_int: loader::get_constant::<MPI_Datatype>(b"MPIABI_LONG_LONG_INT\0"),
+            mpi_offset: loader::get_constant::<MPI_Datatype>(b"MPIABI_OFFSET\0"),
+            mpi_packed: loader::get_constant::<MPI_Datatype>(b"MPIABI_PACKED\0"),
+            mpi_real: loader::get_constant::<MPI_Datatype>(b"MPIABI_REAL\0"),
+            mpi_real16: loader::get_constant::<MPI_Datatype>(b"MPIABI_REAL16\0"),
+            mpi_real4: loader::get_constant::<MPI_Datatype>(b"MPIABI_REAL4\0"),
+            mpi_real8: loader::get_constant::<MPI_Datatype>(b"MPIABI_REAL8\0"),
+            mpi_short: loader::get_constant::<MPI_Datatype>(b"MPIABI_SHORT\0"),
+            mpi_short_int: loader::get_constant::<MPI_Datatype>(b"MPIABI_SHORT_INT\0"),
+            mpi_signed_char: loader::get_constant::<MPI_Datatype>(b"MPIABI_SIGNED_CHAR\0"),
+            mpi_uint16_t: loader::get_constant::<MPI_Datatype>(b"MPIABI_UINT16_T\0"),
+            mpi_uint32_t: loader::get_constant::<MPI_Datatype>(b"MPIABI_UINT32_T\0"),
+            mpi_uint64_t: loader::get_constant::<MPI_Datatype>(b"MPIABI_UINT64_T\0"),
+            mpi_uint8_t: loader::get_constant::<MPI_Datatype>(b"MPIABI_UINT8_T\0"),
+            mpi_unsigned: loader::get_constant::<MPI_Datatype>(b"MPIABI_UNSIGNED\0"),
+            mpi_unsigned_char: loader::get_constant::<MPI_Datatype>(b"MPIABI_UNSIGNED_CHAR\0"),
+            mpi_unsigned_long: loader::get_constant::<MPI_Datatype>(b"MPIABI_UNSIGNED_LONG\0"),
+            mpi_unsigned_long_long: loader::get_constant::<MPI_Datatype>(
+                b"MPIABI_UNSIGNED_LONG_LONG\0",
+            ),
+            mpi_unsigned_short: loader::get_constant::<MPI_Datatype>(b"MPIABI_UNSIGNED_SHORT\0"),
+            mpi_wchar: loader::get_constant::<MPI_Datatype>(b"MPIABI_WCHAR\0"),
+            mpi_null_delete_fn: loader::get_constant::<MPI_Delete_function>(
+                b"MPIABI_NULL_DELETE_FN\0",
+            ),
+            mpi_errhandler_null: loader::get_constant::<MPI_Errhandler>(
+                b"MPIABI_ERRHANDLER_NULL\0",
+            ),
+            mpi_errors_are_fatal: loader::get_constant::<MPI_Errhandler>(
+                b"MPIABI_ERRORS_ARE_FATAL\0",
+            ),
+            mpi_errors_return: loader::get_constant::<MPI_Errhandler>(b"MPIABI_ERRORS_RETURN\0"),
+            mpi_file_null: loader::get_constant::<MPI_File>(b"MPIABI_FILE_NULL\0"),
+            mpi_f_status_ignore: loader::get_constant::<*mut MPI_Fint>(b"MPIABI_F_STATUS_IGNORE\0"),
+            mpi_f_statuses_ignore: loader::get_constant::<*mut MPI_Fint>(
+                b"MPIABI_F_STATUSES_IGNORE\0",
+            ),
+            mpi_group_empty: loader::get_constant::<MPI_Group>(b"MPIABI_GROUP_EMPTY\0"),
+            mpi_group_null: loader::get_constant::<MPI_Group>(b"MPIABI_GROUP_NULL\0"),
+            mpi_info_env: loader::get_constant::<MPI_Info>(b"MPIABI_INFO_ENV\0"),
+            mpi_info_null: loader::get_constant::<MPI_Info>(b"MPIABI_INFO_NULL\0"),
+            mpi_message_no_proc: loader::get_constant::<MPI_Message>(b"MPIABI_MESSAGE_NO_PROC\0"),
+            mpi_message_null: loader::get_constant::<MPI_Message>(b"MPIABI_MESSAGE_NULL\0"),
+            mpi_displacement_current: loader::get_constant::<MPI_Offset>(
+                b"MPIABI_DISPLACEMENT_CURRENT\0",
+            ),
+            mpi_band: loader::get_constant::<MPI_Op>(b"MPIABI_BAND\0"),
+            mpi_bor: loader::get_constant::<MPI_Op>(b"MPIABI_BOR\0"),
+            mpi_bxor: loader::get_constant::<MPI_Op>(b"MPIABI_BXOR\0"),
+            mpi_land: loader::get_constant::<MPI_Op>(b"MPIABI_LAND\0"),
+            mpi_lor: loader::get_constant::<MPI_Op>(b"MPIABI_LOR\0"),
+            mpi_lxor: loader::get_constant::<MPI_Op>(b"MPIABI_LXOR\0"),
+            mpi_max: loader::get_constant::<MPI_Op>(b"MPIABI_MAX\0"),
+            mpi_maxloc: loader::get_constant::<MPI_Op>(b"MPIABI_MAXLOC\0"),
+            mpi_min: loader::get_constant::<MPI_Op>(b"MPIABI_MIN\0"),
+            mpi_minloc: loader::get_constant::<MPI_Op>(b"MPIABI_MINLOC\0"),
+            mpi_no_op: loader::get_constant::<MPI_Op>(b"MPIABI_NO_OP\0"),
+            mpi_op_null: loader::get_constant::<MPI_Op>(b"MPIABI_OP_NULL\0"),
+            mpi_prod: loader::get_constant::<MPI_Op>(b"MPIABI_PROD\0"),
+            mpi_replace: loader::get_constant::<MPI_Op>(b"MPIABI_REPLACE\0"),
+            mpi_sum: loader::get_constant::<MPI_Op>(b"MPIABI_SUM\0"),
+            mpi_request_null: loader::get_constant::<MPI_Request>(b"MPIABI_REQUEST_NULL\0"),
+            mpi_status_ignore: loader::get_constant::<*mut MPI_Status>(b"MPIABI_STATUS_IGNORE\0"),
+            mpi_statuses_ignore: loader::get_constant::<*mut MPI_Status>(
+                b"MPIABI_STATUSES_IGNORE\0",
+            ),
+            mpi_type_dup_fn: loader::get_constant::<MPI_Type_copy_attr_function>(
+                b"MPIABI_TYPE_DUP_FN\0",
+            ),
+            mpi_type_null_copy_fn: loader::get_constant::<MPI_Type_copy_attr_function>(
+                b"MPIABI_TYPE_NULL_COPY_FN\0",
+            ),
+            mpi_type_null_delete_fn: loader::get_constant::<MPI_Type_delete_attr_function>(
+                b"MPIABI_TYPE_NULL_DELETE_FN\0",
+            ),
+            mpi_win_null: loader::get_constant::<MPI_Win>(b"MPIABI_WIN_NULL\0"),
+            mpi_win_dup_fn: loader::get_constant::<MPI_Win_copy_attr_function>(
+                b"MPIABI_WIN_DUP_FN\0",
+            ),
+            mpi_win_null_copy_fn: loader::get_constant::<MPI_Win_copy_attr_function>(
+                b"MPIABI_WIN_NULL_COPY_FN\0",
+            ),
+            mpi_win_null_delete_fn: loader::get_constant::<MPI_Win_delete_attr_function>(
+                b"MPIABI_WIN_NULL_DELETE_FN\0",
+            ),
         }
     })
 }
@@ -3153,12 +2696,8 @@ pub fn RSMPI_MAX_LIBRARY_VERSION_STRING_fn() -> c_int {
     // MPI standard defines this as MPI_MAX_LIBRARY_VERSION_STRING
     // MPItrampoline exposes it as MPIABI_MAX_LIBRARY_VERSION_STRING
     static VAL: OnceLock<c_int> = OnceLock::new();
-    *VAL.get_or_init(|| {
-        let lib = loader::library();
-        unsafe {
-            *lib.get::<c_int>(b"MPIABI_MAX_LIBRARY_VERSION_STRING\0")
-                .expect("MPIABI_MAX_LIBRARY_VERSION_STRING")
-        }
+    *VAL.get_or_init(|| unsafe {
+        loader::get_constant::<c_int>(b"MPIABI_MAX_LIBRARY_VERSION_STRING\0")
     })
 }
 
@@ -3168,13 +2707,7 @@ pub fn RSMPI_MAX_LIBRARY_VERSION_STRING() -> c_int {
 
 pub fn RSMPI_MAX_PROCESSOR_NAME_fn() -> c_int {
     static VAL: OnceLock<c_int> = OnceLock::new();
-    *VAL.get_or_init(|| {
-        let lib = loader::library();
-        unsafe {
-            *lib.get::<c_int>(b"MPIABI_MAX_PROCESSOR_NAME\0")
-                .expect("MPIABI_MAX_PROCESSOR_NAME")
-        }
-    })
+    *VAL.get_or_init(|| unsafe { loader::get_constant::<c_int>(b"MPIABI_MAX_PROCESSOR_NAME\0") })
 }
 
 pub fn RSMPI_MAX_PROCESSOR_NAME() -> c_int {
