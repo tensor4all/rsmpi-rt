@@ -155,6 +155,15 @@ def mpi_to_rsmpi_const(name: str) -> str:
     return "RSMPI_" + name[4:]
 
 
+def mpi_to_mpiabi_func(name: str) -> str:
+    """Convert an MPI function name to its MPIABI adapter symbol name."""
+    if name.startswith("MPI_"):
+        return "MPIABI_" + name[4:]
+    if name.startswith("MPIX_"):
+        return "MPIXABI_" + name[5:]
+    raise AssertionError(f"Expected MPI_ or MPIX_ prefix: {name}")
+
+
 def generate_functions() -> str:
     """Generate functions.rs content."""
     lines = []
@@ -199,7 +208,8 @@ def generate_functions() -> str:
         lines.append(f"    type F = unsafe extern \"C\" fn({fn_type_params_str}){fn_type_ret};")
         lines.append(f"    static FN: OnceLock<F> = OnceLock::new();")
         lines.append(f"    let f = FN.get_or_init(|| {{")
-        lines.append(f"        let ptr = loader::get_symbol::<F>(b\"{name}\\0\");")
+        symbol_name = mpi_to_mpiabi_func(name)
+        lines.append(f"        let ptr = loader::get_symbol::<F>(b\"{symbol_name}\\0\");")
         lines.append(f"        std::mem::transmute(ptr)")
         lines.append(f"    }});")
         call_args_str = ", ".join(call_args)
@@ -248,7 +258,6 @@ def generate_constants() -> str:
     lines.append("")
     lines.append("fn get_constants() -> &'static MpiConstants {")
     lines.append("    CONSTANTS.get_or_init(|| {")
-    lines.append("        let lib = loader::library();")
     lines.append("        unsafe {")
     lines.append("            MpiConstants {")
     for c_type, name in constants:
@@ -257,7 +266,7 @@ def generate_constants() -> str:
         rust_type, _ = CONST_TYPE_MAP[c_type]
         field_name = name.lower()
         mpiabi_name = mpi_to_mpiabi_const(name)
-        lines.append(f"                {field_name}: *lib.get::<{rust_type}>(b\"{mpiabi_name}\\0\").expect(\"symbol {mpiabi_name}\"),")
+        lines.append(f"                {field_name}: loader::get_constant::<{rust_type}>(b\"{mpiabi_name}\\0\"),")
     lines.append("            }")
     lines.append("        }")
     lines.append("    })")
@@ -298,9 +307,8 @@ def generate_constants() -> str:
     lines.append("    // MPI standard defines this as MPI_MAX_LIBRARY_VERSION_STRING")
     lines.append("    // MPItrampoline exposes it as MPIABI_MAX_LIBRARY_VERSION_STRING")
     lines.append("    static VAL: OnceLock<c_int> = OnceLock::new();")
-    lines.append("    *VAL.get_or_init(|| {")
-    lines.append("        let lib = loader::library();")
-    lines.append("        unsafe { *lib.get::<c_int>(b\"MPIABI_MAX_LIBRARY_VERSION_STRING\\0\").expect(\"MPIABI_MAX_LIBRARY_VERSION_STRING\") }")
+    lines.append("    *VAL.get_or_init(|| unsafe {")
+    lines.append("        loader::get_constant::<c_int>(b\"MPIABI_MAX_LIBRARY_VERSION_STRING\\0\")")
     lines.append("    })")
     lines.append("}")
     lines.append("")
@@ -310,15 +318,20 @@ def generate_constants() -> str:
     lines.append("")
     lines.append("pub fn RSMPI_MAX_PROCESSOR_NAME_fn() -> c_int {")
     lines.append("    static VAL: OnceLock<c_int> = OnceLock::new();")
-    lines.append("    *VAL.get_or_init(|| {")
-    lines.append("        let lib = loader::library();")
-    lines.append("        unsafe { *lib.get::<c_int>(b\"MPIABI_MAX_PROCESSOR_NAME\\0\").expect(\"MPIABI_MAX_PROCESSOR_NAME\") }")
+    lines.append("    *VAL.get_or_init(|| unsafe {")
+    lines.append("        loader::get_constant::<c_int>(b\"MPIABI_MAX_PROCESSOR_NAME\\0\")")
     lines.append("    })")
     lines.append("}")
     lines.append("")
     lines.append("pub fn RSMPI_MAX_PROCESSOR_NAME() -> c_int {")
     lines.append("    RSMPI_MAX_PROCESSOR_NAME_fn()")
     lines.append("}")
+    lines.append("")
+
+    # MPI_MAX_OBJECT_NAME is a compile-time MPI standard constant.
+    lines.append("/// MPI_MAX_OBJECT_NAME from MPIABI spec (MPIABI_MAX_OBJECT_NAME = 128)")
+    lines.append("pub const MPI_MAX_OBJECT_NAME: usize = 128;")
+    lines.append("pub const RSMPI_MAX_OBJECT_NAME: usize = MPI_MAX_OBJECT_NAME;")
     lines.append("")
 
     # RSMPI_Wtime and RSMPI_Wtick (these are functions, not constants)
