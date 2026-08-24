@@ -1,5 +1,18 @@
 # RSMPI Release Notes
 
+## 0.8.2 (2026-07-09)
+
+**MSRV:** 1.78
+
+### New Features
+
+* [[PR 224]](https://github.com/rsmpi/rsmpi/pull/224) make `is_initialized` and `is_finalized` public
+
+### Maintenance
+
+* Upgrade dependencies; fix OpenMPI-5 issues.
+* Drop dependency on `memoffset` (in `core` since rust-1.77
+
 ## 0.8.1 (2025-12-07)
 
 **MSRV:** 1.78

@@ -1,8 +1,7 @@
 #![deny(warnings)]
 #![allow(clippy::forget_copy)]
 
-#[macro_use]
-extern crate memoffset;
+use core::mem::offset_of;
 
 use mpi::{
     datatype::{UncommittedUserDatatype, UserDatatype},

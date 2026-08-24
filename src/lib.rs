@@ -43,7 +43,7 @@
 //!
 //! ```toml
 //! [dependencies]
-//! mpi = "0.1.0"
+//! mpi = "0.8.2"
 //! ```
 //!
 //! Then use it in your program like this:
@@ -174,14 +174,13 @@ pub mod traits {
 /// crates
 #[doc(hidden)]
 pub mod internal {
-    #[cfg(feature = "derive")]
-    pub use memoffset;
     pub use once_cell;
 }
 
 #[doc(inline)]
 pub use crate::environment::{
-    initialize, initialize_with_threading, time, time_resolution, Threading,
+    initialize, initialize_with_threading, is_finalized, is_initialized, time, time_resolution,
+    Threading,
 };
 use crate::ffi::MPI_Aint;
 
