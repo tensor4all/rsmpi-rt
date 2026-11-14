@@ -32,7 +32,7 @@ The primary goal is to enable **calling Rust MPI code from Julia and Python** wi
 
 ```toml
 [dependencies]
-mpi = { git = "https://github.com/tensor4all/rsmpi-rt", default-features = false, features = ["mpi-rt-sys-backend"] }
+mpi = { package = "rsmpi-rt", version = "0.8.2", default-features = false, features = ["mpi-rt-sys-backend"] }
 ```
 
 ```rust
@@ -65,14 +65,14 @@ No build-time MPI dependencies. The MPI library is loaded at runtime via [MPIwra
 
 ```toml
 [dependencies]
-mpi = { git = "https://github.com/tensor4all/rsmpi-rt", default-features = false, features = ["mpi-rt-sys-backend"] }
+mpi = { package = "rsmpi-rt", version = "0.8.2", default-features = false, features = ["mpi-rt-sys-backend"] }
 ```
 
 With optional features:
 
 ```toml
 [dependencies]
-mpi = { git = "https://github.com/tensor4all/rsmpi-rt", default-features = false, features = ["mpi-rt-sys-backend", "user-operations", "derive"] }
+mpi = { package = "rsmpi-rt", version = "0.8.2", default-features = false, features = ["mpi-rt-sys-backend", "user-operations", "derive"] }
 ```
 
 **Runtime setup:** Set `MPI_RT_LIB` to the path of an [MPIwrapper] library:
@@ -101,7 +101,7 @@ Traditional compile-time binding via `rust-bindgen`. Same as upstream [rsmpi]. R
 
 ```toml
 [dependencies]
-mpi = { git = "https://github.com/tensor4all/rsmpi-rt" }
+mpi = { package = "rsmpi-rt", version = "0.8.2" }
 ```
 
 See the [upstream rsmpi README](https://github.com/rsmpi/rsmpi#requirements) for detailed build requirements.

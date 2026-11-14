@@ -1,5 +1,5 @@
 [package]
-name = "mpi"
+name = "rsmpi-rt"
 version = "0.8.2"
 authors = [
   "Benedikt Steinbusch <ben@rockshrub.de>",
@@ -9,7 +9,7 @@ authors = [
 description = "Message Passing Interface bindings for Rust"
 homepage = "https://github.com/tensor4all/rsmpi-rt"
 repository = "https://github.com/tensor4all/rsmpi-rt"
-documentation = "https://tensor4all.github.io/rsmpi-rt/mpi/"
+documentation = "https://docs.rs/rsmpi-rt"
 readme = "README.md"
 keywords = ["message-passing", "parallel"]
 categories = ["concurrency"]
@@ -20,6 +20,10 @@ exclude = [
   ".github/",
   "ci/*.sh",
 ]
+
+[lib]
+name = "mpi"
+path = "src/lib.rs"
 
 [workspace]
 members = [
