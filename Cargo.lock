@@ -104,7 +104,7 @@ checksum = "ef8ae57c4978a2acd8b869ce6b9ca1dfe817bff704c220209fdef2c0b75a01b9"
 name = "derive-test"
 version = "0.1.1"
 dependencies = [
- "mpi",
+ "rsmpi-rt",
 ]
 
 [[package]]
@@ -189,23 +189,6 @@ name = "minimal-lexical"
 version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "68354c5c6bd36d73ff3feceb05efa59b6acb7626617f4962be322a825e61f79a"
-
-[[package]]
-name = "mpi"
-version = "0.8.2"
-dependencies = [
- "build-probe-mpi",
- "conv",
- "libffi",
- "memoffset",
- "mpi-derive",
- "mpi-rt-sys",
- "mpi-sys",
- "num-complex",
- "once_cell",
- "smallvec",
- "thiserror",
-]
 
 [[package]]
 name = "mpi-derive"
@@ -318,6 +301,23 @@ name = "regex-syntax"
 version = "0.8.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7a2d987857b319362043e95f5353c0535c1f58eec5336fdfcf626430af7def58"
+
+[[package]]
+name = "rsmpi-rt"
+version = "0.8.2"
+dependencies = [
+ "build-probe-mpi",
+ "conv",
+ "libffi",
+ "memoffset",
+ "mpi-derive",
+ "mpi-rt-sys",
+ "mpi-sys",
+ "num-complex",
+ "once_cell",
+ "smallvec",
+ "thiserror",
+]
 
 [[package]]
 name = "rustc-hash"
