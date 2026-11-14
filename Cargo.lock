@@ -207,15 +207,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "mpi-sys"
-version = "0.2.4"
-dependencies = [
- "bindgen",
- "build-probe-mpi",
- "cc",
-]
-
-[[package]]
 name = "nom"
 version = "7.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -312,11 +303,20 @@ dependencies = [
  "memoffset",
  "mpi-derive",
  "mpi-rt-sys",
- "mpi-sys",
  "num-complex",
  "once_cell",
+ "rsmpi-sys",
  "smallvec",
  "thiserror",
+]
+
+[[package]]
+name = "rsmpi-sys"
+version = "0.2.4"
+dependencies = [
+ "bindgen",
+ "build-probe-mpi",
+ "cc",
 ]
 
 [[package]]
