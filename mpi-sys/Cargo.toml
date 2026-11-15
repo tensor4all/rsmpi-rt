@@ -1,5 +1,5 @@
 [package]
-name = "mpi-sys"
+name = "rsmpi-sys"
 version = "0.2.4"
 authors = [
     "Benedikt Steinbusch <ben@rockshrub.de>",
@@ -7,8 +7,8 @@ authors = [
 ]
 description = "Message Passing Interface bindings for Rust"
 homepage = "https://github.com/rsmpi/rsmpi"
-repository = "https://github.com/rsmpi/rsmpi"
-documentation = "https://docs.rs/mpi"
+repository = "https://github.com/tensor4all/rsmpi-rt"
+documentation = "https://docs.rs/rsmpi-sys"
 keywords = [ "message-passing", "parallel" ]
 categories = [ "external-ffi-bindings" ]
 license = "MIT OR Apache-2.0"
@@ -22,6 +22,10 @@ links = "mpi"
 cc = "1.2.66"
 bindgen = { version = "0.72", default-features = false, features = ["runtime"] }
 build-probe-mpi = { path = "../build-probe-mpi", version = "0.1.6" }
+
+[lib]
+name = "mpi_sys"
+path = "src/lib.rs"
 
 [package.metadata.release]
 tag-name = "{{crate_name}}-{{version}}"
