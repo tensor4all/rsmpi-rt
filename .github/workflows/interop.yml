@@ -53,9 +53,3 @@ jobs:
 
       - name: Run interop tests (mpi-sys-backend)
         run: bash tests/interop/run_interop.sh --backend mpi-sys-backend
-
-      # TODO: Enable mpi-rt-sys-backend tests once MPIwrapper is available in CI
-      # - name: Run interop tests (mpi-rt-sys-backend)
-      #   run: bash tests/interop/run_interop.sh --backend mpi-rt-sys-backend
-      #   env:
-      #     MPI_RT_LIB: /path/to/libmpiwrapper.so

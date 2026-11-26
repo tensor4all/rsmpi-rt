@@ -4,9 +4,10 @@ the hand-written carried set (src/functions.rs, src/constants.rs) does not defin
 
 Usage: python3 gen/gen_stubs.py <path-to-mpi-rt-sys/src> > src/stubs.rs
 
-The signature list comes from the MPItrampoline-era `mpi-rt-sys` crate, which carried
-rsmpi-rt's complete `ffi` surface. Run once when that surface changes; the output is
-checked in.
+The signature list comes from the retired `mpi-rt-sys` crate, which carried rsmpi-rt's
+complete `ffi` surface. Fetch it with `cargo download mpi-rt-sys@0.1.0` (or read
+`~/.cargo/registry/src/*/mpi-rt-sys-0.1.0/src` after any build that used it) and pass its
+`src` directory. Run once when that surface changes; the output is checked in.
 """
 import re, sys, pathlib
 

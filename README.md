@@ -9,7 +9,7 @@
 > **Status: Experimental / Proof of Concept.**
 > This project aims to eventually merge its runtime-loading backend upstream into rsmpi.
 
-The key addition over upstream rsmpi is the `mpi-rt-sys-backend`: a backend based on [MPItrampoline]'s [MPIABI] that loads MPI at runtime via `dlopen`, requiring **no C compiler, system MPI headers, or libclang at build time**.
+The key addition over upstream rsmpi is the `mpi-native-sys-backend`: a backend that finds the MPI library already loaded in the process (or loads one by name) and calls it with **that library's own handles**, requiring **no C compiler, system MPI headers, libclang or wrapper library at build or run time**. The MPICH ABI, the Open MPI ABI and the MPI 5.0 standard ABI are supported.
 
 ### Motivation
 
@@ -23,8 +23,6 @@ The primary goal is to enable **calling Rust MPI code from Julia and Python** wi
 [license]: https://github.com/tensor4all/rsmpi-rt#license
 [MPI]: http://www.mpi-forum.org
 [rsmpi]: https://github.com/rsmpi/rsmpi
-[MPItrampoline]: https://github.com/eschnett/MPItrampoline
-[MPIABI]: https://github.com/eschnett/MPItrampoline#mpiabi
 [MPI.jl]: https://github.com/JuliaParallel/MPI.jl
 [mpi4py]: https://mpi4py.readthedocs.io/
 
@@ -32,7 +30,7 @@ The primary goal is to enable **calling Rust MPI code from Julia and Python** wi
 
 ```toml
 [dependencies]
-mpi = { package = "rsmpi-rt", version = "0.8.2", default-features = false, features = ["mpi-rt-sys-backend"] }
+mpi = { package = "rsmpi-rt", version = "0.9.0", default-features = false, features = ["mpi-native-sys-backend"] }
 ```
 
 ```rust
@@ -46,65 +44,36 @@ fn main() {
 ```
 
 ```bash
-export MPI_RT_LIB=/path/to/libmpiwrapper.so
-mpiexec -n 4 cargo run
+mpiexec -n 4 cargo run   # the site libmpi is found by soname; MPI_NATIVE_LIB overrides
 ```
 
 ## Backend Selection
 
 | Feature | Description | Default |
 |---------|-------------|---------|
-| `mpi-sys-backend` | Bindgen-based (requires C compiler, system MPI, libclang) | Yes |
-| `mpi-rt-sys-backend` | [MPItrampoline]/MPIABI-based runtime loading (no build-time MPI deps) | No |
+| `mpi-sys-backend` | bindgen against system MPI headers (needs libclang) | Yes |
+| `mpi-native-sys-backend` | native handles of the MPI library found at run time (no build-time MPI deps) | No |
 
-The two backends are **mutually exclusive**.
+Exactly one backend must be enabled.
 
-### mpi-rt-sys-backend (recommended for this fork)
-
-No build-time MPI dependencies. The MPI library is loaded at runtime via [MPIwrapper].
+### mpi-native-sys-backend
 
 ```toml
-[dependencies]
-mpi = { package = "rsmpi-rt", version = "0.8.2", default-features = false, features = ["mpi-rt-sys-backend"] }
+mpi = { package = "rsmpi-rt", version = "0.9.0", default-features = false, features = ["mpi-native-sys-backend"] }
 ```
 
-With optional features:
+**Run time.** When a host (MPI.jl, mpi4py) has already loaded MPI, the library is found by walking the
+loaded objects and nothing is loaded a second time. A standalone Rust program calls `mpi::initialize()`;
+the backend then loads `MPI_NATIVE_LIB` if set, else `libmpi.so.12`, `libmpi.so.40`,
+`libmpi_cray.so.12` or `libmpi_abi.so.1`. The family is identified before any handle is used
+(MPIwrapper marker, then the return value of `MPI_Abi_get_version`, then the version string and a
+symbol witness). An MPI outside the supported families fails with a named error instead of
+passing foreign handles. There is no wrapper fallback: MPItrampoline support was removed in 0.9.0
+(`mpi-rt-sys 0.1.0` stays on crates.io).
 
-```toml
-[dependencies]
-mpi = { package = "rsmpi-rt", version = "0.8.2", default-features = false, features = ["mpi-rt-sys-backend", "user-operations", "derive"] }
-```
-
-**Runtime setup:** Set `MPI_RT_LIB` to the path of an [MPIwrapper] library:
-
-```bash
-export MPI_RT_LIB=/path/to/libmpiwrapper.so
-mpiexec -n 4 ./my_program
-```
-
-To build MPIwrapper (requires a system MPI):
-
-```bash
-git clone https://github.com/eschnett/MPIwrapper
-cd MPIwrapper
-cmake -S . -B build -DCMAKE_INSTALL_PREFIX=$HOME/.local
-cmake --build build
-cmake --install build
-export MPI_RT_LIB=$HOME/.local/lib/libmpiwrapper.so
-```
-
-[MPIwrapper]: https://github.com/eschnett/MPIwrapper
-
-### mpi-sys-backend
-
-Traditional compile-time binding via `rust-bindgen`. Same as upstream [rsmpi]. Requires a C compiler, system MPI installation, and `libclang`.
-
-```toml
-[dependencies]
-mpi = { package = "rsmpi-rt", version = "0.8.2" }
-```
-
-See the [upstream rsmpi README](https://github.com/rsmpi/rsmpi#requirements) for detailed build requirements.
+Only a carried subset of MPI is real (initialization, communicator queries, blocking send,
+matched probe/receive, error strings). Every other name in `ffi` is a stub that panics with an
+`UnsupportedMpiCall` payload and increments `mpi_native_sys::stub_hits()`.
 
 ## Optional Features
 
@@ -129,7 +98,6 @@ See [tests/interop/](tests/interop/) for details.
 
 - [API docs (GitHub Pages)][doc]
 - [Architecture overview](docs/architecture.md)
-- [MPIABI and dynamic loading](docs/mpiabi-dynamic-loading.md)
 - [Backend comparison](docs/backend-comparison.md)
 - [Code generation](docs/codegen.md)
 

@@ -1,5 +1,12 @@
 # RSMPI Release Notes
 
+## 0.9.0
+
+**Breaking.** The MPItrampoline/MPIwrapper backend is removed: the `mpi-rt-sys-backend` feature
+and the `mpi-rt-sys` crate are gone (`mpi-rt-sys 0.1.0` stays published) and `MPI_RT_LIB` is no
+longer read. The new `mpi-native-sys-backend` feature uses the native handles of the MPI
+library the host already loaded (MPICH ABI, Open MPI ABI, MPI 5.0 standard ABI).
+
 ## 0.8.2 (2026-07-09)
 
 **MSRV:** 1.78

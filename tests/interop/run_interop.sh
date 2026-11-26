@@ -9,10 +9,10 @@
 #   - MPI implementation (MPICH or OpenMPI)
 #   - Python 3 with mpi4py: pip install mpi4py
 #   - Julia with MPI.jl: julia -e 'using Pkg; Pkg.add("MPI")'
-#   - For mpi-rt-sys-backend: MPI_RT_LIB environment variable set
+#   - For mpi-native-sys-backend: an MPI library of a supported family (MPI_NATIVE_LIB optional)
 #
 # Usage:
-#   bash tests/interop/run_interop.sh [--backend mpi-sys-backend|mpi-rt-sys-backend]
+#   bash tests/interop/run_interop.sh [--backend mpi-sys-backend|mpi-native-sys-backend]
 
 set -euo pipefail
 
@@ -32,7 +32,7 @@ echo "=== Cross-language MPI interop test (backend: $BACKEND) ==="
 # Build Rust test binary
 echo "Building Rust test binary..."
 FEATURES="$BACKEND"
-if [ "$BACKEND" = "mpi-rt-sys-backend" ]; then
+if [ "$BACKEND" = "mpi-native-sys-backend" ]; then
     DEFAULT_FEATURES="--no-default-features"
 else
     DEFAULT_FEATURES=""
