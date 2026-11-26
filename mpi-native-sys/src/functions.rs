@@ -9,13 +9,17 @@
 //! communicator construction calls. Every other `ffi` name is a panic stub in
 //! [`crate::stubs`].
 
-use std::ffi::{c_void, CString};
-use std::os::raw::{c_char, c_double, c_int};
-use std::sync::OnceLock;
+use std::{
+    ffi::{c_void, CString},
+    os::raw::{c_char, c_double, c_int},
+    sync::OnceLock,
+};
 
-use crate::detect::Family;
-use crate::loader::{loaded, Loaded};
-use crate::types::*;
+use crate::{
+    detect::Family,
+    loader::{loaded, Loaded},
+    types::*,
+};
 
 #[inline]
 fn to_int(h: usize) -> c_int {
@@ -94,16 +98,32 @@ macro_rules! ptr_ty {
     (v $t:ty) => { $t };
 }
 macro_rules! int_conv {
-    ($lib:ident, $a:ident, h) => { to_int($a) };
-    ($lib:ident, $a:ident, cs) => { (*$a).raw_const_ptr() };
-    ($lib:ident, $a:ident, s) => { status_arg($lib, $a) };
-    ($lib:ident, $a:ident, v) => { $a };
+    ($lib:ident, $a:ident, h) => {
+        to_int($a)
+    };
+    ($lib:ident, $a:ident, cs) => {
+        (*$a).raw_const_ptr()
+    };
+    ($lib:ident, $a:ident, s) => {
+        status_arg($lib, $a)
+    };
+    ($lib:ident, $a:ident, v) => {
+        $a
+    };
 }
 macro_rules! ptr_conv {
-    ($lib:ident, $a:ident, h) => { to_ptr($a) };
-    ($lib:ident, $a:ident, cs) => { (*$a).raw_const_ptr() };
-    ($lib:ident, $a:ident, s) => { status_arg($lib, $a) };
-    ($lib:ident, $a:ident, v) => { $a };
+    ($lib:ident, $a:ident, h) => {
+        to_ptr($a)
+    };
+    ($lib:ident, $a:ident, cs) => {
+        (*$a).raw_const_ptr()
+    };
+    ($lib:ident, $a:ident, s) => {
+        status_arg($lib, $a)
+    };
+    ($lib:ident, $a:ident, v) => {
+        $a
+    };
 }
 
 /// A thunk whose arguments are handles (`h`), statuses (`s`, `cs`) or plain values
@@ -237,7 +257,8 @@ pub unsafe fn MPI_Comm_get_errhandler(comm: MPI_Comm, errhandler: *mut MPI_Errha
         Family::Mpich => {
             type F = unsafe extern "C" fn(c_int, *mut c_int) -> c_int;
             static FN: OnceLock<usize> = OnceLock::new();
-            let f: F = std::mem::transmute(*FN.get_or_init(|| resolve(lib, "MPI_Comm_get_errhandler")));
+            let f: F =
+                std::mem::transmute(*FN.get_or_init(|| resolve(lib, "MPI_Comm_get_errhandler")));
             let mut slot: c_int = 0;
             let rc = f(to_int(comm), &mut slot);
             *errhandler = from_int(slot);
@@ -246,7 +267,8 @@ pub unsafe fn MPI_Comm_get_errhandler(comm: MPI_Comm, errhandler: *mut MPI_Errha
         Family::OpenMpi | Family::StandardAbi => {
             type F = unsafe extern "C" fn(*mut c_void, *mut *mut c_void) -> c_int;
             static FN: OnceLock<usize> = OnceLock::new();
-            let f: F = std::mem::transmute(*FN.get_or_init(|| resolve(lib, "MPI_Comm_get_errhandler")));
+            let f: F =
+                std::mem::transmute(*FN.get_or_init(|| resolve(lib, "MPI_Comm_get_errhandler")));
             let mut slot: *mut c_void = std::ptr::null_mut();
             let rc = f(to_ptr(comm), &mut slot);
             *errhandler = from_ptr(slot);
@@ -296,16 +318,34 @@ pub unsafe fn MPI_Mprobe(
             static FN: OnceLock<usize> = OnceLock::new();
             let f: F = std::mem::transmute(*FN.get_or_init(|| resolve(lib, "MPI_Mprobe")));
             let mut slot: c_int = 0;
-            let rc = f(source, tag, to_int(comm), &mut slot, status_arg(lib, status));
+            let rc = f(
+                source,
+                tag,
+                to_int(comm),
+                &mut slot,
+                status_arg(lib, status),
+            );
             *message = from_int(slot);
             rc
         }
         Family::OpenMpi | Family::StandardAbi => {
-            type F = unsafe extern "C" fn(c_int, c_int, *mut c_void, *mut *mut c_void, *mut c_void) -> c_int;
+            type F = unsafe extern "C" fn(
+                c_int,
+                c_int,
+                *mut c_void,
+                *mut *mut c_void,
+                *mut c_void,
+            ) -> c_int;
             static FN: OnceLock<usize> = OnceLock::new();
             let f: F = std::mem::transmute(*FN.get_or_init(|| resolve(lib, "MPI_Mprobe")));
             let mut slot: *mut c_void = std::ptr::null_mut();
-            let rc = f(source, tag, to_ptr(comm), &mut slot, status_arg(lib, status));
+            let rc = f(
+                source,
+                tag,
+                to_ptr(comm),
+                &mut slot,
+                status_arg(lib, status),
+            );
             *message = from_ptr(slot);
             rc
         }
@@ -326,20 +366,39 @@ pub unsafe fn MPI_Mrecv(
     let lib = loaded();
     let rc = match lib.family {
         Family::Mpich => {
-            type F = unsafe extern "C" fn(*mut c_void, c_int, c_int, *mut c_int, *mut c_void) -> c_int;
+            type F =
+                unsafe extern "C" fn(*mut c_void, c_int, c_int, *mut c_int, *mut c_void) -> c_int;
             static FN: OnceLock<usize> = OnceLock::new();
             let f: F = std::mem::transmute(*FN.get_or_init(|| resolve(lib, "MPI_Mrecv")));
             let mut slot: c_int = to_int(*message);
-            let rc = f(buf, count, to_int(datatype), &mut slot, status_arg(lib, status));
+            let rc = f(
+                buf,
+                count,
+                to_int(datatype),
+                &mut slot,
+                status_arg(lib, status),
+            );
             *message = from_int(slot);
             rc
         }
         Family::OpenMpi | Family::StandardAbi => {
-            type F = unsafe extern "C" fn(*mut c_void, c_int, *mut c_void, *mut *mut c_void, *mut c_void) -> c_int;
+            type F = unsafe extern "C" fn(
+                *mut c_void,
+                c_int,
+                *mut c_void,
+                *mut *mut c_void,
+                *mut c_void,
+            ) -> c_int;
             static FN: OnceLock<usize> = OnceLock::new();
             let f: F = std::mem::transmute(*FN.get_or_init(|| resolve(lib, "MPI_Mrecv")));
             let mut slot: *mut c_void = to_ptr(*message);
-            let rc = f(buf, count, to_ptr(datatype), &mut slot, status_arg(lib, status));
+            let rc = f(
+                buf,
+                count,
+                to_ptr(datatype),
+                &mut slot,
+                status_arg(lib, status),
+            );
             *message = from_ptr(slot);
             rc
         }

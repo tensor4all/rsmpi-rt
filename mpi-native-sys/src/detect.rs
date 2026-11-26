@@ -298,7 +298,9 @@ pub fn decide(candidates: &[Candidate]) -> Result<Decision, LoadError> {
     // 1. MPIwrapper first: under MPItrampoline the trampoline, wrapper and real library
     // are all loaded, so it must be rejected before any ambiguity is counted.
     if let Some(c) = candidates.iter().find(|c| c.mpiabi_marker) {
-        return Err(LoadError::MpiTrampolineNotSupported { path: c.path.clone() });
+        return Err(LoadError::MpiTrampolineNotSupported {
+            path: c.path.clone(),
+        });
     }
 
     // 2. Standard ABI: decided by the return value, never by the symbol's presence.
@@ -314,13 +316,17 @@ pub fn decide(candidates: &[Candidate]) -> Result<Decision, LoadError> {
             let c = &candidates[*i];
             let major = c.abi_major.unwrap_or(0);
             if major > 1 {
-                return Err(LoadError::UnsupportedAbiVersion { path: c.path.clone(), major });
+                return Err(LoadError::UnsupportedAbiVersion {
+                    path: c.path.clone(),
+                    major,
+                });
             }
             let version = c.version.clone().unwrap_or_default();
             return match classify_version(&version) {
-                Row::Family(Family::StandardAbi) => {
-                    Ok(Decision { index: *i, family: Family::StandardAbi })
-                }
+                Row::Family(Family::StandardAbi) => Ok(Decision {
+                    index: *i,
+                    family: Family::StandardAbi,
+                }),
                 row => Err(LoadError::FamilyMismatch {
                     path: c.path.clone(),
                     version,
@@ -366,10 +372,16 @@ pub fn decide(candidates: &[Candidate]) -> Result<Decision, LoadError> {
         }
         Row::Family(f) => f,
         Row::Reject(Reject::MpiWrapper) => {
-            return Err(LoadError::MpiTrampolineNotSupported { path: c.path.clone() })
+            return Err(LoadError::MpiTrampolineNotSupported {
+                path: c.path.clone(),
+            })
         }
         Row::Reject(reject) => {
-            return Err(LoadError::UnsupportedMpi { path: c.path.clone(), version, reject })
+            return Err(LoadError::UnsupportedMpi {
+                path: c.path.clone(),
+                version,
+                reject,
+            })
         }
     };
 
@@ -380,7 +392,11 @@ pub fn decide(candidates: &[Candidate]) -> Result<Decision, LoadError> {
         Family::StandardAbi => true,
     };
     if !ok {
-        let symbols = if c.ompi_witness { Family::OpenMpi } else { Family::Mpich };
+        let symbols = if c.ompi_witness {
+            Family::OpenMpi
+        } else {
+            Family::Mpich
+        };
         return Err(LoadError::FamilyMismatch {
             path: c.path.clone(),
             version,
@@ -399,8 +415,10 @@ pub fn decide(candidates: &[Candidate]) -> Result<Decision, LoadError> {
 mod tests {
     use super::*;
 
-    const MPICH: &str = "MPICH Version:      5.0.2\nMPICH Release date: x\nMPICH configure:    --enable-fast";
-    const MPICH_ABI: &str = "MPICH Version:      5.0.2\nMPICH configure:    --enable-mpi-abi --prefix=/x";
+    const MPICH: &str =
+        "MPICH Version:      5.0.2\nMPICH Release date: x\nMPICH configure:    --enable-fast";
+    const MPICH_ABI: &str =
+        "MPICH Version:      5.0.2\nMPICH configure:    --enable-mpi-abi --prefix=/x";
     const OMPI: &str = "Open MPI v4.1.6, package: Debian OpenMPI, ident: 4.1.6, repo rev: v4.1.6";
     const INTEL: &str = "Intel(R) MPI Library 2021.19.0 for Linux* OS\n";
     const WRAPPER: &str = "mpi_abi_wrapper 1.2.0 (wrapping: Open MPI v5.0.10)";
@@ -412,18 +430,33 @@ mod tests {
     #[test]
     fn one_sample_per_table_row() {
         use Family::*;
-        assert_eq!(row("MPIwrapper Version: 2.9.0"), Row::Reject(Reject::MpiWrapper));
+        assert_eq!(
+            row("MPIwrapper Version: 2.9.0"),
+            Row::Reject(Reject::MpiWrapper)
+        );
         assert_eq!(row(MPICH_ABI), Row::Family(StandardAbi));
         assert_eq!(row(WRAPPER), Row::Family(StandardAbi));
         assert_eq!(row(MPICH), Row::Family(Mpich));
-        assert_eq!(row("MPICH Version:      3.0.4"), Row::Reject(Reject::Unknown));
+        assert_eq!(
+            row("MPICH Version:      3.0.4"),
+            Row::Reject(Reject::Unknown)
+        );
         assert_eq!(row(OMPI), Row::Family(OpenMpi));
         assert_eq!(row("Microsoft MPI 10.1"), Row::Reject(Reject::MsMpi));
         assert_eq!(row(INTEL), Row::Family(Mpich));
-        assert_eq!(row("Intel(R) MPI Library 2018 Update 3"), Row::Family(Mpich));
-        assert_eq!(row("Intel(R) MPI Library 2014"), Row::Reject(Reject::Unknown));
+        assert_eq!(
+            row("Intel(R) MPI Library 2018 Update 3"),
+            Row::Family(Mpich)
+        );
+        assert_eq!(
+            row("Intel(R) MPI Library 2014"),
+            Row::Reject(Reject::Unknown)
+        );
         assert_eq!(row("MVAPICH2 Version      :\t2.3.7\n"), Row::Family(Mpich));
-        assert_eq!(row("MVAPICH Version      :\t1.2\n"), Row::Reject(Reject::Unknown));
+        assert_eq!(
+            row("MVAPICH Version      :\t1.2\n"),
+            Row::Reject(Reject::Unknown)
+        );
         assert_eq!(
             row("MPI VERSION    : CRAY MPICH version 7.7.10 (ANL base 3.2)"),
             Row::Family(Mpich)
@@ -436,7 +469,10 @@ mod tests {
     }
 
     fn cand(path: &str) -> Candidate {
-        Candidate { path: path.into(), ..Default::default() }
+        Candidate {
+            path: path.into(),
+            ..Default::default()
+        }
     }
     fn native_ompi() -> Candidate {
         Candidate {
@@ -508,7 +544,10 @@ mod tests {
         let mut marker = cand("/x/libmpiwrapper.so");
         marker.mpiabi_marker = true;
         let err = decide(&[native_ompi(), native_mpich(), marker]).unwrap_err();
-        assert!(matches!(err, LoadError::MpiTrampolineNotSupported { .. }), "{err:?}");
+        assert!(
+            matches!(err, LoadError::MpiTrampolineNotSupported { .. }),
+            "{err:?}"
+        );
     }
 
     #[test]
@@ -526,7 +565,10 @@ mod tests {
         let a = abi_lib();
         let mut b = abi_lib();
         b.path = "/other/libmpi_abi.so.1".into();
-        assert!(matches!(decide(&[a, b]).unwrap_err(), LoadError::AmbiguousMpi { .. }));
+        assert!(matches!(
+            decide(&[a, b]).unwrap_err(),
+            LoadError::AmbiguousMpi { .. }
+        ));
     }
 
     #[test]
@@ -543,14 +585,20 @@ mod tests {
     fn standard_abi_with_a_native_string_is_a_family_mismatch() {
         let mut c = abi_lib();
         c.version = Some(OMPI.into());
-        assert!(matches!(decide(&[c]).unwrap_err(), LoadError::FamilyMismatch { .. }));
+        assert!(matches!(
+            decide(&[c]).unwrap_err(),
+            LoadError::FamilyMismatch { .. }
+        ));
     }
 
     #[test]
     fn native_string_claiming_standard_abi_without_the_call_is_a_mismatch() {
         let mut c = native_mpich();
         c.version = Some(MPICH_ABI.into());
-        assert!(matches!(decide(&[c]).unwrap_err(), LoadError::FamilyMismatch { .. }));
+        assert!(matches!(
+            decide(&[c]).unwrap_err(),
+            LoadError::FamilyMismatch { .. }
+        ));
     }
 
     #[test]
@@ -566,14 +614,23 @@ mod tests {
     fn witness_agreement_and_disagreement() {
         let mut c = native_ompi();
         c.ompi_witness = false;
-        assert!(matches!(decide(&[c]).unwrap_err(), LoadError::FamilyMismatch { .. }));
+        assert!(matches!(
+            decide(&[c]).unwrap_err(),
+            LoadError::FamilyMismatch { .. }
+        ));
         let mut c = native_mpich();
         c.mpich_witness = false;
-        assert!(matches!(decide(&[c]).unwrap_err(), LoadError::FamilyMismatch { .. }));
+        assert!(matches!(
+            decide(&[c]).unwrap_err(),
+            LoadError::FamilyMismatch { .. }
+        ));
         // An MPICH string with Open MPI's data symbol is a mismatch too.
         let mut c = native_mpich();
         c.ompi_witness = true;
-        assert!(matches!(decide(&[c]).unwrap_err(), LoadError::FamilyMismatch { .. }));
+        assert!(matches!(
+            decide(&[c]).unwrap_err(),
+            LoadError::FamilyMismatch { .. }
+        ));
     }
 
     #[test]

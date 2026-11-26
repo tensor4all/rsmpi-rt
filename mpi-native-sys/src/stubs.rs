@@ -7,8 +7,7 @@
 #![allow(unused_variables, clippy::too_many_arguments)]
 use std::os::raw::*;
 
-use crate::callback_types::*;
-use crate::types::*;
+use crate::{callback_types::*, types::*};
 
 pub unsafe fn MPIX_Query_cuda_support() -> c_int {
     crate::stub("MPIX_Query_cuda_support")
@@ -30,7 +29,17 @@ pub unsafe fn MPI_Abort(comm: MPI_Comm, errorcode: c_int) -> c_int {
     crate::stub("MPI_Abort")
 }
 
-pub unsafe fn MPI_Accumulate(origin_addr: *const c_void, origin_count: c_int, origin_datatype: MPI_Datatype, target_rank: c_int, target_disp: MPI_Aint, target_count: c_int, target_datatype: MPI_Datatype, op: MPI_Op, win: MPI_Win) -> c_int {
+pub unsafe fn MPI_Accumulate(
+    origin_addr: *const c_void,
+    origin_count: c_int,
+    origin_datatype: MPI_Datatype,
+    target_rank: c_int,
+    target_disp: MPI_Aint,
+    target_count: c_int,
+    target_datatype: MPI_Datatype,
+    op: MPI_Op,
+    win: MPI_Win,
+) -> c_int {
     crate::stub("MPI_Accumulate")
 }
 
@@ -54,11 +63,28 @@ pub unsafe fn MPI_Aint_diff(addr1: MPI_Aint, addr2: MPI_Aint) -> MPI_Aint {
     crate::stub("MPI_Aint_diff")
 }
 
-pub unsafe fn MPI_Allgather(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Allgather(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Allgather")
 }
 
-pub unsafe fn MPI_Allgatherv(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcounts: *const c_int, displs: *const c_int, recvtype: MPI_Datatype, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Allgatherv(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    displs: *const c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Allgatherv")
 }
 
@@ -66,31 +92,87 @@ pub unsafe fn MPI_Alloc_mem(size: MPI_Aint, info: MPI_Info, baseptr: *mut c_void
     crate::stub("MPI_Alloc_mem")
 }
 
-pub unsafe fn MPI_Allreduce(sendbuf: *const c_void, recvbuf: *mut c_void, count: c_int, datatype: MPI_Datatype, op: MPI_Op, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Allreduce(
+    sendbuf: *const c_void,
+    recvbuf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    op: MPI_Op,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Allreduce")
 }
 
-pub unsafe fn MPI_Alltoall(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Alltoall(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Alltoall")
 }
 
-pub unsafe fn MPI_Alltoallv(sendbuf: *const c_void, sendcounts: *const c_int, sdispls: *const c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcounts: *const c_int, rdispls: *const c_int, recvtype: MPI_Datatype, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Alltoallv(
+    sendbuf: *const c_void,
+    sendcounts: *const c_int,
+    sdispls: *const c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    rdispls: *const c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Alltoallv")
 }
 
-pub unsafe fn MPI_Alltoallw(sendbuf: *const c_void, sendcounts: *const c_int, sdispls: *const c_int, sendtypes: *const MPI_Datatype, recvbuf: *mut c_void, recvcounts: *const c_int, rdispls: *const c_int, recvtypes: *const MPI_Datatype, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Alltoallw(
+    sendbuf: *const c_void,
+    sendcounts: *const c_int,
+    sdispls: *const c_int,
+    sendtypes: *const MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    rdispls: *const c_int,
+    recvtypes: *const MPI_Datatype,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Alltoallw")
 }
 
-pub unsafe fn MPI_Bcast(buffer: *mut c_void, count: c_int, datatype: MPI_Datatype, root: c_int, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Bcast(
+    buffer: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    root: c_int,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Bcast")
 }
 
-pub unsafe fn MPI_Bsend(buf: *const c_void, count: c_int, datatype: MPI_Datatype, dest: c_int, tag: c_int, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Bsend(
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    dest: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Bsend")
 }
 
-pub unsafe fn MPI_Bsend_init(buf: *const c_void, count: c_int, datatype: MPI_Datatype, dest: c_int, tag: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Bsend_init(
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    dest: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Bsend_init")
 }
 
@@ -106,19 +188,43 @@ pub unsafe fn MPI_Cancel(request: *mut MPI_Request) -> c_int {
     crate::stub("MPI_Cancel")
 }
 
-pub unsafe fn MPI_Cart_coords(comm: MPI_Comm, rank: c_int, maxdims: c_int, coords: *mut c_int) -> c_int {
+pub unsafe fn MPI_Cart_coords(
+    comm: MPI_Comm,
+    rank: c_int,
+    maxdims: c_int,
+    coords: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Cart_coords")
 }
 
-pub unsafe fn MPI_Cart_create(comm_old: MPI_Comm, ndims: c_int, dims: *const c_int, periods: *const c_int, reorder: c_int, comm_cart: *mut MPI_Comm) -> c_int {
+pub unsafe fn MPI_Cart_create(
+    comm_old: MPI_Comm,
+    ndims: c_int,
+    dims: *const c_int,
+    periods: *const c_int,
+    reorder: c_int,
+    comm_cart: *mut MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Cart_create")
 }
 
-pub unsafe fn MPI_Cart_get(comm: MPI_Comm, maxdims: c_int, dims: *mut c_int, periods: *mut c_int, coords: *mut c_int) -> c_int {
+pub unsafe fn MPI_Cart_get(
+    comm: MPI_Comm,
+    maxdims: c_int,
+    dims: *mut c_int,
+    periods: *mut c_int,
+    coords: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Cart_get")
 }
 
-pub unsafe fn MPI_Cart_map(comm: MPI_Comm, ndims: c_int, dims: *const c_int, periods: *const c_int, newrank: *mut c_int) -> c_int {
+pub unsafe fn MPI_Cart_map(
+    comm: MPI_Comm,
+    ndims: c_int,
+    dims: *const c_int,
+    periods: *const c_int,
+    newrank: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Cart_map")
 }
 
@@ -126,11 +232,21 @@ pub unsafe fn MPI_Cart_rank(comm: MPI_Comm, coords: *const c_int, rank: *mut c_i
     crate::stub("MPI_Cart_rank")
 }
 
-pub unsafe fn MPI_Cart_shift(comm: MPI_Comm, direction: c_int, disp: c_int, rank_source: *mut c_int, rank_dest: *mut c_int) -> c_int {
+pub unsafe fn MPI_Cart_shift(
+    comm: MPI_Comm,
+    direction: c_int,
+    disp: c_int,
+    rank_source: *mut c_int,
+    rank_dest: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Cart_shift")
 }
 
-pub unsafe fn MPI_Cart_sub(comm: MPI_Comm, remain_dims: *const c_int, newcomm: *mut MPI_Comm) -> c_int {
+pub unsafe fn MPI_Cart_sub(
+    comm: MPI_Comm,
+    remain_dims: *const c_int,
+    newcomm: *mut MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Cart_sub")
 }
 
@@ -142,7 +258,13 @@ pub unsafe fn MPI_Close_port(port_name: *const c_char) -> c_int {
     crate::stub("MPI_Close_port")
 }
 
-pub unsafe fn MPI_Comm_accept(port_name: *const c_char, info: MPI_Info, root: c_int, comm: MPI_Comm, newcomm: *mut MPI_Comm) -> c_int {
+pub unsafe fn MPI_Comm_accept(
+    port_name: *const c_char,
+    info: MPI_Info,
+    root: c_int,
+    comm: MPI_Comm,
+    newcomm: *mut MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Comm_accept")
 }
 
@@ -154,7 +276,13 @@ pub unsafe fn MPI_Comm_call_errhandler(comm: MPI_Comm, errorcode: c_int) -> c_in
     crate::stub("MPI_Comm_call_errhandler")
 }
 
-pub unsafe fn MPI_Comm_connect(port_name: *const c_char, info: MPI_Info, root: c_int, comm: MPI_Comm, newcomm: *mut MPI_Comm) -> c_int {
+pub unsafe fn MPI_Comm_connect(
+    port_name: *const c_char,
+    info: MPI_Info,
+    root: c_int,
+    comm: MPI_Comm,
+    newcomm: *mut MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Comm_connect")
 }
 
@@ -162,15 +290,28 @@ pub unsafe fn MPI_Comm_create(comm: MPI_Comm, group: MPI_Group, newcomm: *mut MP
     crate::stub("MPI_Comm_create")
 }
 
-pub unsafe fn MPI_Comm_create_errhandler(comm_errhandler_fn: MPI_Comm_errhandler_function, errhandler: *mut MPI_Errhandler) -> c_int {
+pub unsafe fn MPI_Comm_create_errhandler(
+    comm_errhandler_fn: MPI_Comm_errhandler_function,
+    errhandler: *mut MPI_Errhandler,
+) -> c_int {
     crate::stub("MPI_Comm_create_errhandler")
 }
 
-pub unsafe fn MPI_Comm_create_group(comm: MPI_Comm, group: MPI_Group, tag: c_int, newcomm: *mut MPI_Comm) -> c_int {
+pub unsafe fn MPI_Comm_create_group(
+    comm: MPI_Comm,
+    group: MPI_Group,
+    tag: c_int,
+    newcomm: *mut MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Comm_create_group")
 }
 
-pub unsafe fn MPI_Comm_create_keyval(comm_copy_attr_fn: MPI_Comm_copy_attr_function, comm_delete_attr_fn: MPI_Comm_delete_attr_function, comm_keyval: *mut c_int, extra_state: *mut c_void) -> c_int {
+pub unsafe fn MPI_Comm_create_keyval(
+    comm_copy_attr_fn: MPI_Comm_copy_attr_function,
+    comm_delete_attr_fn: MPI_Comm_delete_attr_function,
+    comm_keyval: *mut c_int,
+    extra_state: *mut c_void,
+) -> c_int {
     crate::stub("MPI_Comm_create_keyval")
 }
 
@@ -182,7 +323,11 @@ pub unsafe fn MPI_Comm_disconnect(comm: *mut MPI_Comm) -> c_int {
     crate::stub("MPI_Comm_disconnect")
 }
 
-pub unsafe fn MPI_Comm_dup_with_info(comm: MPI_Comm, info: MPI_Info, newcomm: *mut MPI_Comm) -> c_int {
+pub unsafe fn MPI_Comm_dup_with_info(
+    comm: MPI_Comm,
+    info: MPI_Info,
+    newcomm: *mut MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Comm_dup_with_info")
 }
 
@@ -198,7 +343,11 @@ pub unsafe fn MPI_Comm_get_info(comm: MPI_Comm, info: *mut MPI_Info) -> c_int {
     crate::stub("MPI_Comm_get_info")
 }
 
-pub unsafe fn MPI_Comm_get_name(comm: MPI_Comm, comm_name: *mut c_char, resultlen: *mut c_int) -> c_int {
+pub unsafe fn MPI_Comm_get_name(
+    comm: MPI_Comm,
+    comm_name: *mut c_char,
+    resultlen: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Comm_get_name")
 }
 
@@ -206,7 +355,11 @@ pub unsafe fn MPI_Comm_group(comm: MPI_Comm, group: *mut MPI_Group) -> c_int {
     crate::stub("MPI_Comm_group")
 }
 
-pub unsafe fn MPI_Comm_idup(comm: MPI_Comm, newcomm: *mut MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Comm_idup(
+    comm: MPI_Comm,
+    newcomm: *mut MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Comm_idup")
 }
 
@@ -222,7 +375,11 @@ pub unsafe fn MPI_Comm_remote_size(comm: MPI_Comm, size: *mut c_int) -> c_int {
     crate::stub("MPI_Comm_remote_size")
 }
 
-pub unsafe fn MPI_Comm_set_attr(comm: MPI_Comm, comm_keyval: c_int, attribute_val: *mut c_void) -> c_int {
+pub unsafe fn MPI_Comm_set_attr(
+    comm: MPI_Comm,
+    comm_keyval: c_int,
+    attribute_val: *mut c_void,
+) -> c_int {
     crate::stub("MPI_Comm_set_attr")
 }
 
@@ -238,23 +395,61 @@ pub unsafe fn MPI_Comm_set_name(comm: MPI_Comm, comm_name: *const c_char) -> c_i
     crate::stub("MPI_Comm_set_name")
 }
 
-pub unsafe fn MPI_Comm_spawn(command: *const c_char, argv: *mut *mut c_char, maxprocs: c_int, info: MPI_Info, root: c_int, comm: MPI_Comm, intercomm: *mut MPI_Comm, array_off_errcodes: *mut c_int) -> c_int {
+pub unsafe fn MPI_Comm_spawn(
+    command: *const c_char,
+    argv: *mut *mut c_char,
+    maxprocs: c_int,
+    info: MPI_Info,
+    root: c_int,
+    comm: MPI_Comm,
+    intercomm: *mut MPI_Comm,
+    array_off_errcodes: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Comm_spawn")
 }
 
-pub unsafe fn MPI_Comm_spawn_multiple(count: c_int, array_of_commands: *mut *mut c_char, array_of_argv: *mut *mut *mut c_char, array_of_maxprocs: *const c_int, array_of_info: *const MPI_Info, root: c_int, comm: MPI_Comm, intercomm: *mut MPI_Comm, array_of_errcodes: *mut c_int) -> c_int {
+pub unsafe fn MPI_Comm_spawn_multiple(
+    count: c_int,
+    array_of_commands: *mut *mut c_char,
+    array_of_argv: *mut *mut *mut c_char,
+    array_of_maxprocs: *const c_int,
+    array_of_info: *const MPI_Info,
+    root: c_int,
+    comm: MPI_Comm,
+    intercomm: *mut MPI_Comm,
+    array_of_errcodes: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Comm_spawn_multiple")
 }
 
-pub unsafe fn MPI_Comm_split(comm: MPI_Comm, color: c_int, key: c_int, newcomm: *mut MPI_Comm) -> c_int {
+pub unsafe fn MPI_Comm_split(
+    comm: MPI_Comm,
+    color: c_int,
+    key: c_int,
+    newcomm: *mut MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Comm_split")
 }
 
-pub unsafe fn MPI_Comm_split_type(comm: MPI_Comm, split_type: c_int, key: c_int, info: MPI_Info, newcomm: *mut MPI_Comm) -> c_int {
+pub unsafe fn MPI_Comm_split_type(
+    comm: MPI_Comm,
+    split_type: c_int,
+    key: c_int,
+    info: MPI_Info,
+    newcomm: *mut MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Comm_split_type")
 }
 
-pub unsafe fn MPI_Compare_and_swap(origin_addr: *const c_void, compare_addr: *const c_void, result_addr: *mut c_void, datatype: MPI_Datatype, target_rank: c_int, target_disp: MPI_Aint, win: MPI_Win) -> c_int {
+pub unsafe fn MPI_Compare_and_swap(
+    origin_addr: *const c_void,
+    compare_addr: *const c_void,
+    result_addr: *mut c_void,
+    datatype: MPI_Datatype,
+    target_rank: c_int,
+    target_disp: MPI_Aint,
+    win: MPI_Win,
+) -> c_int {
     crate::stub("MPI_Compare_and_swap")
 }
 
@@ -262,19 +457,53 @@ pub unsafe fn MPI_Dims_create(nnodes: c_int, ndims: c_int, dims: *mut c_int) -> 
     crate::stub("MPI_Dims_create")
 }
 
-pub unsafe fn MPI_Dist_graph_create(comm_old: MPI_Comm, n: c_int, sources: *const c_int, degrees: *const c_int, destinations: *const c_int, weights: *const c_int, info: MPI_Info, reorder: c_int, comm_dist_graph: *mut MPI_Comm) -> c_int {
+pub unsafe fn MPI_Dist_graph_create(
+    comm_old: MPI_Comm,
+    n: c_int,
+    sources: *const c_int,
+    degrees: *const c_int,
+    destinations: *const c_int,
+    weights: *const c_int,
+    info: MPI_Info,
+    reorder: c_int,
+    comm_dist_graph: *mut MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Dist_graph_create")
 }
 
-pub unsafe fn MPI_Dist_graph_create_adjacent(comm_old: MPI_Comm, indegree: c_int, sources: *const c_int, sourceweights: *const c_int, outdegree: c_int, destinations: *const c_int, destweights: *const c_int, info: MPI_Info, reorder: c_int, comm_dist_graph: *mut MPI_Comm) -> c_int {
+pub unsafe fn MPI_Dist_graph_create_adjacent(
+    comm_old: MPI_Comm,
+    indegree: c_int,
+    sources: *const c_int,
+    sourceweights: *const c_int,
+    outdegree: c_int,
+    destinations: *const c_int,
+    destweights: *const c_int,
+    info: MPI_Info,
+    reorder: c_int,
+    comm_dist_graph: *mut MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Dist_graph_create_adjacent")
 }
 
-pub unsafe fn MPI_Dist_graph_neighbors(comm: MPI_Comm, maxindeegree: c_int, sources: *mut c_int, wourceweights: *mut c_int, maxoutdegree: c_int, destinations: *mut c_int, destweights: *mut c_int) -> c_int {
+pub unsafe fn MPI_Dist_graph_neighbors(
+    comm: MPI_Comm,
+    maxindeegree: c_int,
+    sources: *mut c_int,
+    wourceweights: *mut c_int,
+    maxoutdegree: c_int,
+    destinations: *mut c_int,
+    destweights: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Dist_graph_neighbors")
 }
 
-pub unsafe fn MPI_Dist_graph_neighbors_count(comm: MPI_Comm, indegree: *mut c_int, outdegree: *mut c_int, weighted: *mut c_int) -> c_int {
+pub unsafe fn MPI_Dist_graph_neighbors_count(
+    comm: MPI_Comm,
+    indegree: *mut c_int,
+    outdegree: *mut c_int,
+    weighted: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Dist_graph_neighbors_count")
 }
 
@@ -290,11 +519,26 @@ pub unsafe fn MPI_Error_class(errorcode: c_int, errorclass: *mut c_int) -> c_int
     crate::stub("MPI_Error_class")
 }
 
-pub unsafe fn MPI_Exscan(sendbuf: *const c_void, recvbuf: *mut c_void, count: c_int, datatype: MPI_Datatype, op: MPI_Op, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Exscan(
+    sendbuf: *const c_void,
+    recvbuf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    op: MPI_Op,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Exscan")
 }
 
-pub unsafe fn MPI_Fetch_and_op(origin_addr: *const c_void, result_addr: *mut c_void, datatype: MPI_Datatype, target_rank: c_int, target_disp: MPI_Aint, op: MPI_Op, win: MPI_Win) -> c_int {
+pub unsafe fn MPI_Fetch_and_op(
+    origin_addr: *const c_void,
+    result_addr: *mut c_void,
+    datatype: MPI_Datatype,
+    target_rank: c_int,
+    target_disp: MPI_Aint,
+    op: MPI_Op,
+    win: MPI_Win,
+) -> c_int {
     crate::stub("MPI_Fetch_and_op")
 }
 
@@ -310,7 +554,10 @@ pub unsafe fn MPI_File_close(fh: *mut MPI_File) -> c_int {
     crate::stub("MPI_File_close")
 }
 
-pub unsafe fn MPI_File_create_errhandler(file_errhandler_fn: MPI_File_errhandler_function, errhandler: *mut MPI_Errhandler) -> c_int {
+pub unsafe fn MPI_File_create_errhandler(
+    file_errhandler_fn: MPI_File_errhandler_function,
+    errhandler: *mut MPI_Errhandler,
+) -> c_int {
     crate::stub("MPI_File_create_errhandler")
 }
 
@@ -330,7 +577,11 @@ pub unsafe fn MPI_File_get_atomicity(fh: MPI_File, flag: *mut c_int) -> c_int {
     crate::stub("MPI_File_get_atomicity")
 }
 
-pub unsafe fn MPI_File_get_byte_offset(fh: MPI_File, offset: MPI_Offset, disp: *mut MPI_Offset) -> c_int {
+pub unsafe fn MPI_File_get_byte_offset(
+    fh: MPI_File,
+    offset: MPI_Offset,
+    disp: *mut MPI_Offset,
+) -> c_int {
     crate::stub("MPI_File_get_byte_offset")
 }
 
@@ -358,55 +609,135 @@ pub unsafe fn MPI_File_get_size(fh: MPI_File, size: *mut MPI_Offset) -> c_int {
     crate::stub("MPI_File_get_size")
 }
 
-pub unsafe fn MPI_File_get_type_extent(fh: MPI_File, datatype: MPI_Datatype, extent: *mut MPI_Aint) -> c_int {
+pub unsafe fn MPI_File_get_type_extent(
+    fh: MPI_File,
+    datatype: MPI_Datatype,
+    extent: *mut MPI_Aint,
+) -> c_int {
     crate::stub("MPI_File_get_type_extent")
 }
 
-pub unsafe fn MPI_File_get_view(fh: MPI_File, disp: *mut MPI_Offset, etype: *mut MPI_Datatype, filetype: *mut MPI_Datatype, datarep: *mut c_char) -> c_int {
+pub unsafe fn MPI_File_get_view(
+    fh: MPI_File,
+    disp: *mut MPI_Offset,
+    etype: *mut MPI_Datatype,
+    filetype: *mut MPI_Datatype,
+    datarep: *mut c_char,
+) -> c_int {
     crate::stub("MPI_File_get_view")
 }
 
-pub unsafe fn MPI_File_iread(fh: MPI_File, buf: *mut c_void, count: c_int, datatype: MPI_Datatype, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_File_iread(
+    fh: MPI_File,
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_File_iread")
 }
 
-pub unsafe fn MPI_File_iread_all(fh: MPI_File, buf: *mut c_void, count: c_int, datatype: MPI_Datatype, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_File_iread_all(
+    fh: MPI_File,
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_File_iread_all")
 }
 
-pub unsafe fn MPI_File_iread_at(fh: MPI_File, offset: MPI_Offset, buf: *mut c_void, count: c_int, datatype: MPI_Datatype, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_File_iread_at(
+    fh: MPI_File,
+    offset: MPI_Offset,
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_File_iread_at")
 }
 
-pub unsafe fn MPI_File_iread_at_all(fh: MPI_File, offset: MPI_Offset, buf: *mut c_void, count: c_int, datatype: MPI_Datatype, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_File_iread_at_all(
+    fh: MPI_File,
+    offset: MPI_Offset,
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_File_iread_at_all")
 }
 
-pub unsafe fn MPI_File_iread_shared(fh: MPI_File, buf: *mut c_void, count: c_int, datatype: MPI_Datatype, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_File_iread_shared(
+    fh: MPI_File,
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_File_iread_shared")
 }
 
-pub unsafe fn MPI_File_iwrite(fh: MPI_File, buf: *const c_void, count: c_int, datatype: MPI_Datatype, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_File_iwrite(
+    fh: MPI_File,
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_File_iwrite")
 }
 
-pub unsafe fn MPI_File_iwrite_all(fh: MPI_File, buf: *const c_void, count: c_int, datatype: MPI_Datatype, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_File_iwrite_all(
+    fh: MPI_File,
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_File_iwrite_all")
 }
 
-pub unsafe fn MPI_File_iwrite_at(fh: MPI_File, offset: MPI_Offset, buf: *const c_void, count: c_int, datatype: MPI_Datatype, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_File_iwrite_at(
+    fh: MPI_File,
+    offset: MPI_Offset,
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_File_iwrite_at")
 }
 
-pub unsafe fn MPI_File_iwrite_at_all(fh: MPI_File, offset: MPI_Offset, buf: *const c_void, count: c_int, datatype: MPI_Datatype, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_File_iwrite_at_all(
+    fh: MPI_File,
+    offset: MPI_Offset,
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_File_iwrite_at_all")
 }
 
-pub unsafe fn MPI_File_iwrite_shared(fh: MPI_File, buf: *const c_void, count: c_int, datatype: MPI_Datatype, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_File_iwrite_shared(
+    fh: MPI_File,
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_File_iwrite_shared")
 }
 
-pub unsafe fn MPI_File_open(comm: MPI_Comm, filename: *const c_char, amode: c_int, info: MPI_Info, fh: *mut MPI_File) -> c_int {
+pub unsafe fn MPI_File_open(
+    comm: MPI_Comm,
+    filename: *const c_char,
+    amode: c_int,
+    info: MPI_Info,
+    fh: *mut MPI_File,
+) -> c_int {
     crate::stub("MPI_File_open")
 }
 
@@ -414,51 +745,117 @@ pub unsafe fn MPI_File_preallocate(fh: MPI_File, size: MPI_Offset) -> c_int {
     crate::stub("MPI_File_preallocate")
 }
 
-pub unsafe fn MPI_File_read(fh: MPI_File, buf: *mut c_void, count: c_int, datatype: MPI_Datatype, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_read(
+    fh: MPI_File,
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_read")
 }
 
-pub unsafe fn MPI_File_read_all(fh: MPI_File, buf: *mut c_void, count: c_int, datatype: MPI_Datatype, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_read_all(
+    fh: MPI_File,
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_read_all")
 }
 
-pub unsafe fn MPI_File_read_all_begin(fh: MPI_File, buf: *mut c_void, count: c_int, datatype: MPI_Datatype) -> c_int {
+pub unsafe fn MPI_File_read_all_begin(
+    fh: MPI_File,
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_File_read_all_begin")
 }
 
-pub unsafe fn MPI_File_read_all_end(fh: MPI_File, buf: *mut c_void, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_read_all_end(
+    fh: MPI_File,
+    buf: *mut c_void,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_read_all_end")
 }
 
-pub unsafe fn MPI_File_read_at(fh: MPI_File, offset: MPI_Offset, buf: *mut c_void, count: c_int, datatype: MPI_Datatype, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_read_at(
+    fh: MPI_File,
+    offset: MPI_Offset,
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_read_at")
 }
 
-pub unsafe fn MPI_File_read_at_all(fh: MPI_File, offset: MPI_Offset, buf: *mut c_void, count: c_int, datatype: MPI_Datatype, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_read_at_all(
+    fh: MPI_File,
+    offset: MPI_Offset,
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_read_at_all")
 }
 
-pub unsafe fn MPI_File_read_at_all_begin(fh: MPI_File, offset: MPI_Offset, buf: *mut c_void, count: c_int, datatype: MPI_Datatype) -> c_int {
+pub unsafe fn MPI_File_read_at_all_begin(
+    fh: MPI_File,
+    offset: MPI_Offset,
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_File_read_at_all_begin")
 }
 
-pub unsafe fn MPI_File_read_at_all_end(fh: MPI_File, buf: *mut c_void, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_read_at_all_end(
+    fh: MPI_File,
+    buf: *mut c_void,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_read_at_all_end")
 }
 
-pub unsafe fn MPI_File_read_ordered(fh: MPI_File, buf: *mut c_void, count: c_int, datatype: MPI_Datatype, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_read_ordered(
+    fh: MPI_File,
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_read_ordered")
 }
 
-pub unsafe fn MPI_File_read_ordered_begin(fh: MPI_File, buf: *mut c_void, count: c_int, datatype: MPI_Datatype) -> c_int {
+pub unsafe fn MPI_File_read_ordered_begin(
+    fh: MPI_File,
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_File_read_ordered_begin")
 }
 
-pub unsafe fn MPI_File_read_ordered_end(fh: MPI_File, buf: *mut c_void, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_read_ordered_end(
+    fh: MPI_File,
+    buf: *mut c_void,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_read_ordered_end")
 }
 
-pub unsafe fn MPI_File_read_shared(fh: MPI_File, buf: *mut c_void, count: c_int, datatype: MPI_Datatype, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_read_shared(
+    fh: MPI_File,
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_read_shared")
 }
 
@@ -486,7 +883,14 @@ pub unsafe fn MPI_File_set_size(fh: MPI_File, size: MPI_Offset) -> c_int {
     crate::stub("MPI_File_set_size")
 }
 
-pub unsafe fn MPI_File_set_view(fh: MPI_File, disp: MPI_Offset, etype: MPI_Datatype, filetype: MPI_Datatype, datarep: *const c_char, info: MPI_Info) -> c_int {
+pub unsafe fn MPI_File_set_view(
+    fh: MPI_File,
+    disp: MPI_Offset,
+    etype: MPI_Datatype,
+    filetype: MPI_Datatype,
+    datarep: *const c_char,
+    info: MPI_Info,
+) -> c_int {
     crate::stub("MPI_File_set_view")
 }
 
@@ -494,51 +898,117 @@ pub unsafe fn MPI_File_sync(fh: MPI_File) -> c_int {
     crate::stub("MPI_File_sync")
 }
 
-pub unsafe fn MPI_File_write(fh: MPI_File, buf: *const c_void, count: c_int, datatype: MPI_Datatype, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_write(
+    fh: MPI_File,
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_write")
 }
 
-pub unsafe fn MPI_File_write_all(fh: MPI_File, buf: *const c_void, count: c_int, datatype: MPI_Datatype, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_write_all(
+    fh: MPI_File,
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_write_all")
 }
 
-pub unsafe fn MPI_File_write_all_begin(fh: MPI_File, buf: *const c_void, count: c_int, datatype: MPI_Datatype) -> c_int {
+pub unsafe fn MPI_File_write_all_begin(
+    fh: MPI_File,
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_File_write_all_begin")
 }
 
-pub unsafe fn MPI_File_write_all_end(fh: MPI_File, buf: *const c_void, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_write_all_end(
+    fh: MPI_File,
+    buf: *const c_void,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_write_all_end")
 }
 
-pub unsafe fn MPI_File_write_at(fh: MPI_File, offset: MPI_Offset, buf: *const c_void, count: c_int, datatype: MPI_Datatype, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_write_at(
+    fh: MPI_File,
+    offset: MPI_Offset,
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_write_at")
 }
 
-pub unsafe fn MPI_File_write_at_all(fh: MPI_File, offset: MPI_Offset, buf: *const c_void, count: c_int, datatype: MPI_Datatype, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_write_at_all(
+    fh: MPI_File,
+    offset: MPI_Offset,
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_write_at_all")
 }
 
-pub unsafe fn MPI_File_write_at_all_begin(fh: MPI_File, offset: MPI_Offset, buf: *const c_void, count: c_int, datatype: MPI_Datatype) -> c_int {
+pub unsafe fn MPI_File_write_at_all_begin(
+    fh: MPI_File,
+    offset: MPI_Offset,
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_File_write_at_all_begin")
 }
 
-pub unsafe fn MPI_File_write_at_all_end(fh: MPI_File, buf: *const c_void, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_write_at_all_end(
+    fh: MPI_File,
+    buf: *const c_void,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_write_at_all_end")
 }
 
-pub unsafe fn MPI_File_write_ordered(fh: MPI_File, buf: *const c_void, count: c_int, datatype: MPI_Datatype, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_write_ordered(
+    fh: MPI_File,
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_write_ordered")
 }
 
-pub unsafe fn MPI_File_write_ordered_begin(fh: MPI_File, buf: *const c_void, count: c_int, datatype: MPI_Datatype) -> c_int {
+pub unsafe fn MPI_File_write_ordered_begin(
+    fh: MPI_File,
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_File_write_ordered_begin")
 }
 
-pub unsafe fn MPI_File_write_ordered_end(fh: MPI_File, buf: *const c_void, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_write_ordered_end(
+    fh: MPI_File,
+    buf: *const c_void,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_write_ordered_end")
 }
 
-pub unsafe fn MPI_File_write_shared(fh: MPI_File, buf: *const c_void, count: c_int, datatype: MPI_Datatype, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_File_write_shared(
+    fh: MPI_File,
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_File_write_shared")
 }
 
@@ -546,19 +1016,60 @@ pub unsafe fn MPI_Free_mem(base: *mut c_void) -> c_int {
     crate::stub("MPI_Free_mem")
 }
 
-pub unsafe fn MPI_Gather(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, root: c_int, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Gather(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    root: c_int,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Gather")
 }
 
-pub unsafe fn MPI_Gatherv(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcounts: *const c_int, displs: *const c_int, recvtype: MPI_Datatype, root: c_int, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Gatherv(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    displs: *const c_int,
+    recvtype: MPI_Datatype,
+    root: c_int,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Gatherv")
 }
 
-pub unsafe fn MPI_Get(origin_addr: *mut c_void, origin_count: c_int, origin_datatype: MPI_Datatype, target_rank: c_int, target_disp: MPI_Aint, target_count: c_int, target_datatype: MPI_Datatype, win: MPI_Win) -> c_int {
+pub unsafe fn MPI_Get(
+    origin_addr: *mut c_void,
+    origin_count: c_int,
+    origin_datatype: MPI_Datatype,
+    target_rank: c_int,
+    target_disp: MPI_Aint,
+    target_count: c_int,
+    target_datatype: MPI_Datatype,
+    win: MPI_Win,
+) -> c_int {
     crate::stub("MPI_Get")
 }
 
-pub unsafe fn MPI_Get_accumulate(origin_addr: *const c_void, origin_count: c_int, origin_datatype: MPI_Datatype, result_addr: *mut c_void, result_count: c_int, result_datatype: MPI_Datatype, target_rank: c_int, target_disp: MPI_Aint, target_count: c_int, target_datatype: MPI_Datatype, op: MPI_Op, win: MPI_Win) -> c_int {
+pub unsafe fn MPI_Get_accumulate(
+    origin_addr: *const c_void,
+    origin_count: c_int,
+    origin_datatype: MPI_Datatype,
+    result_addr: *mut c_void,
+    result_count: c_int,
+    result_datatype: MPI_Datatype,
+    target_rank: c_int,
+    target_disp: MPI_Aint,
+    target_count: c_int,
+    target_datatype: MPI_Datatype,
+    op: MPI_Op,
+    win: MPI_Win,
+) -> c_int {
     crate::stub("MPI_Get_accumulate")
 }
 
@@ -566,11 +1077,19 @@ pub unsafe fn MPI_Get_address(location: *const c_void, address: *mut MPI_Aint) -
     crate::stub("MPI_Get_address")
 }
 
-pub unsafe fn MPI_Get_elements(status: *const MPI_Status, datatype: MPI_Datatype, count: *mut c_int) -> c_int {
+pub unsafe fn MPI_Get_elements(
+    status: *const MPI_Status,
+    datatype: MPI_Datatype,
+    count: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Get_elements")
 }
 
-pub unsafe fn MPI_Get_elements_x(status: *const MPI_Status, datatype: MPI_Datatype, count: *mut MPI_Count) -> c_int {
+pub unsafe fn MPI_Get_elements_x(
+    status: *const MPI_Status,
+    datatype: MPI_Datatype,
+    count: *mut MPI_Count,
+) -> c_int {
     crate::stub("MPI_Get_elements_x")
 }
 
@@ -578,23 +1097,51 @@ pub unsafe fn MPI_Get_processor_name(name: *mut c_char, resultlen: *mut c_int) -
     crate::stub("MPI_Get_processor_name")
 }
 
-pub unsafe fn MPI_Graph_create(comm_old: MPI_Comm, nnodes: c_int, index: *const c_int, edges: *const c_int, reorder: c_int, comm_graph: *mut MPI_Comm) -> c_int {
+pub unsafe fn MPI_Graph_create(
+    comm_old: MPI_Comm,
+    nnodes: c_int,
+    index: *const c_int,
+    edges: *const c_int,
+    reorder: c_int,
+    comm_graph: *mut MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Graph_create")
 }
 
-pub unsafe fn MPI_Graph_get(comm: MPI_Comm, maxindex: c_int, maxedges: c_int, index: *mut c_int, edges: *mut c_int) -> c_int {
+pub unsafe fn MPI_Graph_get(
+    comm: MPI_Comm,
+    maxindex: c_int,
+    maxedges: c_int,
+    index: *mut c_int,
+    edges: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Graph_get")
 }
 
-pub unsafe fn MPI_Graph_map(comm: MPI_Comm, nnodes: c_int, index: *const c_int, edges: *const c_int, newrank: *mut c_int) -> c_int {
+pub unsafe fn MPI_Graph_map(
+    comm: MPI_Comm,
+    nnodes: c_int,
+    index: *const c_int,
+    edges: *const c_int,
+    newrank: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Graph_map")
 }
 
-pub unsafe fn MPI_Graph_neighbors(comm: MPI_Comm, rank: c_int, maxneighbors: c_int, neighbors: *mut c_int) -> c_int {
+pub unsafe fn MPI_Graph_neighbors(
+    comm: MPI_Comm,
+    rank: c_int,
+    maxneighbors: c_int,
+    neighbors: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Graph_neighbors")
 }
 
-pub unsafe fn MPI_Graph_neighbors_count(comm: MPI_Comm, rank: c_int, nneighbors: *mut c_int) -> c_int {
+pub unsafe fn MPI_Graph_neighbors_count(
+    comm: MPI_Comm,
+    rank: c_int,
+    nneighbors: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Graph_neighbors_count")
 }
 
@@ -606,7 +1153,13 @@ pub unsafe fn MPI_Grequest_complete(request: MPI_Request) -> c_int {
     crate::stub("MPI_Grequest_complete")
 }
 
-pub unsafe fn MPI_Grequest_start(query_fn: MPI_Grequest_query_function, free_fn: MPI_Grequest_free_function, cancel_fn: MPI_Grequest_cancel_function, extra_state: *mut c_void, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Grequest_start(
+    query_fn: MPI_Grequest_query_function,
+    free_fn: MPI_Grequest_free_function,
+    cancel_fn: MPI_Grequest_cancel_function,
+    extra_state: *mut c_void,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Grequest_start")
 }
 
@@ -618,11 +1171,20 @@ pub unsafe fn MPI_Group_compare(group1: MPI_Group, group2: MPI_Group, result: *m
     crate::stub("MPI_Group_compare")
 }
 
-pub unsafe fn MPI_Group_difference(group1: MPI_Group, group2: MPI_Group, newgroup: *mut MPI_Group) -> c_int {
+pub unsafe fn MPI_Group_difference(
+    group1: MPI_Group,
+    group2: MPI_Group,
+    newgroup: *mut MPI_Group,
+) -> c_int {
     crate::stub("MPI_Group_difference")
 }
 
-pub unsafe fn MPI_Group_excl(group: MPI_Group, n: c_int, ranks: *const c_int, newgroup: *mut MPI_Group) -> c_int {
+pub unsafe fn MPI_Group_excl(
+    group: MPI_Group,
+    n: c_int,
+    ranks: *const c_int,
+    newgroup: *mut MPI_Group,
+) -> c_int {
     crate::stub("MPI_Group_excl")
 }
 
@@ -634,19 +1196,38 @@ pub unsafe fn MPI_Group_free(group: *mut MPI_Group) -> c_int {
     crate::stub("MPI_Group_free")
 }
 
-pub unsafe fn MPI_Group_incl(group: MPI_Group, n: c_int, ranks: *const c_int, newgroup: *mut MPI_Group) -> c_int {
+pub unsafe fn MPI_Group_incl(
+    group: MPI_Group,
+    n: c_int,
+    ranks: *const c_int,
+    newgroup: *mut MPI_Group,
+) -> c_int {
     crate::stub("MPI_Group_incl")
 }
 
-pub unsafe fn MPI_Group_intersection(group1: MPI_Group, group2: MPI_Group, newgroup: *mut MPI_Group) -> c_int {
+pub unsafe fn MPI_Group_intersection(
+    group1: MPI_Group,
+    group2: MPI_Group,
+    newgroup: *mut MPI_Group,
+) -> c_int {
     crate::stub("MPI_Group_intersection")
 }
 
-pub unsafe fn MPI_Group_range_excl(group: MPI_Group, n: c_int, ranges: *mut [c_int; 3], newgroup: *mut MPI_Group) -> c_int {
+pub unsafe fn MPI_Group_range_excl(
+    group: MPI_Group,
+    n: c_int,
+    ranges: *mut [c_int; 3],
+    newgroup: *mut MPI_Group,
+) -> c_int {
     crate::stub("MPI_Group_range_excl")
 }
 
-pub unsafe fn MPI_Group_range_incl(group: MPI_Group, n: c_int, ranges: *mut [c_int; 3], newgroup: *mut MPI_Group) -> c_int {
+pub unsafe fn MPI_Group_range_incl(
+    group: MPI_Group,
+    n: c_int,
+    ranges: *mut [c_int; 3],
+    newgroup: *mut MPI_Group,
+) -> c_int {
     crate::stub("MPI_Group_range_incl")
 }
 
@@ -658,35 +1239,103 @@ pub unsafe fn MPI_Group_size(group: MPI_Group, size: *mut c_int) -> c_int {
     crate::stub("MPI_Group_size")
 }
 
-pub unsafe fn MPI_Group_translate_ranks(group1: MPI_Group, n: c_int, ranks1: *const c_int, group2: MPI_Group, ranks2: *mut c_int) -> c_int {
+pub unsafe fn MPI_Group_translate_ranks(
+    group1: MPI_Group,
+    n: c_int,
+    ranks1: *const c_int,
+    group2: MPI_Group,
+    ranks2: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Group_translate_ranks")
 }
 
-pub unsafe fn MPI_Group_union(group1: MPI_Group, group2: MPI_Group, newgroup: *mut MPI_Group) -> c_int {
+pub unsafe fn MPI_Group_union(
+    group1: MPI_Group,
+    group2: MPI_Group,
+    newgroup: *mut MPI_Group,
+) -> c_int {
     crate::stub("MPI_Group_union")
 }
 
-pub unsafe fn MPI_Iallgather(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Iallgather(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Iallgather")
 }
 
-pub unsafe fn MPI_Iallgatherv(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcounts: *const c_int, displs: *const c_int, recvtype: MPI_Datatype, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Iallgatherv(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    displs: *const c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Iallgatherv")
 }
 
-pub unsafe fn MPI_Iallreduce(sendbuf: *const c_void, recvbuf: *mut c_void, count: c_int, datatype: MPI_Datatype, op: MPI_Op, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Iallreduce(
+    sendbuf: *const c_void,
+    recvbuf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    op: MPI_Op,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Iallreduce")
 }
 
-pub unsafe fn MPI_Ialltoall(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Ialltoall(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Ialltoall")
 }
 
-pub unsafe fn MPI_Ialltoallv(sendbuf: *const c_void, sendcounts: *const c_int, sdispls: *const c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcounts: *const c_int, rdispls: *const c_int, recvtype: MPI_Datatype, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Ialltoallv(
+    sendbuf: *const c_void,
+    sendcounts: *const c_int,
+    sdispls: *const c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    rdispls: *const c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Ialltoallv")
 }
 
-pub unsafe fn MPI_Ialltoallw(sendbuf: *const c_void, sendcounts: *const c_int, sdispls: *const c_int, sendtypes: *const MPI_Datatype, recvbuf: *mut c_void, recvcounts: *const c_int, rdispls: *const c_int, recvtypes: *const MPI_Datatype, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Ialltoallw(
+    sendbuf: *const c_void,
+    sendcounts: *const c_int,
+    sdispls: *const c_int,
+    sendtypes: *const MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    rdispls: *const c_int,
+    recvtypes: *const MPI_Datatype,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Ialltoallw")
 }
 
@@ -694,51 +1343,158 @@ pub unsafe fn MPI_Ibarrier(comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
     crate::stub("MPI_Ibarrier")
 }
 
-pub unsafe fn MPI_Ibcast(buffer: *mut c_void, count: c_int, datatype: MPI_Datatype, root: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Ibcast(
+    buffer: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    root: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Ibcast")
 }
 
-pub unsafe fn MPI_Ibsend(buf: *const c_void, count: c_int, datatype: MPI_Datatype, dest: c_int, tag: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Ibsend(
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    dest: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Ibsend")
 }
 
-pub unsafe fn MPI_Iexscan(sendbuf: *const c_void, recvbuf: *mut c_void, count: c_int, datatype: MPI_Datatype, op: MPI_Op, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Iexscan(
+    sendbuf: *const c_void,
+    recvbuf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    op: MPI_Op,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Iexscan")
 }
 
-pub unsafe fn MPI_Igather(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, root: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Igather(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    root: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Igather")
 }
 
-pub unsafe fn MPI_Igatherv(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcounts: *const c_int, displs: *const c_int, recvtype: MPI_Datatype, root: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Igatherv(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    displs: *const c_int,
+    recvtype: MPI_Datatype,
+    root: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Igatherv")
 }
 
-pub unsafe fn MPI_Improbe(source: c_int, tag: c_int, comm: MPI_Comm, flag: *mut c_int, message: *mut MPI_Message, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_Improbe(
+    source: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+    flag: *mut c_int,
+    message: *mut MPI_Message,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_Improbe")
 }
 
-pub unsafe fn MPI_Imrecv(buf: *mut c_void, count: c_int, datatype: MPI_Datatype, message: *mut MPI_Message, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Imrecv(
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    message: *mut MPI_Message,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Imrecv")
 }
 
-pub unsafe fn MPI_Ineighbor_allgather(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Ineighbor_allgather(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Ineighbor_allgather")
 }
 
-pub unsafe fn MPI_Ineighbor_allgatherv(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcounts: *const c_int, displs: *const c_int, recvtype: MPI_Datatype, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Ineighbor_allgatherv(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    displs: *const c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Ineighbor_allgatherv")
 }
 
-pub unsafe fn MPI_Ineighbor_alltoall(sendbuf: *const c_void, sendcount: c_int, senddtype: MPI_Datatype, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Ineighbor_alltoall(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    senddtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Ineighbor_alltoall")
 }
 
-pub unsafe fn MPI_Ineighbor_alltoallv(sendbuf: *const c_void, sendcounts: *const c_int, sdispls: *const c_int, senddtype: MPI_Datatype, recvbuf: *mut c_void, recvcounts: *const c_int, rdispls: *const c_int, recvtype: MPI_Datatype, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Ineighbor_alltoallv(
+    sendbuf: *const c_void,
+    sendcounts: *const c_int,
+    sdispls: *const c_int,
+    senddtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    rdispls: *const c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Ineighbor_alltoallv")
 }
 
-pub unsafe fn MPI_Ineighbor_alltoallw(sendbuf: *const c_void, sendcounts: *const c_int, sdispls: *const MPI_Aint, sendtypes: *const MPI_Datatype, recvbuf: *mut c_void, recvcounts: *const c_int, rdispls: *const MPI_Aint, recvtypes: *const MPI_Datatype, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Ineighbor_alltoallw(
+    sendbuf: *const c_void,
+    sendcounts: *const c_int,
+    sdispls: *const MPI_Aint,
+    sendtypes: *const MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    rdispls: *const MPI_Aint,
+    recvtypes: *const MPI_Datatype,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Ineighbor_alltoallw")
 }
 
@@ -766,7 +1522,13 @@ pub unsafe fn MPI_Info_free(info: *mut MPI_Info) -> c_int {
     crate::stub("MPI_Info_free")
 }
 
-pub unsafe fn MPI_Info_get(info: MPI_Info, key: *const c_char, valuelen: c_int, value: *mut c_char, flag: *mut c_int) -> c_int {
+pub unsafe fn MPI_Info_get(
+    info: MPI_Info,
+    key: *const c_char,
+    valuelen: c_int,
+    value: *mut c_char,
+    flag: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Info_get")
 }
 
@@ -778,7 +1540,12 @@ pub unsafe fn MPI_Info_get_nthkey(info: MPI_Info, n: c_int, key: *mut c_char) ->
     crate::stub("MPI_Info_get_nthkey")
 }
 
-pub unsafe fn MPI_Info_get_valuelen(info: MPI_Info, key: *const c_char, valuelen: *mut c_int, flag: *mut c_int) -> c_int {
+pub unsafe fn MPI_Info_get_valuelen(
+    info: MPI_Info,
+    key: *const c_char,
+    valuelen: *mut c_int,
+    flag: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Info_get_valuelen")
 }
 
@@ -790,59 +1557,166 @@ pub unsafe fn MPI_Init(argc: *mut c_int, argv: *mut *mut *mut c_char) -> c_int {
     crate::stub("MPI_Init")
 }
 
-pub unsafe fn MPI_Intercomm_create(local_comm: MPI_Comm, local_leader: c_int, peer_comm: MPI_Comm, remote_leader: c_int, tag: c_int, newintercomm: *mut MPI_Comm) -> c_int {
+pub unsafe fn MPI_Intercomm_create(
+    local_comm: MPI_Comm,
+    local_leader: c_int,
+    peer_comm: MPI_Comm,
+    remote_leader: c_int,
+    tag: c_int,
+    newintercomm: *mut MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Intercomm_create")
 }
 
-pub unsafe fn MPI_Intercomm_merge(intercomm: MPI_Comm, high: c_int, newintracomm: *mut MPI_Comm) -> c_int {
+pub unsafe fn MPI_Intercomm_merge(
+    intercomm: MPI_Comm,
+    high: c_int,
+    newintracomm: *mut MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Intercomm_merge")
 }
 
-pub unsafe fn MPI_Iprobe(source: c_int, tag: c_int, comm: MPI_Comm, flag: *mut c_int, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_Iprobe(
+    source: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+    flag: *mut c_int,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_Iprobe")
 }
 
-pub unsafe fn MPI_Irecv(buf: *mut c_void, count: c_int, datatype: MPI_Datatype, source: c_int, tag: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Irecv(
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    source: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Irecv")
 }
 
-pub unsafe fn MPI_Ireduce(sendbuf: *const c_void, recvbuf: *mut c_void, count: c_int, datatype: MPI_Datatype, op: MPI_Op, root: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Ireduce(
+    sendbuf: *const c_void,
+    recvbuf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    op: MPI_Op,
+    root: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Ireduce")
 }
 
-pub unsafe fn MPI_Ireduce_scatter(sendbuf: *const c_void, recvbuf: *mut c_void, recvcounts: *const c_int, datatype: MPI_Datatype, op: MPI_Op, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Ireduce_scatter(
+    sendbuf: *const c_void,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    datatype: MPI_Datatype,
+    op: MPI_Op,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Ireduce_scatter")
 }
 
-pub unsafe fn MPI_Ireduce_scatter_block(sendbuf: *const c_void, recvbuf: *mut c_void, recvcount: c_int, datatype: MPI_Datatype, op: MPI_Op, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Ireduce_scatter_block(
+    sendbuf: *const c_void,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    datatype: MPI_Datatype,
+    op: MPI_Op,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Ireduce_scatter_block")
 }
 
-pub unsafe fn MPI_Irsend(buf: *const c_void, count: c_int, datatype: MPI_Datatype, dest: c_int, tag: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Irsend(
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    dest: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Irsend")
 }
 
-pub unsafe fn MPI_Iscan(sendbuf: *const c_void, recvbuf: *mut c_void, count: c_int, datatype: MPI_Datatype, op: MPI_Op, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Iscan(
+    sendbuf: *const c_void,
+    recvbuf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    op: MPI_Op,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Iscan")
 }
 
-pub unsafe fn MPI_Iscatter(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, root: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Iscatter(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    root: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Iscatter")
 }
 
-pub unsafe fn MPI_Iscatterv(sendbuf: *const c_void, sendcounts: *const c_int, displs: *const c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, root: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Iscatterv(
+    sendbuf: *const c_void,
+    sendcounts: *const c_int,
+    displs: *const c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    root: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Iscatterv")
 }
 
-pub unsafe fn MPI_Isend(buf: *const c_void, count: c_int, datatype: MPI_Datatype, dest: c_int, tag: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Isend(
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    dest: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Isend")
 }
 
-pub unsafe fn MPI_Issend(buf: *const c_void, count: c_int, datatype: MPI_Datatype, dest: c_int, tag: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Issend(
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    dest: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Issend")
 }
 
-pub unsafe fn MPI_Lookup_name(service_name: *const c_char, info: MPI_Info, port_name: *mut c_char) -> c_int {
+pub unsafe fn MPI_Lookup_name(
+    service_name: *const c_char,
+    info: MPI_Info,
+    port_name: *mut c_char,
+) -> c_int {
     crate::stub("MPI_Lookup_name")
 }
 
@@ -854,23 +1728,68 @@ pub unsafe fn MPI_Message_f2c(message: MPI_Fint) -> MPI_Message {
     crate::stub("MPI_Message_f2c")
 }
 
-pub unsafe fn MPI_Neighbor_allgather(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Neighbor_allgather(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Neighbor_allgather")
 }
 
-pub unsafe fn MPI_Neighbor_allgatherv(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcounts: *const c_int, displs: *const c_int, recvtype: MPI_Datatype, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Neighbor_allgatherv(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    displs: *const c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Neighbor_allgatherv")
 }
 
-pub unsafe fn MPI_Neighbor_alltoall(sendbuf: *const c_void, sendcount: c_int, senddtype: MPI_Datatype, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Neighbor_alltoall(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    senddtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Neighbor_alltoall")
 }
 
-pub unsafe fn MPI_Neighbor_alltoallv(sendbuf: *const c_void, sendcounts: *const c_int, sdispls: *const c_int, senddtype: MPI_Datatype, recvbuf: *mut c_void, recvcounts: *const c_int, rdispls: *const c_int, recvtype: MPI_Datatype, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Neighbor_alltoallv(
+    sendbuf: *const c_void,
+    sendcounts: *const c_int,
+    sdispls: *const c_int,
+    senddtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    rdispls: *const c_int,
+    recvtype: MPI_Datatype,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Neighbor_alltoallv")
 }
 
-pub unsafe fn MPI_Neighbor_alltoallw(sendbuf: *const c_void, sendcounts: *const c_int, sdispls: *const MPI_Aint, sendtypes: *const MPI_Datatype, recvbuf: *mut c_void, recvcounts: *const c_int, rdispls: *const MPI_Aint, recvtypes: *const MPI_Datatype, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Neighbor_alltoallw(
+    sendbuf: *const c_void,
+    sendcounts: *const c_int,
+    sdispls: *const MPI_Aint,
+    sendtypes: *const MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    rdispls: *const MPI_Aint,
+    recvtypes: *const MPI_Datatype,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Neighbor_alltoallw")
 }
 
@@ -898,59 +1817,156 @@ pub unsafe fn MPI_Open_port(info: MPI_Info, port_name: *mut c_char) -> c_int {
     crate::stub("MPI_Open_port")
 }
 
-pub unsafe fn MPI_Pack(inbuf: *const c_void, incount: c_int, datatype: MPI_Datatype, outbuf: *mut c_void, outsize: c_int, position: *mut c_int, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Pack(
+    inbuf: *const c_void,
+    incount: c_int,
+    datatype: MPI_Datatype,
+    outbuf: *mut c_void,
+    outsize: c_int,
+    position: *mut c_int,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Pack")
 }
 
-pub unsafe fn MPI_Pack_external(datarep: *const c_char, inbuf: *const c_void, incount: c_int, datatype: MPI_Datatype, outbuf: *mut c_void, outsize: MPI_Aint, position: *mut MPI_Aint) -> c_int {
+pub unsafe fn MPI_Pack_external(
+    datarep: *const c_char,
+    inbuf: *const c_void,
+    incount: c_int,
+    datatype: MPI_Datatype,
+    outbuf: *mut c_void,
+    outsize: MPI_Aint,
+    position: *mut MPI_Aint,
+) -> c_int {
     crate::stub("MPI_Pack_external")
 }
 
-pub unsafe fn MPI_Pack_external_size(datarep: *const c_char, incount: c_int, datatype: MPI_Datatype, size: *mut MPI_Aint) -> c_int {
+pub unsafe fn MPI_Pack_external_size(
+    datarep: *const c_char,
+    incount: c_int,
+    datatype: MPI_Datatype,
+    size: *mut MPI_Aint,
+) -> c_int {
     crate::stub("MPI_Pack_external_size")
 }
 
-pub unsafe fn MPI_Pack_size(incount: c_int, datatype: MPI_Datatype, comm: MPI_Comm, size: *mut c_int) -> c_int {
+pub unsafe fn MPI_Pack_size(
+    incount: c_int,
+    datatype: MPI_Datatype,
+    comm: MPI_Comm,
+    size: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Pack_size")
 }
 
-pub unsafe fn MPI_Probe(source: c_int, tag: c_int, comm: MPI_Comm, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_Probe(
+    source: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_Probe")
 }
 
-pub unsafe fn MPI_Publish_name(service_name: *const c_char, info: MPI_Info, port_name: *const c_char) -> c_int {
+pub unsafe fn MPI_Publish_name(
+    service_name: *const c_char,
+    info: MPI_Info,
+    port_name: *const c_char,
+) -> c_int {
     crate::stub("MPI_Publish_name")
 }
 
-pub unsafe fn MPI_Put(origin_addr: *const c_void, origin_count: c_int, origin_datatype: MPI_Datatype, target_rank: c_int, target_disp: MPI_Aint, target_count: c_int, target_datatype: MPI_Datatype, win: MPI_Win) -> c_int {
+pub unsafe fn MPI_Put(
+    origin_addr: *const c_void,
+    origin_count: c_int,
+    origin_datatype: MPI_Datatype,
+    target_rank: c_int,
+    target_disp: MPI_Aint,
+    target_count: c_int,
+    target_datatype: MPI_Datatype,
+    win: MPI_Win,
+) -> c_int {
     crate::stub("MPI_Put")
 }
 
-pub unsafe fn MPI_Raccumulate(origin_addr: *const c_void, origin_count: c_int, origin_datatype: MPI_Datatype, target_rank: c_int, target_disp: MPI_Aint, target_count: c_int, target_datatype: MPI_Datatype, op: MPI_Op, win: MPI_Win, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Raccumulate(
+    origin_addr: *const c_void,
+    origin_count: c_int,
+    origin_datatype: MPI_Datatype,
+    target_rank: c_int,
+    target_disp: MPI_Aint,
+    target_count: c_int,
+    target_datatype: MPI_Datatype,
+    op: MPI_Op,
+    win: MPI_Win,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Raccumulate")
 }
 
-pub unsafe fn MPI_Recv_init(buf: *mut c_void, count: c_int, datatype: MPI_Datatype, source: c_int, tag: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Recv_init(
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    source: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Recv_init")
 }
 
-pub unsafe fn MPI_Reduce(sendbuf: *const c_void, recvbuf: *mut c_void, count: c_int, datatype: MPI_Datatype, op: MPI_Op, root: c_int, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Reduce(
+    sendbuf: *const c_void,
+    recvbuf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    op: MPI_Op,
+    root: c_int,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Reduce")
 }
 
-pub unsafe fn MPI_Reduce_local(inbuf: *const c_void, inoutbuf: *mut c_void, count: c_int, datatype: MPI_Datatype, op: MPI_Op) -> c_int {
+pub unsafe fn MPI_Reduce_local(
+    inbuf: *const c_void,
+    inoutbuf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    op: MPI_Op,
+) -> c_int {
     crate::stub("MPI_Reduce_local")
 }
 
-pub unsafe fn MPI_Reduce_scatter(sendbuf: *const c_void, recvbuf: *mut c_void, recvcounts: *const c_int, datatype: MPI_Datatype, op: MPI_Op, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Reduce_scatter(
+    sendbuf: *const c_void,
+    recvbuf: *mut c_void,
+    recvcounts: *const c_int,
+    datatype: MPI_Datatype,
+    op: MPI_Op,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Reduce_scatter")
 }
 
-pub unsafe fn MPI_Reduce_scatter_block(sendbuf: *const c_void, recvbuf: *mut c_void, recvcount: c_int, datatype: MPI_Datatype, op: MPI_Op, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Reduce_scatter_block(
+    sendbuf: *const c_void,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    datatype: MPI_Datatype,
+    op: MPI_Op,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Reduce_scatter_block")
 }
 
-pub unsafe fn MPI_Register_datarep(datarep: *const c_char, read_conversion_fn: MPI_Datarep_conversion_function, write_conversion_fn: MPI_Datarep_conversion_function, dtype_file_extent_fn: MPI_Datarep_extent_function, extra_state: *mut c_void) -> c_int {
+pub unsafe fn MPI_Register_datarep(
+    datarep: *const c_char,
+    read_conversion_fn: MPI_Datarep_conversion_function,
+    write_conversion_fn: MPI_Datarep_conversion_function,
+    dtype_file_extent_fn: MPI_Datarep_extent_function,
+    extra_state: *mut c_void,
+) -> c_int {
     crate::stub("MPI_Register_datarep")
 }
 
@@ -966,59 +1982,184 @@ pub unsafe fn MPI_Request_free(request: *mut MPI_Request) -> c_int {
     crate::stub("MPI_Request_free")
 }
 
-pub unsafe fn MPI_Request_get_status(request: MPI_Request, flag: *mut c_int, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_Request_get_status(
+    request: MPI_Request,
+    flag: *mut c_int,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_Request_get_status")
 }
 
-pub unsafe fn MPI_Rget(origin_addr: *mut c_void, origin_count: c_int, origin_datatype: MPI_Datatype, target_rank: c_int, target_disp: MPI_Aint, target_count: c_int, target_datatype: MPI_Datatype, win: MPI_Win, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Rget(
+    origin_addr: *mut c_void,
+    origin_count: c_int,
+    origin_datatype: MPI_Datatype,
+    target_rank: c_int,
+    target_disp: MPI_Aint,
+    target_count: c_int,
+    target_datatype: MPI_Datatype,
+    win: MPI_Win,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Rget")
 }
 
-pub unsafe fn MPI_Rget_accumulate(origin_addr: *const c_void, origin_count: c_int, origin_datatype: MPI_Datatype, result_addr: *mut c_void, result_count: c_int, result_datatype: MPI_Datatype, target_rank: c_int, target_disp: MPI_Aint, target_count: c_int, target_datatype: MPI_Datatype, op: MPI_Op, win: MPI_Win, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Rget_accumulate(
+    origin_addr: *const c_void,
+    origin_count: c_int,
+    origin_datatype: MPI_Datatype,
+    result_addr: *mut c_void,
+    result_count: c_int,
+    result_datatype: MPI_Datatype,
+    target_rank: c_int,
+    target_disp: MPI_Aint,
+    target_count: c_int,
+    target_datatype: MPI_Datatype,
+    op: MPI_Op,
+    win: MPI_Win,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Rget_accumulate")
 }
 
-pub unsafe fn MPI_Rput(origin_addr: *const c_void, origin_count: c_int, origin_datatype: MPI_Datatype, target_rank: c_int, target_disp: MPI_Aint, target_count: c_int, target_datatype: MPI_Datatype, win: MPI_Win, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Rput(
+    origin_addr: *const c_void,
+    origin_count: c_int,
+    origin_datatype: MPI_Datatype,
+    target_rank: c_int,
+    target_disp: MPI_Aint,
+    target_count: c_int,
+    target_datatype: MPI_Datatype,
+    win: MPI_Win,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Rput")
 }
 
-pub unsafe fn MPI_Rsend(buf: *const c_void, count: c_int, datatype: MPI_Datatype, dest: c_int, tag: c_int, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Rsend(
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    dest: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Rsend")
 }
 
-pub unsafe fn MPI_Rsend_init(buf: *const c_void, count: c_int, datatype: MPI_Datatype, dest: c_int, tag: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Rsend_init(
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    dest: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Rsend_init")
 }
 
-pub unsafe fn MPI_Scan(sendbuf: *const c_void, recvbuf: *mut c_void, count: c_int, datatype: MPI_Datatype, op: MPI_Op, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Scan(
+    sendbuf: *const c_void,
+    recvbuf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    op: MPI_Op,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Scan")
 }
 
-pub unsafe fn MPI_Scatter(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, root: c_int, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Scatter(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    root: c_int,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Scatter")
 }
 
-pub unsafe fn MPI_Scatterv(sendbuf: *const c_void, sendcounts: *const c_int, displs: *const c_int, sendtype: MPI_Datatype, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, root: c_int, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Scatterv(
+    sendbuf: *const c_void,
+    sendcounts: *const c_int,
+    displs: *const c_int,
+    sendtype: MPI_Datatype,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    root: c_int,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Scatterv")
 }
 
-pub unsafe fn MPI_Send_init(buf: *const c_void, count: c_int, datatype: MPI_Datatype, dest: c_int, tag: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Send_init(
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    dest: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Send_init")
 }
 
-pub unsafe fn MPI_Sendrecv(sendbuf: *const c_void, sendcount: c_int, sendtype: MPI_Datatype, dest: c_int, sendtag: c_int, recvbuf: *mut c_void, recvcount: c_int, recvtype: MPI_Datatype, source: c_int, recvtag: c_int, comm: MPI_Comm, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_Sendrecv(
+    sendbuf: *const c_void,
+    sendcount: c_int,
+    sendtype: MPI_Datatype,
+    dest: c_int,
+    sendtag: c_int,
+    recvbuf: *mut c_void,
+    recvcount: c_int,
+    recvtype: MPI_Datatype,
+    source: c_int,
+    recvtag: c_int,
+    comm: MPI_Comm,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_Sendrecv")
 }
 
-pub unsafe fn MPI_Sendrecv_replace(buf: *mut c_void, count: c_int, datatype: MPI_Datatype, dest: c_int, sendtag: c_int, source: c_int, recvtag: c_int, comm: MPI_Comm, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_Sendrecv_replace(
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    dest: c_int,
+    sendtag: c_int,
+    source: c_int,
+    recvtag: c_int,
+    comm: MPI_Comm,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_Sendrecv_replace")
 }
 
-pub unsafe fn MPI_Ssend(buf: *const c_void, count: c_int, datatype: MPI_Datatype, dest: c_int, tag: c_int, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Ssend(
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    dest: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Ssend")
 }
 
-pub unsafe fn MPI_Ssend_init(buf: *const c_void, count: c_int, datatype: MPI_Datatype, dest: c_int, tag: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {
+pub unsafe fn MPI_Ssend_init(
+    buf: *const c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    dest: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+    request: *mut MPI_Request,
+) -> c_int {
     crate::stub("MPI_Ssend_init")
 }
 
@@ -1042,15 +2183,27 @@ pub unsafe fn MPI_Status_set_cancelled(status: *mut MPI_Status, flag: c_int) -> 
     crate::stub("MPI_Status_set_cancelled")
 }
 
-pub unsafe fn MPI_Status_set_elements(status: *mut MPI_Status, datatype: MPI_Datatype, count: c_int) -> c_int {
+pub unsafe fn MPI_Status_set_elements(
+    status: *mut MPI_Status,
+    datatype: MPI_Datatype,
+    count: c_int,
+) -> c_int {
     crate::stub("MPI_Status_set_elements")
 }
 
-pub unsafe fn MPI_Status_set_elements_x(status: *mut MPI_Status, datatype: MPI_Datatype, count: MPI_Count) -> c_int {
+pub unsafe fn MPI_Status_set_elements_x(
+    status: *mut MPI_Status,
+    datatype: MPI_Datatype,
+    count: MPI_Count,
+) -> c_int {
     crate::stub("MPI_Status_set_elements_x")
 }
 
-pub unsafe fn MPI_Test(request: *mut MPI_Request, flag: *mut c_int, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_Test(
+    request: *mut MPI_Request,
+    flag: *mut c_int,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_Test")
 }
 
@@ -1058,15 +2211,32 @@ pub unsafe fn MPI_Test_cancelled(status: *const MPI_Status, flag: *mut c_int) ->
     crate::stub("MPI_Test_cancelled")
 }
 
-pub unsafe fn MPI_Testall(count: c_int, array_of_requests: *mut MPI_Request, flag: *mut c_int, array_of_statuses: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_Testall(
+    count: c_int,
+    array_of_requests: *mut MPI_Request,
+    flag: *mut c_int,
+    array_of_statuses: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_Testall")
 }
 
-pub unsafe fn MPI_Testany(count: c_int, array_of_requests: *mut MPI_Request, index: *mut c_int, flag: *mut c_int, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_Testany(
+    count: c_int,
+    array_of_requests: *mut MPI_Request,
+    index: *mut c_int,
+    flag: *mut c_int,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_Testany")
 }
 
-pub unsafe fn MPI_Testsome(incount: c_int, array_of_requests: *mut MPI_Request, outcount: *mut c_int, array_of_indices: *mut c_int, array_of_statuses: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_Testsome(
+    incount: c_int,
+    array_of_requests: *mut MPI_Request,
+    outcount: *mut c_int,
+    array_of_indices: *mut c_int,
+    array_of_statuses: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_Testsome")
 }
 
@@ -1082,15 +2252,34 @@ pub unsafe fn MPI_Type_commit(datatype: *mut MPI_Datatype) -> c_int {
     crate::stub("MPI_Type_commit")
 }
 
-pub unsafe fn MPI_Type_contiguous(count: c_int, oldtype: MPI_Datatype, newtype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_contiguous(
+    count: c_int,
+    oldtype: MPI_Datatype,
+    newtype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_contiguous")
 }
 
-pub unsafe fn MPI_Type_create_darray(size: c_int, rank: c_int, ndims: c_int, array_of_gsizes: *const c_int, array_of_distribs: *const c_int, array_of_dargs: *const c_int, array_of_psizes: *const c_int, order: c_int, oldtype: MPI_Datatype, newtype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_create_darray(
+    size: c_int,
+    rank: c_int,
+    ndims: c_int,
+    array_of_gsizes: *const c_int,
+    array_of_distribs: *const c_int,
+    array_of_dargs: *const c_int,
+    array_of_psizes: *const c_int,
+    order: c_int,
+    oldtype: MPI_Datatype,
+    newtype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_create_darray")
 }
 
-pub unsafe fn MPI_Type_create_f90_complex(precision: c_int, range: c_int, newtype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_create_f90_complex(
+    precision: c_int,
+    range: c_int,
+    newtype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_create_f90_complex")
 }
 
@@ -1098,39 +2287,91 @@ pub unsafe fn MPI_Type_create_f90_integer(range: c_int, newtype: *mut MPI_Dataty
     crate::stub("MPI_Type_create_f90_integer")
 }
 
-pub unsafe fn MPI_Type_create_f90_real(precision: c_int, range: c_int, newtype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_create_f90_real(
+    precision: c_int,
+    range: c_int,
+    newtype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_create_f90_real")
 }
 
-pub unsafe fn MPI_Type_create_hindexed(count: c_int, array_of_blocklengths: *const c_int, array_of_displacements: *const MPI_Aint, oldtype: MPI_Datatype, newtype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_create_hindexed(
+    count: c_int,
+    array_of_blocklengths: *const c_int,
+    array_of_displacements: *const MPI_Aint,
+    oldtype: MPI_Datatype,
+    newtype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_create_hindexed")
 }
 
-pub unsafe fn MPI_Type_create_hindexed_block(count: c_int, blocklength: c_int, array_of_displacements: *const MPI_Aint, oldtype: MPI_Datatype, newtype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_create_hindexed_block(
+    count: c_int,
+    blocklength: c_int,
+    array_of_displacements: *const MPI_Aint,
+    oldtype: MPI_Datatype,
+    newtype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_create_hindexed_block")
 }
 
-pub unsafe fn MPI_Type_create_hvector(count: c_int, blocklength: c_int, stride: MPI_Aint, oldtype: MPI_Datatype, newtype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_create_hvector(
+    count: c_int,
+    blocklength: c_int,
+    stride: MPI_Aint,
+    oldtype: MPI_Datatype,
+    newtype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_create_hvector")
 }
 
-pub unsafe fn MPI_Type_create_indexed_block(count: c_int, blocklength: c_int, array_of_displacements: *const c_int, oldtype: MPI_Datatype, newtype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_create_indexed_block(
+    count: c_int,
+    blocklength: c_int,
+    array_of_displacements: *const c_int,
+    oldtype: MPI_Datatype,
+    newtype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_create_indexed_block")
 }
 
-pub unsafe fn MPI_Type_create_keyval(type_copy_attr_fn: MPI_Type_copy_attr_function, type_delete_attr_fn: MPI_Type_delete_attr_function, type_keyval: *mut c_int, extra_state: *mut c_void) -> c_int {
+pub unsafe fn MPI_Type_create_keyval(
+    type_copy_attr_fn: MPI_Type_copy_attr_function,
+    type_delete_attr_fn: MPI_Type_delete_attr_function,
+    type_keyval: *mut c_int,
+    extra_state: *mut c_void,
+) -> c_int {
     crate::stub("MPI_Type_create_keyval")
 }
 
-pub unsafe fn MPI_Type_create_resized(oldtype: MPI_Datatype, lb: MPI_Aint, extent: MPI_Aint, newtype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_create_resized(
+    oldtype: MPI_Datatype,
+    lb: MPI_Aint,
+    extent: MPI_Aint,
+    newtype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_create_resized")
 }
 
-pub unsafe fn MPI_Type_create_struct(count: c_int, array_of_blocklengths: *const c_int, array_of_displacements: *const MPI_Aint, array_of_types: *const MPI_Datatype, newtype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_create_struct(
+    count: c_int,
+    array_of_blocklengths: *const c_int,
+    array_of_displacements: *const MPI_Aint,
+    array_of_types: *const MPI_Datatype,
+    newtype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_create_struct")
 }
 
-pub unsafe fn MPI_Type_create_subarray(ndims: c_int, array_of_sizes: *const c_int, array_of_subsizes: *const c_int, array_of_starts: *const c_int, ordder: c_int, oldtype: MPI_Datatype, newtype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_create_subarray(
+    ndims: c_int,
+    array_of_sizes: *const c_int,
+    array_of_subsizes: *const c_int,
+    array_of_starts: *const c_int,
+    ordder: c_int,
+    oldtype: MPI_Datatype,
+    newtype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_create_subarray")
 }
 
@@ -1154,47 +2395,100 @@ pub unsafe fn MPI_Type_free_keyval(type_keyval: *mut c_int) -> c_int {
     crate::stub("MPI_Type_free_keyval")
 }
 
-pub unsafe fn MPI_Type_get_attr(type_: MPI_Datatype, type_keyval: c_int, attribute_val: *mut c_void, flag: *mut c_int) -> c_int {
+pub unsafe fn MPI_Type_get_attr(
+    type_: MPI_Datatype,
+    type_keyval: c_int,
+    attribute_val: *mut c_void,
+    flag: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Type_get_attr")
 }
 
-pub unsafe fn MPI_Type_get_contents(datatype: MPI_Datatype, max_integers: c_int, max_addresses: c_int, max_datatypes: c_int, array_of_integers: *mut c_int, array_of_addresses: *mut MPI_Aint, array_of_datatypes: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_get_contents(
+    datatype: MPI_Datatype,
+    max_integers: c_int,
+    max_addresses: c_int,
+    max_datatypes: c_int,
+    array_of_integers: *mut c_int,
+    array_of_addresses: *mut MPI_Aint,
+    array_of_datatypes: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_get_contents")
 }
 
-pub unsafe fn MPI_Type_get_envelope(datatype: MPI_Datatype, num_integers: *mut c_int, num_addresses: *mut c_int, num_datatypes: *mut c_int, combiner: *mut c_int) -> c_int {
+pub unsafe fn MPI_Type_get_envelope(
+    datatype: MPI_Datatype,
+    num_integers: *mut c_int,
+    num_addresses: *mut c_int,
+    num_datatypes: *mut c_int,
+    combiner: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Type_get_envelope")
 }
 
-pub unsafe fn MPI_Type_get_extent(datatype: MPI_Datatype, lb: *mut MPI_Aint, extent: *mut MPI_Aint) -> c_int {
+pub unsafe fn MPI_Type_get_extent(
+    datatype: MPI_Datatype,
+    lb: *mut MPI_Aint,
+    extent: *mut MPI_Aint,
+) -> c_int {
     crate::stub("MPI_Type_get_extent")
 }
 
-pub unsafe fn MPI_Type_get_extent_x(datatype: MPI_Datatype, lb: *mut MPI_Count, extent: *mut MPI_Count) -> c_int {
+pub unsafe fn MPI_Type_get_extent_x(
+    datatype: MPI_Datatype,
+    lb: *mut MPI_Count,
+    extent: *mut MPI_Count,
+) -> c_int {
     crate::stub("MPI_Type_get_extent_x")
 }
 
-pub unsafe fn MPI_Type_get_name(type_: MPI_Datatype, type_name: *mut c_char, resultlen: *mut c_int) -> c_int {
+pub unsafe fn MPI_Type_get_name(
+    type_: MPI_Datatype,
+    type_name: *mut c_char,
+    resultlen: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Type_get_name")
 }
 
-pub unsafe fn MPI_Type_get_true_extent(datatype: MPI_Datatype, true_lb: *mut MPI_Aint, true_extent: *mut MPI_Aint) -> c_int {
+pub unsafe fn MPI_Type_get_true_extent(
+    datatype: MPI_Datatype,
+    true_lb: *mut MPI_Aint,
+    true_extent: *mut MPI_Aint,
+) -> c_int {
     crate::stub("MPI_Type_get_true_extent")
 }
 
-pub unsafe fn MPI_Type_get_true_extent_x(datatype: MPI_Datatype, true_lb: *mut MPI_Count, true_extent: *mut MPI_Count) -> c_int {
+pub unsafe fn MPI_Type_get_true_extent_x(
+    datatype: MPI_Datatype,
+    true_lb: *mut MPI_Count,
+    true_extent: *mut MPI_Count,
+) -> c_int {
     crate::stub("MPI_Type_get_true_extent_x")
 }
 
-pub unsafe fn MPI_Type_indexed(count: c_int, array_of_blocklengths: *const c_int, array_of_displacements: *const c_int, oldtype: MPI_Datatype, newtype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_indexed(
+    count: c_int,
+    array_of_blocklengths: *const c_int,
+    array_of_displacements: *const c_int,
+    oldtype: MPI_Datatype,
+    newtype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_indexed")
 }
 
-pub unsafe fn MPI_Type_match_size(typeclass: c_int, size: c_int, datatype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_match_size(
+    typeclass: c_int,
+    size: c_int,
+    datatype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_match_size")
 }
 
-pub unsafe fn MPI_Type_set_attr(type_: MPI_Datatype, type_keyval: c_int, attribute_val: *mut c_void) -> c_int {
+pub unsafe fn MPI_Type_set_attr(
+    type_: MPI_Datatype,
+    type_keyval: c_int,
+    attribute_val: *mut c_void,
+) -> c_int {
     crate::stub("MPI_Type_set_attr")
 }
 
@@ -1210,23 +2504,55 @@ pub unsafe fn MPI_Type_size_x(datatype: MPI_Datatype, size: *mut MPI_Count) -> c
     crate::stub("MPI_Type_size_x")
 }
 
-pub unsafe fn MPI_Type_struct(count: c_int, array_of_blocklengths: *const c_int, array_of_displacements: *const MPI_Aint, array_of_types: *const MPI_Datatype, newtype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_struct(
+    count: c_int,
+    array_of_blocklengths: *const c_int,
+    array_of_displacements: *const MPI_Aint,
+    array_of_types: *const MPI_Datatype,
+    newtype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_struct")
 }
 
-pub unsafe fn MPI_Type_vector(count: c_int, blocklength: c_int, stride: c_int, oldtype: MPI_Datatype, newtype: *mut MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Type_vector(
+    count: c_int,
+    blocklength: c_int,
+    stride: c_int,
+    oldtype: MPI_Datatype,
+    newtype: *mut MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Type_vector")
 }
 
-pub unsafe fn MPI_Unpack(inbuf: *const c_void, insize: c_int, position: *mut c_int, outbuf: *mut c_void, outcount: c_int, datatype: MPI_Datatype, comm: MPI_Comm) -> c_int {
+pub unsafe fn MPI_Unpack(
+    inbuf: *const c_void,
+    insize: c_int,
+    position: *mut c_int,
+    outbuf: *mut c_void,
+    outcount: c_int,
+    datatype: MPI_Datatype,
+    comm: MPI_Comm,
+) -> c_int {
     crate::stub("MPI_Unpack")
 }
 
-pub unsafe fn MPI_Unpack_external(datarep: *const c_char, inbuf: *const c_void, insize: MPI_Aint, position: *mut MPI_Aint, outbuf: *mut c_void, outcount: c_int, datatype: MPI_Datatype) -> c_int {
+pub unsafe fn MPI_Unpack_external(
+    datarep: *const c_char,
+    inbuf: *const c_void,
+    insize: MPI_Aint,
+    position: *mut MPI_Aint,
+    outbuf: *mut c_void,
+    outcount: c_int,
+    datatype: MPI_Datatype,
+) -> c_int {
     crate::stub("MPI_Unpack_external")
 }
 
-pub unsafe fn MPI_Unpublish_name(service_name: *const c_char, info: MPI_Info, port_name: *const c_char) -> c_int {
+pub unsafe fn MPI_Unpublish_name(
+    service_name: *const c_char,
+    info: MPI_Info,
+    port_name: *const c_char,
+) -> c_int {
     crate::stub("MPI_Unpublish_name")
 }
 
@@ -1234,23 +2560,52 @@ pub unsafe fn MPI_Wait(request: *mut MPI_Request, status: *mut MPI_Status) -> c_
     crate::stub("MPI_Wait")
 }
 
-pub unsafe fn MPI_Waitall(count: c_int, array_of_requests: *mut MPI_Request, array_of_statuses: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_Waitall(
+    count: c_int,
+    array_of_requests: *mut MPI_Request,
+    array_of_statuses: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_Waitall")
 }
 
-pub unsafe fn MPI_Waitany(count: c_int, array_of_requests: *mut MPI_Request, index: *mut c_int, status: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_Waitany(
+    count: c_int,
+    array_of_requests: *mut MPI_Request,
+    index: *mut c_int,
+    status: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_Waitany")
 }
 
-pub unsafe fn MPI_Waitsome(incount: c_int, array_of_requests: *mut MPI_Request, outcount: *mut c_int, array_of_indices: *mut c_int, array_of_statuses: *mut MPI_Status) -> c_int {
+pub unsafe fn MPI_Waitsome(
+    incount: c_int,
+    array_of_requests: *mut MPI_Request,
+    outcount: *mut c_int,
+    array_of_indices: *mut c_int,
+    array_of_statuses: *mut MPI_Status,
+) -> c_int {
     crate::stub("MPI_Waitsome")
 }
 
-pub unsafe fn MPI_Win_allocate(size: MPI_Aint, disp_unit: c_int, info: MPI_Info, comm: MPI_Comm, baseptr: *mut c_void, win: *mut MPI_Win) -> c_int {
+pub unsafe fn MPI_Win_allocate(
+    size: MPI_Aint,
+    disp_unit: c_int,
+    info: MPI_Info,
+    comm: MPI_Comm,
+    baseptr: *mut c_void,
+    win: *mut MPI_Win,
+) -> c_int {
     crate::stub("MPI_Win_allocate")
 }
 
-pub unsafe fn MPI_Win_allocate_shared(size: MPI_Aint, disp_unit: c_int, info: MPI_Info, comm: MPI_Comm, baseptr: *mut c_void, win: *mut MPI_Win) -> c_int {
+pub unsafe fn MPI_Win_allocate_shared(
+    size: MPI_Aint,
+    disp_unit: c_int,
+    info: MPI_Info,
+    comm: MPI_Comm,
+    baseptr: *mut c_void,
+    win: *mut MPI_Win,
+) -> c_int {
     crate::stub("MPI_Win_allocate_shared")
 }
 
@@ -1270,7 +2625,14 @@ pub unsafe fn MPI_Win_complete(win: MPI_Win) -> c_int {
     crate::stub("MPI_Win_complete")
 }
 
-pub unsafe fn MPI_Win_create(base: *mut c_void, size: MPI_Aint, disp_unit: c_int, info: MPI_Info, comm: MPI_Comm, win: *mut MPI_Win) -> c_int {
+pub unsafe fn MPI_Win_create(
+    base: *mut c_void,
+    size: MPI_Aint,
+    disp_unit: c_int,
+    info: MPI_Info,
+    comm: MPI_Comm,
+    win: *mut MPI_Win,
+) -> c_int {
     crate::stub("MPI_Win_create")
 }
 
@@ -1278,11 +2640,19 @@ pub unsafe fn MPI_Win_create_dynamic(info: MPI_Info, comm: MPI_Comm, win: *mut M
     crate::stub("MPI_Win_create_dynamic")
 }
 
-pub unsafe fn MPI_Win_create_errhandler(win_errhandler_fn: MPI_Win_errhandler_function, errhandler: *mut MPI_Errhandler) -> c_int {
+pub unsafe fn MPI_Win_create_errhandler(
+    win_errhandler_fn: MPI_Win_errhandler_function,
+    errhandler: *mut MPI_Errhandler,
+) -> c_int {
     crate::stub("MPI_Win_create_errhandler")
 }
 
-pub unsafe fn MPI_Win_create_keyval(win_copy_attr_fn: MPI_Win_copy_attr_function, win_delete_attr_fn: MPI_Win_delete_attr_function, win_keyval: *mut c_int, extra_state: *mut c_void) -> c_int {
+pub unsafe fn MPI_Win_create_keyval(
+    win_copy_attr_fn: MPI_Win_copy_attr_function,
+    win_delete_attr_fn: MPI_Win_delete_attr_function,
+    win_keyval: *mut c_int,
+    extra_state: *mut c_void,
+) -> c_int {
     crate::stub("MPI_Win_create_keyval")
 }
 
@@ -1326,7 +2696,12 @@ pub unsafe fn MPI_Win_free_keyval(win_keyval: *mut c_int) -> c_int {
     crate::stub("MPI_Win_free_keyval")
 }
 
-pub unsafe fn MPI_Win_get_attr(win: MPI_Win, win_keyval: c_int, attribute_val: *mut c_void, flag: *mut c_int) -> c_int {
+pub unsafe fn MPI_Win_get_attr(
+    win: MPI_Win,
+    win_keyval: c_int,
+    attribute_val: *mut c_void,
+    flag: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Win_get_attr")
 }
 
@@ -1342,7 +2717,11 @@ pub unsafe fn MPI_Win_get_info(win: MPI_Win, info_used: *mut MPI_Info) -> c_int 
     crate::stub("MPI_Win_get_info")
 }
 
-pub unsafe fn MPI_Win_get_name(win: MPI_Win, win_name: *mut c_char, resultlen: *mut c_int) -> c_int {
+pub unsafe fn MPI_Win_get_name(
+    win: MPI_Win,
+    win_name: *mut c_char,
+    resultlen: *mut c_int,
+) -> c_int {
     crate::stub("MPI_Win_get_name")
 }
 
@@ -1358,7 +2737,11 @@ pub unsafe fn MPI_Win_post(group: MPI_Group, assert: c_int, win: MPI_Win) -> c_i
     crate::stub("MPI_Win_post")
 }
 
-pub unsafe fn MPI_Win_set_attr(win: MPI_Win, win_keyval: c_int, attribute_val: *mut c_void) -> c_int {
+pub unsafe fn MPI_Win_set_attr(
+    win: MPI_Win,
+    win_keyval: c_int,
+    attribute_val: *mut c_void,
+) -> c_int {
     crate::stub("MPI_Win_set_attr")
 }
 
@@ -1374,7 +2757,13 @@ pub unsafe fn MPI_Win_set_name(win: MPI_Win, win_name: *const c_char) -> c_int {
     crate::stub("MPI_Win_set_name")
 }
 
-pub unsafe fn MPI_Win_shared_query(win: MPI_Win, rank: c_int, size: *mut MPI_Aint, disp_unit: *mut c_int, baseptr: *mut c_void) -> c_int {
+pub unsafe fn MPI_Win_shared_query(
+    win: MPI_Win,
+    rank: c_int,
+    size: *mut MPI_Aint,
+    disp_unit: *mut c_int,
+    baseptr: *mut c_void,
+) -> c_int {
     crate::stub("MPI_Win_shared_query")
 }
 
@@ -3125,4 +4514,3 @@ pub fn RSMPI_WTIME_IS_GLOBAL() -> c_int {
 pub fn RSMPI_WTIME_IS_GLOBAL_fn() -> c_int {
     crate::stub("RSMPI_WTIME_IS_GLOBAL_fn")
 }
-

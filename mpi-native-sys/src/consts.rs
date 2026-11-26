@@ -245,10 +245,22 @@ mod tests {
     fn tables_are_consistent_with_the_design() {
         let m = Consts::for_family(Family::Mpich, |_| unreachable!());
         let a = Consts::for_family(Family::StandardAbi, |_| unreachable!());
-        assert_eq!((m.comm_world, m.comm_self, m.comm_null), (0x44000000, 0x44000001, 0x04000000));
-        assert_eq!((a.comm_world, a.comm_self, a.comm_null), (0x101, 0x102, 0x100));
-        assert_eq!((m.byte, m.uint8_t, a.byte, a.uint8_t), (0x4c00010d, 0x4c00013b, 0x247, 0x241));
-        assert_eq!((m.any_source, m.proc_null, a.any_source, a.proc_null), (-2, -1, -1, -3));
+        assert_eq!(
+            (m.comm_world, m.comm_self, m.comm_null),
+            (0x44000000, 0x44000001, 0x04000000)
+        );
+        assert_eq!(
+            (a.comm_world, a.comm_self, a.comm_null),
+            (0x101, 0x102, 0x100)
+        );
+        assert_eq!(
+            (m.byte, m.uint8_t, a.byte, a.uint8_t),
+            (0x4c00010d, 0x4c00013b, 0x247, 0x241)
+        );
+        assert_eq!(
+            (m.any_source, m.proc_null, a.any_source, a.proc_null),
+            (-2, -1, -1, -3)
+        );
         assert_eq!((m.status_offsets.0, a.status_offsets.0), (8, 0));
         assert_eq!((a.thread_serialized, a.thread_multiple), (2048, 4096));
         assert!(m.thread_single < m.thread_funneled && a.thread_funneled < a.thread_serialized);

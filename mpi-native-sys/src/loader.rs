@@ -10,12 +10,16 @@
 //!
 //! **Caching (D12).** Detection runs under a `Mutex`; only a *success* is stored.
 
-use std::ffi::{c_void, CStr, CString};
-use std::os::raw::{c_char, c_int};
-use std::sync::{Mutex, OnceLock};
+use std::{
+    ffi::{c_void, CStr, CString},
+    os::raw::{c_char, c_int},
+    sync::{Mutex, OnceLock},
+};
 
-use crate::consts::{Consts, VERSION_BUFFER};
-use crate::detect::{decide, Candidate, Family, LoadError};
+use crate::{
+    consts::{Consts, VERSION_BUFFER},
+    detect::{decide, Candidate, Family, LoadError},
+};
 
 /// A detected, referenced MPI library. Process-global and never released.
 #[derive(Debug)]
@@ -50,13 +54,19 @@ struct Object {
 }
 
 fn walk() -> Vec<Object> {
-    unsafe extern "C" fn cb(info: *mut libc::dl_phdr_info, _size: usize, data: *mut c_void) -> c_int {
+    unsafe extern "C" fn cb(
+        info: *mut libc::dl_phdr_info,
+        _size: usize,
+        data: *mut c_void,
+    ) -> c_int {
         let objects = &mut *(data as *mut Vec<Object>);
         let info = &*info;
         let path = if info.dlpi_name.is_null() {
             String::new()
         } else {
-            CStr::from_ptr(info.dlpi_name).to_string_lossy().into_owned()
+            CStr::from_ptr(info.dlpi_name)
+                .to_string_lossy()
+                .into_owned()
         };
         let mut segments = Vec::new();
         for i in 0..info.dlpi_phnum as usize {
@@ -121,7 +131,10 @@ fn probe(object: &Object) -> Option<(Candidate, usize)> {
             return None;
         }
         let own = |n: &str| own_symbol(handle, object, &c(n));
-        let mut cand = Candidate { path: object.path.clone(), ..Default::default() };
+        let mut cand = Candidate {
+            path: object.path.clone(),
+            ..Default::default()
+        };
         cand.mpiabi_marker = !own("MPIABI_Get_library_version").is_null();
         let abi = own("MPI_Abi_get_version");
         let pmpi = own("PMPI_Get_library_version");
@@ -175,7 +188,11 @@ pub fn detect_in_process() -> Result<Loaded, LoadError> {
     let consts = Consts::for_family(decision.family, |name| {
         // SAFETY: `handle` is a live reference; a data symbol's address is its value.
         let p = unsafe { libc::dlsym(handle as *mut c_void, c(name).as_ptr()) };
-        assert!(!p.is_null(), "Open MPI library {} does not export {name}", cand.path);
+        assert!(
+            !p.is_null(),
+            "Open MPI library {} does not export {name}",
+            cand.path
+        );
         p as usize
     });
     Ok(Loaded {
@@ -206,7 +223,12 @@ pub fn default_sonames() -> &'static [&'static str] {
     if cfg!(target_os = "macos") {
         &["libmpi.12.dylib", "libmpi.40.dylib"]
     } else {
-        &["libmpi.so.12", "libmpi.so.40", "libmpi_cray.so.12", "libmpi_abi.so.1"]
+        &[
+            "libmpi.so.12",
+            "libmpi.so.40",
+            "libmpi_cray.so.12",
+            "libmpi_abi.so.1",
+        ]
     }
 }
 

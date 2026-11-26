@@ -14,11 +14,15 @@
 
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
-#![allow(clippy::missing_safety_doc, clippy::too_many_arguments, clippy::type_complexity)]
+#![allow(
+    clippy::missing_safety_doc,
+    clippy::too_many_arguments,
+    clippy::type_complexity
+)]
 
 pub mod callback_types;
-pub mod consts;
 pub mod constants;
+pub mod consts;
 pub mod detect;
 pub mod functions;
 pub mod loader;
@@ -37,7 +41,10 @@ pub use types::*;
 ///
 /// ```
 /// let p = mpi_native_sys::UnsupportedMpiCall { name: "Alltoall" };
-/// assert_eq!(p.to_string(), "MPI_Alltoall is outside tenferro's native MPI surface");
+/// assert_eq!(
+///     p.to_string(),
+///     "MPI_Alltoall is outside tenferro's native MPI surface"
+/// );
 /// ```
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct UnsupportedMpiCall {
@@ -47,7 +54,11 @@ pub struct UnsupportedMpiCall {
 
 impl std::fmt::Display for UnsupportedMpiCall {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "MPI_{} is outside tenferro's native MPI surface", self.name)
+        write!(
+            f,
+            "MPI_{} is outside tenferro's native MPI surface",
+            self.name
+        )
     }
 }
 
@@ -62,7 +73,10 @@ pub fn stub_hits() -> usize {
 /// Enter a stub: count it and panic with a typed payload.
 pub(crate) fn stub(name: &'static str) -> ! {
     STUB_HITS.fetch_add(1, Ordering::SeqCst);
-    let short = name.strip_prefix("MPI_").or_else(|| name.strip_prefix("RSMPI_")).unwrap_or(name);
+    let short = name
+        .strip_prefix("MPI_")
+        .or_else(|| name.strip_prefix("RSMPI_"))
+        .unwrap_or(name);
     std::panic::panic_any(UnsupportedMpiCall { name: short })
 }
 

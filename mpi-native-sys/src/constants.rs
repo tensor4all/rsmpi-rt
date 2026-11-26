@@ -3,8 +3,7 @@
 
 use std::os::raw::c_int;
 
-use crate::loader::loaded;
-use crate::types::*;
+use crate::{loader::loaded, types::*};
 
 macro_rules! constant {
     ($plain:ident, $fnname:ident, $ty:ty, $field:ident) => {
@@ -20,27 +19,87 @@ macro_rules! constant {
 constant!(RSMPI_COMM_WORLD, RSMPI_COMM_WORLD_fn, MPI_Comm, comm_world);
 constant!(RSMPI_COMM_SELF, RSMPI_COMM_SELF_fn, MPI_Comm, comm_self);
 constant!(RSMPI_COMM_NULL, RSMPI_COMM_NULL_fn, MPI_Comm, comm_null);
-constant!(RSMPI_DATATYPE_NULL, RSMPI_DATATYPE_NULL_fn, MPI_Datatype, datatype_null);
+constant!(
+    RSMPI_DATATYPE_NULL,
+    RSMPI_DATATYPE_NULL_fn,
+    MPI_Datatype,
+    datatype_null
+);
 constant!(RSMPI_INFO_NULL, RSMPI_INFO_NULL_fn, MPI_Info, info_null);
-constant!(RSMPI_MESSAGE_NULL, RSMPI_MESSAGE_NULL_fn, MPI_Message, message_null);
-constant!(RSMPI_MESSAGE_NO_PROC, RSMPI_MESSAGE_NO_PROC_fn, MPI_Message, message_no_proc);
-constant!(RSMPI_REQUEST_NULL, RSMPI_REQUEST_NULL_fn, MPI_Request, request_null);
+constant!(
+    RSMPI_MESSAGE_NULL,
+    RSMPI_MESSAGE_NULL_fn,
+    MPI_Message,
+    message_null
+);
+constant!(
+    RSMPI_MESSAGE_NO_PROC,
+    RSMPI_MESSAGE_NO_PROC_fn,
+    MPI_Message,
+    message_no_proc
+);
+constant!(
+    RSMPI_REQUEST_NULL,
+    RSMPI_REQUEST_NULL_fn,
+    MPI_Request,
+    request_null
+);
 constant!(RSMPI_GROUP_NULL, RSMPI_GROUP_NULL_fn, MPI_Group, group_null);
-constant!(RSMPI_GROUP_EMPTY, RSMPI_GROUP_EMPTY_fn, MPI_Group, group_empty);
-constant!(RSMPI_ERRORS_ARE_FATAL, RSMPI_ERRORS_ARE_FATAL_fn, MPI_Errhandler, errors_are_fatal);
-constant!(RSMPI_ERRORS_RETURN, RSMPI_ERRORS_RETURN_fn, MPI_Errhandler, errors_return);
+constant!(
+    RSMPI_GROUP_EMPTY,
+    RSMPI_GROUP_EMPTY_fn,
+    MPI_Group,
+    group_empty
+);
+constant!(
+    RSMPI_ERRORS_ARE_FATAL,
+    RSMPI_ERRORS_ARE_FATAL_fn,
+    MPI_Errhandler,
+    errors_are_fatal
+);
+constant!(
+    RSMPI_ERRORS_RETURN,
+    RSMPI_ERRORS_RETURN_fn,
+    MPI_Errhandler,
+    errors_return
+);
 
 constant!(RSMPI_ANY_SOURCE, RSMPI_ANY_SOURCE_fn, c_int, any_source);
 constant!(RSMPI_ANY_TAG, RSMPI_ANY_TAG_fn, c_int, any_tag);
 constant!(RSMPI_PROC_NULL, RSMPI_PROC_NULL_fn, c_int, proc_null);
 constant!(RSMPI_UNDEFINED, RSMPI_UNDEFINED_fn, c_int, undefined);
-constant!(RSMPI_THREAD_SINGLE, RSMPI_THREAD_SINGLE_fn, c_int, thread_single);
-constant!(RSMPI_THREAD_FUNNELED, RSMPI_THREAD_FUNNELED_fn, c_int, thread_funneled);
-constant!(RSMPI_THREAD_SERIALIZED, RSMPI_THREAD_SERIALIZED_fn, c_int, thread_serialized);
-constant!(RSMPI_THREAD_MULTIPLE, RSMPI_THREAD_MULTIPLE_fn, c_int, thread_multiple);
+constant!(
+    RSMPI_THREAD_SINGLE,
+    RSMPI_THREAD_SINGLE_fn,
+    c_int,
+    thread_single
+);
+constant!(
+    RSMPI_THREAD_FUNNELED,
+    RSMPI_THREAD_FUNNELED_fn,
+    c_int,
+    thread_funneled
+);
+constant!(
+    RSMPI_THREAD_SERIALIZED,
+    RSMPI_THREAD_SERIALIZED_fn,
+    c_int,
+    thread_serialized
+);
+constant!(
+    RSMPI_THREAD_MULTIPLE,
+    RSMPI_THREAD_MULTIPLE_fn,
+    c_int,
+    thread_multiple
+);
 constant!(RSMPI_TAG_UB, RSMPI_TAG_UB_fn, c_int, tag_ub);
 constant!(RSMPI_APPNUM, RSMPI_APPNUM_fn, c_int, appnum);
-constant!(RSMPI_UNIVERSE_SIZE, RSMPI_UNIVERSE_SIZE_fn, c_int, universe_size);
+constant!(
+    RSMPI_UNIVERSE_SIZE,
+    RSMPI_UNIVERSE_SIZE_fn,
+    c_int,
+    universe_size
+);
 constant!(RSMPI_IDENT, RSMPI_IDENT_fn, c_int, ident);
 constant!(RSMPI_CONGRUENT, RSMPI_CONGRUENT_fn, c_int, congruent);
 constant!(RSMPI_SIMILAR, RSMPI_SIMILAR_fn, c_int, similar);
@@ -48,8 +107,18 @@ constant!(RSMPI_UNEQUAL, RSMPI_UNEQUAL_fn, c_int, unequal);
 constant!(RSMPI_CART, RSMPI_CART_fn, c_int, cart);
 constant!(RSMPI_GRAPH, RSMPI_GRAPH_fn, c_int, graph);
 constant!(RSMPI_DIST_GRAPH, RSMPI_DIST_GRAPH_fn, c_int, dist_graph);
-constant!(RSMPI_COMM_TYPE_SHARED, RSMPI_COMM_TYPE_SHARED_fn, c_int, comm_type_shared);
-constant!(RSMPI_MAX_PROCESSOR_NAME, RSMPI_MAX_PROCESSOR_NAME_fn, c_int, max_processor_name);
+constant!(
+    RSMPI_COMM_TYPE_SHARED,
+    RSMPI_COMM_TYPE_SHARED_fn,
+    c_int,
+    comm_type_shared
+);
+constant!(
+    RSMPI_MAX_PROCESSOR_NAME,
+    RSMPI_MAX_PROCESSOR_NAME_fn,
+    c_int,
+    max_processor_name
+);
 constant!(
     RSMPI_MAX_LIBRARY_VERSION_STRING,
     RSMPI_MAX_LIBRARY_VERSION_STRING_fn,
