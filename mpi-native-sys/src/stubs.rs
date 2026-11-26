@@ -82,10 +82,6 @@ pub unsafe fn MPI_Alltoallw(sendbuf: *const c_void, sendcounts: *const c_int, sd
     crate::stub("MPI_Alltoallw")
 }
 
-pub unsafe fn MPI_Barrier(comm: MPI_Comm) -> c_int {
-    crate::stub("MPI_Barrier")
-}
-
 pub unsafe fn MPI_Bcast(buffer: *mut c_void, count: c_int, datatype: MPI_Datatype, root: c_int, comm: MPI_Comm) -> c_int {
     crate::stub("MPI_Bcast")
 }
@@ -186,20 +182,12 @@ pub unsafe fn MPI_Comm_disconnect(comm: *mut MPI_Comm) -> c_int {
     crate::stub("MPI_Comm_disconnect")
 }
 
-pub unsafe fn MPI_Comm_dup(comm: MPI_Comm, newcomm: *mut MPI_Comm) -> c_int {
-    crate::stub("MPI_Comm_dup")
-}
-
 pub unsafe fn MPI_Comm_dup_with_info(comm: MPI_Comm, info: MPI_Info, newcomm: *mut MPI_Comm) -> c_int {
     crate::stub("MPI_Comm_dup_with_info")
 }
 
 pub unsafe fn MPI_Comm_f2c(comm: MPI_Fint) -> MPI_Comm {
     crate::stub("MPI_Comm_f2c")
-}
-
-pub unsafe fn MPI_Comm_free(comm: *mut MPI_Comm) -> c_int {
-    crate::stub("MPI_Comm_free")
 }
 
 pub unsafe fn MPI_Comm_free_keyval(comm_keyval: *mut c_int) -> c_int {
@@ -940,10 +928,6 @@ pub unsafe fn MPI_Put(origin_addr: *const c_void, origin_count: c_int, origin_da
 
 pub unsafe fn MPI_Raccumulate(origin_addr: *const c_void, origin_count: c_int, origin_datatype: MPI_Datatype, target_rank: c_int, target_disp: MPI_Aint, target_count: c_int, target_datatype: MPI_Datatype, op: MPI_Op, win: MPI_Win, request: *mut MPI_Request) -> c_int {
     crate::stub("MPI_Raccumulate")
-}
-
-pub unsafe fn MPI_Recv(buf: *mut c_void, count: c_int, datatype: MPI_Datatype, source: c_int, tag: c_int, comm: MPI_Comm, status: *mut MPI_Status) -> c_int {
-    crate::stub("MPI_Recv")
 }
 
 pub unsafe fn MPI_Recv_init(buf: *mut c_void, count: c_int, datatype: MPI_Datatype, source: c_int, tag: c_int, comm: MPI_Comm, request: *mut MPI_Request) -> c_int {

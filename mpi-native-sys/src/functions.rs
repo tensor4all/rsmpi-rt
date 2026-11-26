@@ -149,6 +149,8 @@ thunk!(MPI_Comm_get_attr(h comm, v comm_keyval: c_int, v attribute_val: *mut c_v
 thunk!(MPI_Send(v buf: *const c_void, v count: c_int, h datatype, v dest: c_int, v tag: c_int, h comm) -> c_int);
 thunk!(MPI_Get_count(cs status, h datatype, v count: *mut c_int) -> c_int);
 thunk!(MPI_Error_string(v errorcode: c_int, v string: *mut c_char, v resultlen: *mut c_int) -> c_int);
+thunk!(MPI_Barrier(h comm) -> c_int);
+thunk!(MPI_Recv(v buf: *mut c_void, v count: c_int, h datatype, v source: c_int, v tag: c_int, h comm, s status) -> c_int);
 thunk!(MPI_Wtime() -> c_double);
 thunk!(MPI_Wtick() -> c_double);
 
@@ -172,6 +174,57 @@ pub unsafe fn MPI_Comm_get_parent(parent: *mut MPI_Comm) -> c_int {
             let mut slot: *mut c_void = std::ptr::null_mut();
             let rc = f(&mut slot);
             *parent = from_ptr(slot);
+            rc
+        }
+    }
+}
+
+/// `MPI_Comm_dup(comm, MPI_Comm *newcomm)`. A standalone Rust host that gives a library its own
+/// communicator needs it; the tenferro transport itself never calls it.
+pub unsafe fn MPI_Comm_dup(comm: MPI_Comm, newcomm: *mut MPI_Comm) -> c_int {
+    let lib = loaded();
+    match lib.family {
+        Family::Mpich => {
+            type F = unsafe extern "C" fn(c_int, *mut c_int) -> c_int;
+            static FN: OnceLock<usize> = OnceLock::new();
+            let f: F = std::mem::transmute(*FN.get_or_init(|| resolve(lib, "MPI_Comm_dup")));
+            let mut slot: c_int = 0;
+            let rc = f(to_int(comm), &mut slot);
+            *newcomm = from_int(slot);
+            rc
+        }
+        Family::OpenMpi | Family::StandardAbi => {
+            type F = unsafe extern "C" fn(*mut c_void, *mut *mut c_void) -> c_int;
+            static FN: OnceLock<usize> = OnceLock::new();
+            let f: F = std::mem::transmute(*FN.get_or_init(|| resolve(lib, "MPI_Comm_dup")));
+            let mut slot: *mut c_void = std::ptr::null_mut();
+            let rc = f(to_ptr(comm), &mut slot);
+            *newcomm = from_ptr(slot);
+            rc
+        }
+    }
+}
+
+/// `MPI_Comm_free(MPI_Comm *comm)`: reads the handle and writes back `MPI_COMM_NULL`.
+pub unsafe fn MPI_Comm_free(comm: *mut MPI_Comm) -> c_int {
+    let lib = loaded();
+    match lib.family {
+        Family::Mpich => {
+            type F = unsafe extern "C" fn(*mut c_int) -> c_int;
+            static FN: OnceLock<usize> = OnceLock::new();
+            let f: F = std::mem::transmute(*FN.get_or_init(|| resolve(lib, "MPI_Comm_free")));
+            let mut slot: c_int = to_int(*comm);
+            let rc = f(&mut slot);
+            *comm = from_int(slot);
+            rc
+        }
+        Family::OpenMpi | Family::StandardAbi => {
+            type F = unsafe extern "C" fn(*mut *mut c_void) -> c_int;
+            static FN: OnceLock<usize> = OnceLock::new();
+            let f: F = std::mem::transmute(*FN.get_or_init(|| resolve(lib, "MPI_Comm_free")));
+            let mut slot: *mut c_void = to_ptr(*comm);
+            let rc = f(&mut slot);
+            *comm = from_ptr(slot);
             rc
         }
     }
