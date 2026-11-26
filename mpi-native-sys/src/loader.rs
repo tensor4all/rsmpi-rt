@@ -11,16 +11,14 @@
 //! **Caching (D12).** Detection runs under a `Mutex`; only a *success* is stored.
 
 use std::{
-    ffi::{c_void, CStr, CString},
-    os::raw::{c_char, c_int},
+    ffi::{c_void, CStr},
     sync::{Mutex, OnceLock},
 };
 
 use crate::{
-    consts::{Consts, VERSION_BUFFER},
-    detect::{decide, Candidate, Family, LoadError},
+    consts::Consts,
+    detect::{Family, LoadError},
 };
-
 /// A detected, referenced MPI library. Process-global and never released.
 #[derive(Debug)]
 pub struct Loaded {
@@ -38,177 +36,212 @@ pub struct Loaded {
 impl Loaded {
     /// Resolve `name` in the identified object (and its dependencies, as `dlsym` does).
     pub fn sym(&self, name: &CStr) -> Option<*mut c_void> {
-        // SAFETY: `handle` is a live dlopen reference that is never closed.
-        let p = unsafe { libc::dlsym(self.handle as *mut c_void, name.as_ptr()) };
-        (!p.is_null()).then_some(p)
+        #[cfg(target_os = "linux")]
+        {
+            // SAFETY: `handle` is a live dlopen reference that is never closed.
+            let p = unsafe { libc::dlsym(self.handle as *mut c_void, name.as_ptr()) };
+            (!p.is_null()).then_some(p)
+        }
+        #[cfg(not(target_os = "linux"))]
+        {
+            let _ = (name, self.handle);
+            None
+        }
     }
 }
 
 static LIBRARY: OnceLock<Loaded> = OnceLock::new();
 static DETECT: Mutex<()> = Mutex::new(());
 
-/// One loaded object seen by the walk.
-struct Object {
-    path: String,
-    segments: Vec<(usize, usize)>,
-}
+#[cfg(target_os = "linux")]
+mod linux {
+    use std::{
+        ffi::CString,
+        os::raw::{c_char, c_int},
+    };
 
-fn walk() -> Vec<Object> {
-    unsafe extern "C" fn cb(
-        info: *mut libc::dl_phdr_info,
-        _size: usize,
-        data: *mut c_void,
-    ) -> c_int {
-        let objects = &mut *(data as *mut Vec<Object>);
-        let info = &*info;
-        let path = if info.dlpi_name.is_null() {
-            String::new()
-        } else {
-            CStr::from_ptr(info.dlpi_name)
-                .to_string_lossy()
-                .into_owned()
-        };
-        let mut segments = Vec::new();
-        for i in 0..info.dlpi_phnum as usize {
-            let ph = &*info.dlpi_phdr.add(i);
-            if ph.p_type == libc::PT_LOAD {
-                let start = info.dlpi_addr as usize + ph.p_vaddr as usize;
-                segments.push((start, start + ph.p_memsz as usize));
+    use super::*;
+    use crate::{
+        consts::VERSION_BUFFER,
+        detect::{decide, Candidate},
+    };
+
+    /// One loaded object seen by the walk.
+    struct Object {
+        path: String,
+        segments: Vec<(usize, usize)>,
+    }
+
+    fn walk() -> Vec<Object> {
+        unsafe extern "C" fn cb(
+            info: *mut libc::dl_phdr_info,
+            _size: usize,
+            data: *mut c_void,
+        ) -> c_int {
+            let objects = &mut *(data as *mut Vec<Object>);
+            let info = &*info;
+            let path = if info.dlpi_name.is_null() {
+                String::new()
+            } else {
+                CStr::from_ptr(info.dlpi_name)
+                    .to_string_lossy()
+                    .into_owned()
+            };
+            let mut segments = Vec::new();
+            for i in 0..info.dlpi_phnum as usize {
+                let ph = &*info.dlpi_phdr.add(i);
+                if ph.p_type == libc::PT_LOAD {
+                    let start = info.dlpi_addr as usize + ph.p_vaddr as usize;
+                    segments.push((start, start + ph.p_memsz as usize));
+                }
             }
+            objects.push(Object { path, segments });
+            0
         }
-        objects.push(Object { path, segments });
-        0
+        let mut objects: Vec<Object> = Vec::new();
+        // SAFETY: the callback only reads the info it is given and appends to `objects`.
+        unsafe { libc::dl_iterate_phdr(Some(cb), (&mut objects as *mut Vec<Object>).cast()) };
+        objects
     }
-    let mut objects: Vec<Object> = Vec::new();
-    // SAFETY: the callback only reads the info it is given and appends to `objects`.
-    unsafe { libc::dl_iterate_phdr(Some(cb), (&mut objects as *mut Vec<Object>).cast()) };
-    objects
-}
 
-/// A symbol defined *by this object*, not by one of its dependencies: `dlsym` on a handle
-/// also searches dependencies, so a library that merely links `libmpi_abi` would otherwise
-/// look like a second MPI. The address must fall inside one of the object's load segments.
-unsafe fn own_symbol(handle: *mut c_void, object: &Object, name: &CStr) -> *mut c_void {
-    let p = libc::dlsym(handle, name.as_ptr());
-    if p.is_null() {
-        return p;
-    }
-    let a = p as usize;
-    if object.segments.iter().any(|&(s, e)| a >= s && a < e) {
-        p
-    } else {
-        std::ptr::null_mut()
-    }
-}
-
-unsafe fn library_version(f: *mut c_void) -> Option<String> {
-    let f: unsafe extern "C" fn(*mut c_char, *mut c_int) -> c_int = std::mem::transmute(f);
-    let mut buf = vec![0u8; VERSION_BUFFER + 1];
-    let mut len: c_int = 0;
-    if f(buf.as_mut_ptr().cast(), &mut len) != 0 {
-        return None;
-    }
-    let n = (len.max(0) as usize).min(VERSION_BUFFER);
-    Some(String::from_utf8_lossy(&buf[..n]).into_owned())
-}
-
-fn c(name: &str) -> CString {
-    CString::new(name).expect("symbol names contain no NUL")
-}
-
-fn probe(object: &Object) -> Option<(Candidate, usize)> {
-    // SAFETY: dlopen with RTLD_NOLOAD returns a reference only to an object that is
-    // already mapped; every call below is a documented pre-init-safe MPI query or a
-    // symbol lookup.
-    unsafe {
-        let handle = if object.path.is_empty() {
-            libc::dlopen(std::ptr::null(), libc::RTLD_LAZY)
+    /// A symbol defined *by this object*, not by one of its dependencies: `dlsym` on a handle
+    /// also searches dependencies, so a library that merely links `libmpi_abi` would otherwise
+    /// look like a second MPI. The address must fall inside one of the object's load segments.
+    unsafe fn own_symbol(handle: *mut c_void, object: &Object, name: &CStr) -> *mut c_void {
+        let p = libc::dlsym(handle, name.as_ptr());
+        if p.is_null() {
+            return p;
+        }
+        let a = p as usize;
+        if object.segments.iter().any(|&(s, e)| a >= s && a < e) {
+            p
         } else {
-            let p = c(&object.path);
-            libc::dlopen(p.as_ptr(), libc::RTLD_NOLOAD | libc::RTLD_LAZY)
-        };
-        if handle.is_null() {
+            std::ptr::null_mut()
+        }
+    }
+
+    unsafe fn library_version(f: *mut c_void) -> Option<String> {
+        let f: unsafe extern "C" fn(*mut c_char, *mut c_int) -> c_int = std::mem::transmute(f);
+        let mut buf = vec![0u8; VERSION_BUFFER + 1];
+        let mut len: c_int = 0;
+        if f(buf.as_mut_ptr().cast(), &mut len) != 0 {
             return None;
         }
-        let own = |n: &str| own_symbol(handle, object, &c(n));
-        let mut cand = Candidate {
-            path: object.path.clone(),
-            ..Default::default()
-        };
-        cand.mpiabi_marker = !own("MPIABI_Get_library_version").is_null();
-        let abi = own("MPI_Abi_get_version");
-        let pmpi = own("PMPI_Get_library_version");
-        cand.pmpi_version = !pmpi.is_null();
-        if !abi.is_null() {
-            // The return value is the signal; the symbol's presence is not (A5).
-            let f: unsafe extern "C" fn(*mut c_int, *mut c_int) -> c_int = std::mem::transmute(abi);
-            let (mut major, mut minor) = (-1, -1);
-            if f(&mut major, &mut minor) == 0 {
-                cand.abi_major = Some(major);
-                cand.abi_minor = Some(minor);
+        let n = (len.max(0) as usize).min(VERSION_BUFFER);
+        Some(String::from_utf8_lossy(&buf[..n]).into_owned())
+    }
+
+    fn c(name: &str) -> CString {
+        CString::new(name).expect("symbol names contain no NUL")
+    }
+
+    fn probe(object: &Object) -> Option<(Candidate, usize)> {
+        // SAFETY: dlopen with RTLD_NOLOAD returns a reference only to an object that is
+        // already mapped; every call below is a documented pre-init-safe MPI query or a
+        // symbol lookup.
+        unsafe {
+            let handle = if object.path.is_empty() {
+                libc::dlopen(std::ptr::null(), libc::RTLD_LAZY)
+            } else {
+                let p = c(&object.path);
+                libc::dlopen(p.as_ptr(), libc::RTLD_NOLOAD | libc::RTLD_LAZY)
+            };
+            if handle.is_null() {
+                return None;
+            }
+            let own = |n: &str| own_symbol(handle, object, &c(n));
+            let mut cand = Candidate {
+                path: object.path.clone(),
+                ..Default::default()
+            };
+            cand.mpiabi_marker = !own("MPIABI_Get_library_version").is_null();
+            let abi = own("MPI_Abi_get_version");
+            let pmpi = own("PMPI_Get_library_version");
+            cand.pmpi_version = !pmpi.is_null();
+            if !abi.is_null() {
+                // The return value is the signal; the symbol's presence is not (A5).
+                let f: unsafe extern "C" fn(*mut c_int, *mut c_int) -> c_int =
+                    std::mem::transmute(abi);
+                let (mut major, mut minor) = (-1, -1);
+                if f(&mut major, &mut minor) == 0 {
+                    cand.abi_major = Some(major);
+                    cand.abi_minor = Some(minor);
+                }
+            }
+            if !pmpi.is_null() {
+                cand.version = library_version(pmpi);
+            } else if cand.abi_major.is_some_and(|m| m >= 1) {
+                let f = own("MPI_Get_library_version");
+                if !f.is_null() {
+                    cand.version = library_version(f);
+                }
+            }
+            cand.ompi_witness = !own("ompi_mpi_comm_world").is_null();
+            cand.mpich_witness = !own("MPIR_Err_return_comm").is_null();
+            Some((cand, handle as usize))
+        }
+    }
+
+    /// Run detection on the objects loaded right now. Does not touch the cache.
+    pub fn detect_in_process() -> Result<Loaded, LoadError> {
+        let objects = walk();
+        let mut candidates = Vec::new();
+        let mut handles = Vec::new();
+        let mut origin = Vec::new();
+        for (i, o) in objects.iter().enumerate() {
+            // Only objects that could be MPI are probed, so unrelated libraries are never called.
+            if let Some((cand, handle)) = probe(o) {
+                let interesting = cand.mpiabi_marker
+                    || cand.pmpi_version
+                    || cand.abi_major.is_some()
+                    || cand.ompi_witness;
+                if interesting {
+                    candidates.push(cand);
+                    handles.push(handle);
+                    origin.push(i);
+                }
             }
         }
-        if !pmpi.is_null() {
-            cand.version = library_version(pmpi);
-        } else if cand.abi_major.is_some_and(|m| m >= 1) {
-            let f = own("MPI_Get_library_version");
-            if !f.is_null() {
-                cand.version = library_version(f);
+        let decision = decide(&candidates)?;
+        let cand = &candidates[decision.index];
+        let handle = handles[decision.index];
+        // A missing data symbol is a loader error, never a panic (D10): record the first one.
+        let missing = std::cell::RefCell::new(None::<String>);
+        let consts = Consts::for_family(decision.family, |name| {
+            // SAFETY: `handle` is a live reference; a data symbol's address is its value.
+            let p = unsafe { libc::dlsym(handle as *mut c_void, c(name).as_ptr()) };
+            if p.is_null() {
+                missing.borrow_mut().get_or_insert_with(|| name.to_string());
             }
+            p as usize
+        });
+        if let Some(name) = missing.into_inner() {
+            return Err(LoadError::FamilyMismatch {
+                path: cand.path.clone(),
+                version: cand.version.clone().unwrap_or_default(),
+                string_says: decision.family.name().to_string(),
+                symbols_say: format!("no `{name}` symbol"),
+            });
         }
-        cand.ompi_witness = !own("ompi_mpi_comm_world").is_null();
-        cand.mpich_witness = !own("MPIR_Err_return_comm").is_null();
-        Some((cand, handle as usize))
+        Ok(Loaded {
+            family: decision.family,
+            path: cand.path.clone(),
+            version: cand.version.clone().unwrap_or_default(),
+            handle,
+            consts,
+        })
     }
 }
 
-/// Run detection on the objects loaded right now. Does not touch the cache.
+#[cfg(target_os = "linux")]
+pub use linux::detect_in_process;
+
+/// Native handles are Linux-only for now (docs/design/mpi-native-abi.md, Q6): the walk uses
+/// `dl_iterate_phdr`, and macOS would need the `_dyld_*` interface.
+#[cfg(not(target_os = "linux"))]
 pub fn detect_in_process() -> Result<Loaded, LoadError> {
-    let objects = walk();
-    let mut candidates = Vec::new();
-    let mut handles = Vec::new();
-    let mut origin = Vec::new();
-    for (i, o) in objects.iter().enumerate() {
-        // Only objects that could be MPI are probed, so unrelated libraries are never called.
-        if let Some((cand, handle)) = probe(o) {
-            let interesting = cand.mpiabi_marker
-                || cand.pmpi_version
-                || cand.abi_major.is_some()
-                || cand.ompi_witness;
-            if interesting {
-                candidates.push(cand);
-                handles.push(handle);
-                origin.push(i);
-            }
-        }
-    }
-    let decision = decide(&candidates)?;
-    let cand = &candidates[decision.index];
-    let handle = handles[decision.index];
-    // A missing data symbol is a loader error, never a panic (D10): record the first one.
-    let missing = std::cell::RefCell::new(None::<String>);
-    let consts = Consts::for_family(decision.family, |name| {
-        // SAFETY: `handle` is a live reference; a data symbol's address is its value.
-        let p = unsafe { libc::dlsym(handle as *mut c_void, c(name).as_ptr()) };
-        if p.is_null() {
-            missing.borrow_mut().get_or_insert_with(|| name.to_string());
-        }
-        p as usize
-    });
-    if let Some(name) = missing.into_inner() {
-        return Err(LoadError::FamilyMismatch {
-            path: cand.path.clone(),
-            version: cand.version.clone().unwrap_or_default(),
-            string_says: decision.family.name().to_string(),
-            symbols_say: format!("no `{name}` symbol"),
-        });
-    }
-    Ok(Loaded {
-        family: decision.family,
-        path: cand.path.clone(),
-        version: cand.version.clone().unwrap_or_default(),
-        handle,
-        consts,
+    Err(LoadError::NotFound {
+        tried: vec!["unsupported platform: the native-handle backend is Linux-only".to_string()],
     })
 }
 
@@ -252,17 +285,24 @@ pub fn standalone() -> Result<&'static Loaded, LoadError> {
         Ok(p) if !p.is_empty() => vec![p],
         _ => default_sonames().iter().map(|s| s.to_string()).collect(),
     };
-    let mut loaded_any = false;
-    for name in &names {
-        let n = c(name);
-        // SAFETY: loading the library the user (or the default soname list) named. RTLD_GLOBAL
-        // because Open MPI's component plugins resolve libmpi symbols from the global scope.
-        let h = unsafe { libc::dlopen(n.as_ptr(), libc::RTLD_NOW | libc::RTLD_GLOBAL) };
-        if !h.is_null() {
-            loaded_any = true;
-            break;
+    #[cfg(target_os = "linux")]
+    let loaded_any = {
+        let mut loaded_any = false;
+        for name in &names {
+            let n = std::ffi::CString::new(name.as_str()).expect("no NUL in library names");
+            // SAFETY: loading the library the user (or the default soname list) named.
+            // RTLD_GLOBAL because Open MPI's component plugins resolve libmpi symbols from the
+            // global scope.
+            let h = unsafe { libc::dlopen(n.as_ptr(), libc::RTLD_NOW | libc::RTLD_GLOBAL) };
+            if !h.is_null() {
+                loaded_any = true;
+                break;
+            }
         }
-    }
+        loaded_any
+    };
+    #[cfg(not(target_os = "linux"))]
+    let loaded_any = false;
     if !loaded_any {
         return Err(LoadError::NotFound { tried: names });
     }

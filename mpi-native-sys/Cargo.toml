@@ -8,7 +8,7 @@ repository = "https://github.com/tensor4all/rsmpi-rt"
 # Deliberately no `links` key: the library is found in the process (or by soname) at run
 # time, so this crate can sit next to any other MPI binding in one dependency graph.
 
-[dependencies]
+[target.'cfg(target_os = "linux")'.dependencies]
 libc = "0.2"
 
 [package.metadata.docs.rs]
