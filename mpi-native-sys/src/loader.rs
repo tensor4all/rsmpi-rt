@@ -266,6 +266,8 @@ pub fn default_sonames() -> &'static [&'static str] {
     } else {
         &[
             "libmpi.so.12",
+            // Debian and Ubuntu name their MPICH `libmpich.so.12`.
+            "libmpich.so.12",
             "libmpi.so.40",
             "libmpi_cray.so.12",
             "libmpi_abi.so.1",
