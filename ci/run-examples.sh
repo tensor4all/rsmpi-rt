@@ -30,8 +30,21 @@ do
       printf "."
       rm -f "${output_file}"
     else
-      printf " failed on %d processes.\noutput:\n" ${num_proc}
+      status=$?
+      printf " failed on %d processes (cargo mpirun exit status %d).\noutput:\n" ${num_proc} ${status}
       cat "${output_file}"
+      # `cargo mpirun` can fail without any output from the program itself (an example that
+      # spawns children reports nothing if mpiexec dies first). Run the built binary directly,
+      # with the launcher's own diagnostics on, so the log says why. This is diagnostics only:
+      # the example's result above still counts as failed.
+      binary="target/debug/examples/${example}"
+      if [ -x "${binary}" ]; then
+        printf -- "--- diagnostics: mpiexec -n %d %s\n" ${num_proc} "${binary}"
+        mpiexec --version 2>&1 | head -n 2 || true
+        (mpiexec --display-map --debug-daemons -n ${num_proc} "${binary}" 2>&1 ||
+          mpiexec -n ${num_proc} "${binary}" 2>&1) | head -n 80
+        printf -- "--- diagnostics: exit status %d\n" $?
+      fi
       rm -f "${output_file}"
       num_failed=$((${num_failed} + 1))
       result="failed"
