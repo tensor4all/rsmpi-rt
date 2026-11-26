@@ -1,0 +1,15 @@
+[package]
+name = "mpi-native-sys"
+version = "0.1.0"
+edition = "2021"
+description = "Low-level Rust bindings to MPI through the host's native handles, resolved at run time"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/tensor4all/rsmpi-rt"
+# Deliberately no `links` key: the library is found in the process (or by soname) at run
+# time, so this crate can sit next to any other MPI binding in one dependency graph.
+
+[target.'cfg(target_os = "linux")'.dependencies]
+libc = "0.2"
+
+[package.metadata.docs.rs]
+default-target = "x86_64-unknown-linux-gnu"

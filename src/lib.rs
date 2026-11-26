@@ -125,13 +125,13 @@
 
 use std::{mem::MaybeUninit, os::raw::c_int};
 
-#[cfg(all(feature = "mpi-sys-backend", feature = "mpi-rt-sys-backend"))]
+#[cfg(all(feature = "mpi-sys-backend", feature = "mpi-native-sys-backend"))]
 compile_error!(
-    "Features `mpi-sys-backend` and `mpi-rt-sys-backend` are mutually exclusive. Enable only one."
+    "Features `mpi-sys-backend` and `mpi-native-sys-backend` are mutually exclusive. Enable only one."
 );
 
-#[cfg(not(any(feature = "mpi-sys-backend", feature = "mpi-rt-sys-backend")))]
-compile_error!("Either `mpi-sys-backend` or `mpi-rt-sys-backend` feature must be enabled.");
+#[cfg(not(any(feature = "mpi-sys-backend", feature = "mpi-native-sys-backend")))]
+compile_error!("Either `mpi-sys-backend` or `mpi-native-sys-backend` feature must be enabled.");
 
 /// The raw C language MPI API
 ///
@@ -141,8 +141,8 @@ compile_error!("Either `mpi-sys-backend` or `mpi-rt-sys-backend` feature must be
 #[allow(missing_docs, dead_code, non_snake_case, non_camel_case_types)]
 #[macro_use]
 pub mod ffi {
-    #[cfg(feature = "mpi-rt-sys-backend")]
-    pub use mpi_rt_sys::*;
+    #[cfg(feature = "mpi-native-sys-backend")]
+    pub use mpi_native_sys::*;
     #[cfg(feature = "mpi-sys-backend")]
     pub use mpi_sys::constant_accessors::*;
     #[cfg(feature = "mpi-sys-backend")]

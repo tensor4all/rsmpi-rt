@@ -1,7 +1,7 @@
 //! Accessor functions for MPI constants.
 //!
 //! These wrap the extern const RSMPI_* values as functions,
-//! providing a uniform API with mpi-rt-sys.
+//! providing a uniform API with mpi-native-sys.
 
 use super::*;
 
