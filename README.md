@@ -64,7 +64,7 @@ mpi = { package = "rsmpi-rt", version = "0.9.0", default-features = false, featu
 
 **Run time.** When a host (MPI.jl, mpi4py) has already loaded MPI, the library is found by walking the
 loaded objects and nothing is loaded a second time. A standalone Rust program calls `mpi::initialize()`;
-the backend then loads `MPI_NATIVE_LIB` if set, else `libmpi.so.12`, `libmpi.so.40`,
+the backend then loads `MPI_NATIVE_LIB` if set, else `libmpi.so.12`, `libmpich.so.12` (Debian/Ubuntu MPICH), `libmpi.so.40`,
 `libmpi_cray.so.12` or `libmpi_abi.so.1`. The family is identified before any handle is used
 (MPIwrapper marker, then the return value of `MPI_Abi_get_version`, then the version string and a
 symbol witness). An MPI outside the supported families fails with a named error instead of

@@ -262,7 +262,7 @@ pub fn library() -> Result<&'static Loaded, LoadError> {
 /// Names tried by the standalone path, in order, when `MPI_NATIVE_LIB` is not set.
 pub fn default_sonames() -> &'static [&'static str] {
     if cfg!(target_os = "macos") {
-        &["libmpi.12.dylib", "libmpi.40.dylib"]
+        &["libmpi.12.dylib", "libmpich.12.dylib", "libmpi.40.dylib"]
     } else {
         &[
             "libmpi.so.12",
