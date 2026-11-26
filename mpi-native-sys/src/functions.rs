@@ -68,8 +68,9 @@ fn status_arg(lib: &Loaded, status: *mut MPI_Status) -> *mut c_void {
 
 /// After a call that wrote `raw`, copy source/tag/error out at the family's offsets.
 #[inline]
-unsafe fn read_status(lib: &Loaded, status: *mut MPI_Status) {
-    if status.is_null() {
+unsafe fn read_status(lib: &Loaded, status: *mut MPI_Status, rc: c_int) {
+    // A failed call may not have written the status: never read it then.
+    if status.is_null() || rc != 0 {
         return;
     }
     let (s, t, e) = lib.consts.status_offsets;
@@ -170,7 +171,6 @@ thunk!(MPI_Send(v buf: *const c_void, v count: c_int, h datatype, v dest: c_int,
 thunk!(MPI_Get_count(cs status, h datatype, v count: *mut c_int) -> c_int);
 thunk!(MPI_Error_string(v errorcode: c_int, v string: *mut c_char, v resultlen: *mut c_int) -> c_int);
 thunk!(MPI_Barrier(h comm) -> c_int);
-thunk!(MPI_Recv(v buf: *mut c_void, v count: c_int, h datatype, v source: c_int, v tag: c_int, h comm, s status) -> c_int);
 thunk!(MPI_Wtime() -> c_double);
 thunk!(MPI_Wtick() -> c_double);
 
@@ -303,6 +303,68 @@ pub unsafe fn MPI_Errhandler_free(errhandler: *mut MPI_Errhandler) -> c_int {
     }
 }
 
+/// `MPI_Recv(buf, count, datatype, source, tag, comm, status)`: copies source, tag and error out
+/// of the family's status layout so rsmpi-rt's field reads are defined.
+pub unsafe fn MPI_Recv(
+    buf: *mut c_void,
+    count: c_int,
+    datatype: MPI_Datatype,
+    source: c_int,
+    tag: c_int,
+    comm: MPI_Comm,
+    status: *mut MPI_Status,
+) -> c_int {
+    let lib = loaded();
+    let rc = match lib.family {
+        Family::Mpich => {
+            type F = unsafe extern "C" fn(
+                *mut c_void,
+                c_int,
+                c_int,
+                c_int,
+                c_int,
+                c_int,
+                *mut c_void,
+            ) -> c_int;
+            static FN: OnceLock<usize> = OnceLock::new();
+            let f: F = std::mem::transmute(*FN.get_or_init(|| resolve(lib, "MPI_Recv")));
+            f(
+                buf,
+                count,
+                to_int(datatype),
+                source,
+                tag,
+                to_int(comm),
+                status_arg(lib, status),
+            )
+        }
+        Family::OpenMpi | Family::StandardAbi => {
+            type F = unsafe extern "C" fn(
+                *mut c_void,
+                c_int,
+                *mut c_void,
+                c_int,
+                c_int,
+                *mut c_void,
+                *mut c_void,
+            ) -> c_int;
+            static FN: OnceLock<usize> = OnceLock::new();
+            let f: F = std::mem::transmute(*FN.get_or_init(|| resolve(lib, "MPI_Recv")));
+            f(
+                buf,
+                count,
+                to_ptr(datatype),
+                source,
+                tag,
+                to_ptr(comm),
+                status_arg(lib, status),
+            )
+        }
+    };
+    read_status(lib, status, rc);
+    rc
+}
+
 /// `MPI_Mprobe(source, tag, comm, MPI_Message *message, MPI_Status *status)`.
 pub unsafe fn MPI_Mprobe(
     source: c_int,
@@ -350,7 +412,7 @@ pub unsafe fn MPI_Mprobe(
             rc
         }
     };
-    read_status(lib, status);
+    read_status(lib, status, rc);
     rc
 }
 
@@ -403,6 +465,6 @@ pub unsafe fn MPI_Mrecv(
             rc
         }
     };
-    read_status(lib, status);
+    read_status(lib, status, rc);
     rc
 }

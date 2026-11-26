@@ -362,13 +362,21 @@ pub fn decide(candidates: &[Candidate]) -> Result<Decision, LoadError> {
     let version = c.version.clone().unwrap_or_default();
     let family = match classify_version(&version) {
         Row::Family(Family::StandardAbi) => {
-            // The string claims a standard ABI but the call did not say so.
-            return Err(LoadError::FamilyMismatch {
-                path: c.path.clone(),
-                version,
-                string_says: Family::StandardAbi.name().to_string(),
-                symbols_say: "native (MPI_Abi_get_version did not report abi_major >= 1)".into(),
-            });
+            // MPICH built with `--enable-mpi-abi` also builds a native `libmpi.so.12` whose
+            // configure line carries the flag, while `MPI_Abi_get_version` returns -1 there. If
+            // the call did not report a standard ABI and the object has MPICH's witness and not
+            // Open MPI's, it is the native MPICH library.
+            if c.mpich_witness && !c.ompi_witness {
+                Family::Mpich
+            } else {
+                return Err(LoadError::FamilyMismatch {
+                    path: c.path.clone(),
+                    version,
+                    string_says: Family::StandardAbi.name().to_string(),
+                    symbols_say: "native (MPI_Abi_get_version did not report abi_major >= 1)"
+                        .into(),
+                });
+            }
         }
         Row::Family(f) => f,
         Row::Reject(Reject::MpiWrapper) => {
@@ -592,9 +600,19 @@ mod tests {
     }
 
     #[test]
-    fn native_string_claiming_standard_abi_without_the_call_is_a_mismatch() {
+    fn native_mpich_built_with_the_abi_flag_is_still_native_mpich() {
+        // The configure line of a native libmpi.so.12 from an --enable-mpi-abi build carries the
+        // flag; MPI_Abi_get_version returned -1 and the MPICH witness is there.
         let mut c = native_mpich();
         c.version = Some(MPICH_ABI.into());
+        assert_eq!(decide(&[c]).unwrap().family, Family::Mpich);
+    }
+
+    #[test]
+    fn standard_abi_string_without_the_call_or_the_witness_is_a_mismatch() {
+        let mut c = native_mpich();
+        c.version = Some(WRAPPER.into());
+        c.mpich_witness = false;
         assert!(matches!(
             decide(&[c]).unwrap_err(),
             LoadError::FamilyMismatch { .. }

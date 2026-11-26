@@ -185,16 +185,24 @@ pub fn detect_in_process() -> Result<Loaded, LoadError> {
     let decision = decide(&candidates)?;
     let cand = &candidates[decision.index];
     let handle = handles[decision.index];
+    // A missing data symbol is a loader error, never a panic (D10): record the first one.
+    let missing = std::cell::RefCell::new(None::<String>);
     let consts = Consts::for_family(decision.family, |name| {
         // SAFETY: `handle` is a live reference; a data symbol's address is its value.
         let p = unsafe { libc::dlsym(handle as *mut c_void, c(name).as_ptr()) };
-        assert!(
-            !p.is_null(),
-            "Open MPI library {} does not export {name}",
-            cand.path
-        );
+        if p.is_null() {
+            missing.borrow_mut().get_or_insert_with(|| name.to_string());
+        }
         p as usize
     });
+    if let Some(name) = missing.into_inner() {
+        return Err(LoadError::FamilyMismatch {
+            path: cand.path.clone(),
+            version: cand.version.clone().unwrap_or_default(),
+            string_says: decision.family.name().to_string(),
+            symbols_say: format!("no `{name}` symbol"),
+        });
+    }
     Ok(Loaded {
         family: decision.family,
         path: cand.path.clone(),
