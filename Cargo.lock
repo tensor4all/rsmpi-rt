@@ -200,6 +200,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "mpi-native-sys"
+version = "0.1.0"
+dependencies = [
+ "libc",
+]
+
+[[package]]
 name = "mpi-rt-sys"
 version = "0.1.0"
 dependencies = [
@@ -302,6 +309,7 @@ dependencies = [
  "libffi",
  "memoffset",
  "mpi-derive",
+ "mpi-native-sys",
  "mpi-rt-sys",
  "num-complex",
  "once_cell",

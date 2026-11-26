@@ -32,12 +32,14 @@ members = [
   "mpi-derive",
   "mpi-sys",
   "mpi-rt-sys",
+  "mpi-native-sys",
 ]
 
 [features]
 default = ["user-operations", "mpi-sys-backend"]
 mpi-sys-backend = ["dep:mpi-sys", "dep:build-probe-mpi"]
 mpi-rt-sys-backend = ["dep:mpi-rt-sys"]
+mpi-native-sys-backend = ["dep:mpi-native-sys"]
 user-operations = ["libffi"]
 derive = ["mpi-derive"]
 complex = ["dep:num-complex"]
@@ -48,6 +50,7 @@ libffi = { version = "5.1.1", optional = true }
 mpi-derive = { path = "mpi-derive", version = "0.1.4", optional = true }
 mpi-sys = { package = "rsmpi-sys", path = "mpi-sys", version = "0.2.4", optional = true }
 mpi-rt-sys = { path = "mpi-rt-sys", version = "0.1.0", optional = true }
+mpi-native-sys = { path = "mpi-native-sys", version = "0.1.0", optional = true }
 num-complex = { version = "0.4.6", optional = true }
 once_cell = "1.21"
 smallvec = "1.15.2"
